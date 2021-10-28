@@ -1,0 +1,47 @@
+html, body {
+    height: 99%;
+    font-family: "Charis SIL", Arial, Verdana, Sans-serif; 
+    font-size: 140%;
+    color: blue;
+}
+
+#outer {
+    height: 100%; 
+    width: 100%;
+ /* overflow: hidden; */
+    overflow: visible;
+    position: relative;
+}
+
+#outer[id] {
+    display: table; 
+    position: static;
+}
+
+#middle[id] {
+    display: table-cell; 
+    vertical-align: middle; 
+    width: 100%;
+}
+
+#inner {
+    width: 100%; 
+    margin-left: auto; 
+    margin-right: auto; 
+}
+
+.question_pre {
+    text-align: center;
+    display: table;
+    margin: 5px auto;
+    padding: 5px;
+    color: red;
+}
+
+.answer_pre {
+    text-align: center;
+    display: table;
+    margin: 5px auto;
+    padding: 5px;
+    color: blue;
+}

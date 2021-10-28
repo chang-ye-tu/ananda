@@ -1,0 +1,9 @@
+*.swp
+theory/
+tmp/
+designer/
+db/
+__pycache__/
+*.py[cod]
+*.egg
+.cache
