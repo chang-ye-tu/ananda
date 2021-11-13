@@ -33,7 +33,7 @@ def htm(s, b_centered=False):
     </script>
 <style>
 p {
-  font-family: "Times New Roman", Times, serif;
+  font-family: "Helvetica", "Noto Sans", serif, Times;
   font-size: 20px;
 }
 
@@ -120,7 +120,7 @@ def recreate_db():
                 fn, dt = os.path.splitext(f)
                 if dt in doc_types:
                     path = cat(root, f)
-                    cr.execute('insert into doc(filename, path, created, size) values(?, ?, ?, ?)', (fn, path, time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(os.path.getctime(path))), human_readable(os.path.getsize(path)),))
+                    cr.execute('insert into doc(filename, path, created, size) values(?, ?, ?, ?)', (fn, path, time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(os.path.getmtime(path))), human_readable(os.path.getsize(path)),))
     cn.commit()
 
 def human_readable(size):

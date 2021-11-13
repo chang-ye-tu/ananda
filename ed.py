@@ -179,9 +179,9 @@ class win_ed(QMainWindow):
         hlo.addWidget(self.spl)
         self.setCentralWidget(wdg)
         
-        #self.av = av = wdg_a(self) XXX
-        #av.hide() XXX
-        #av, SIGNAL('msg_av'), self.handler_av) XXX
+        self.av = av = wdg_a(self)
+        av.hide()
+        av.msg_av.connect(self.handler_av)
         
         for i, k in [('save',        ('F2', 'Ctrl+S',)), 
                      ('add_qa',      ('F3', 'Ctrl+T',)),

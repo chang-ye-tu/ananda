@@ -16,151 +16,19 @@ from ui.wdg_a import Ui_wdg_a
 
 import pyaudio 
 
-mp3gain = 'mp3gain'
-lame = 'lame'
-READ_CHUNK = 512
-WRITE_CHUNK = 1024 
+CHUNK = 1024 
 FORMAT = pyaudio.paInt16
-CHANNELS = 2 
 RATE = 44100
 NOREALNUM = -666.24601
-DEFAULT_TARGET = 100
 
 def sha(f):
     return hashlib.sha224(open(f, 'rb').read()).hexdigest()
 
-def adjust_vol(f, target_gain=DEFAULT_TARGET):
-    if os.name == 'posix':
-        call([mp3gain, '-r', '-c', '-d', '9', '-f', f])    
-        return    
-    
-    p = Popen([mp3gain, '-o', f], bufsize=-1, universal_newlines=True, stdin=PIPE, stdout=PIPE)
-    fin = p.stdout
-    vl = fin.readlines()[1].strip().split('\t')
-    i = mp3_info()
-    i.radiodBGain = float(vl[2])
-    i.currMaxAmp = float(vl[3])
-    i.currMaxGain = int(vl[4])
-    i.currMinGain = int(vl[5])
-    i.modifydBGain = target_gain - DEFAULT_TARGET
-    call([mp3gain, 
-          '-g', str(i.radioMp3Gain if i.radioMp3Gain != 0 else 0), 
-          '-f', f])
-
-class mp3_info(object):
-    '''Class to store MP3 Replay Gain information'''
-    def __init__(self):    
-        self.reset()
-        self._moddB = 0
-
-    def _getCurrMaxAmp(self):
-        return self._currMaxAmp
-
-    def _setCurrMaxAmp(self, vData):
-        self._currMaxAmp = vData    
-
-    currMaxAmp = property(_getCurrMaxAmp, _setCurrMaxAmp)
-   
-    def _getCurrMaxGain(self):
-        return self._currMaxGain
-
-    def _setCurrMaxGain(self, vData):
-        self._currMaxGain = vData   
-
-    currMaxGain = property(_getCurrMaxGain, _setCurrMaxGain)
-
-    def _getCurrMinGain(self):
-        return self._currMinGain
-
-    def _setCurrMinGain(self, vData):
-        self._currMinGain = vData
-
-    currMinGain = property(_getCurrMinGain, _setCurrMinGain)
-    
-    def _getAlbumdBGain(self):
-        if self._albumdBGain != NOREALNUM:
-            return self._albumdBGain + self._moddB
-        return self._albumdBGain
-
-    def _setAlbumdBGain(self, vData):
-        self._albumdBGain = vData
-
-    albumdBGain = property(_getAlbumdBGain, _setAlbumdBGain)
-
-    def _getModifydBGain(self):
-        return self._moddB
-
-    def _setModifydBGain(self, vData):
-        self._moddB = vData
-
-    modifydBGain = property(_getModifydBGain, _setModifydBGain)
-    
-    def _getRadiodBGain(self):
-        if self._radiodBGain != NOREALNUM:
-            return self._radiodBGain + self._moddB
-        return self._radiodBGain
-
-    def _setRadiodBGain(self, vData):
-        self._radiodBGain = vData
-
-    radiodBGain = property(_getRadiodBGain, _setRadiodBGain)
-
-    # Read-only properties.
-
-    def _getRawAlbumdBGain(self):
-        return self._albumdBGain
-
-    RawAlbumdBGain = property(_getRawAlbumdBGain)
-
-    def _getRawRadiodBGain(self):
-        return self._radiodBGain
-
-    RawRadiodBGain = property(_getRawRadiodBGain)
-
-    def _getAlbumMp3Gain(self):
-        if self._albumdBGain != NOREALNUM:
-            return int(round((self._albumdBGain + self._moddB) / (5 * log(2, 10))))
-        return 0
-    
-    albumMp3Gain = property(_getAlbumMp3Gain)
-
-    def _getRadioMp3Gain(self):
-        if self._radiodBGain != NOREALNUM:
-            return int(round((self._radiodBGain + self._moddB) / (5 * log(2, 10))))
-        return 0
-    
-    radioMp3Gain = property(_getRadioMp3Gain)
-
-    def _getMaxNoclipMp3Gain(self):
-        if (self._currMaxAmp != NOREALNUM) and (self._currMaxAmp < 1000000) and  (self._currMaxAmp > 0) :
-            dblAdjust = 4 * log(32767/self._currMaxAmp,2)
-            if float(int(dblAdjust)) > dblAdjust:
-                return int(dblAdjust) - 1
-            return int(dblAdjust)
-        return 0
-
-    maxNoclipMp3Gain = property(_getMaxNoclipMp3Gain)   
-
-    def alterDb(self, vData):    
-        if self._radiodBGain != NOREALNUM:
-            self._radiodBGain += vData
-        if self._albumdBGain != NOREALNUM:
-            self._albumdBGain += vData
-    
-        intGainChange = int(-vData / (5 * log(2, 10)))
-        if self._currMaxAmp != NOREALNUM:
-            self._currMaxAmp *= 2 ** (intGainChange / 4)
-        if self._currMaxGain != -1:
-            self._currMaxGain += intGainChange
-        if self._currMinGain != -1:
-            self._currMinGain += intGainChange
-    
-    def reset(self):
-        self._radiodBGain = NOREALNUM
-        self._albumdBGain = NOREALNUM
-        self._currMaxAmp = NOREALNUM
-        self._currMaxGain = -1
-        self._currMinGain = -1
+def adjust_vol(f):
+    exe = 'mp3gain'
+    p = Popen([exe, '-o', f], bufsize=-1, universal_newlines=True, stdin=PIPE, stdout=PIPE)
+    vl = p.stdout.readlines()[1].strip().split('\t')
+    call([exe, '-g', str(vl[2]), '-f', f])
 
 class thread(QThread):
 
@@ -200,32 +68,36 @@ class recorder(thread):
         self.td = td
 
     def process(self):
-        all = []
+        all_data = []
         p = pyaudio.PyAudio()
-
+        
+        channels = 2
+        rate = RATE
         if os.name == 'posix':
-            # manually assign input_device_index of /dev/dsp1, USB sound card
-            # http://n2.nabble.com/New-script-for-recording-screencasts-on-Ubuntu-9-04-td3081264.html
-            
-            ix = 0
+            ix = 0 
             for i in range(p.get_device_count()):
-                if p.get_device_info_by_index(i)['name'] == '/dev/dsp1':
+                info = p.get_device_info_by_index(i)
+                # XXX select Sennheiser USB headset 
+                if 'Sennheiser USB headset' in info.get('name', ''):
+                    channels = info.get('maxInputChannels', 2)
+                    # XXX not 44100 but 48000, very strange! 
+                    rate = 48000 #int(info.get('defaultSampleRate', RATE))
                     ix = i 
                     break
             
             stream = p.open(format=FORMAT, 
-                            channels=CHANNELS,
-                            rate=RATE,
+                            channels=channels,
+                            rate=rate,
                             input=True,
                             input_device_index=ix,
-                            frames_per_buffer=WRITE_CHUNK)        
+                            frames_per_buffer=CHUNK)        
         
         else:
             stream = p.open(format=FORMAT,
-                            channels=CHANNELS,
+                            channels=channels,
                             rate=RATE,
                             input=True,
-                            frames_per_buffer=WRITE_CHUNK)
+                            frames_per_buffer=CHUNK)
         
         def cleanup():
             stream.close()
@@ -234,26 +106,25 @@ class recorder(thread):
         self.send(cnd='rec_start')
 
         while not self.is_stopped():	   
-            data = stream.read(WRITE_CHUNK)
-            all.append(data) 
+            data = stream.read(CHUNK, exception_on_overflow=False)
+            all_data.append(data) 
         
         cleanup()
 
         # write data to wav.
-        data = ''.join(all)
         ff = cat(self.td, 'rec')
         f = '%s.wav' % ff        
         f_ = '%s.mp3' % ff
 
         wf = wave.open(f, 'wb')
-        wf.setnchannels(CHANNELS)
         wf.setsampwidth(p.get_sample_size(FORMAT))
-        wf.setframerate(RATE)
-        wf.writeframes(data)
+        wf.setnchannels(channels)
+        wf.setframerate(rate)
+        wf.writeframes(b''.join(all_data))
         wf.close()
         
         # wav -> mp3 -> mp3gain.
-        call([lame, '-h', f, f_])
+        call(['lame', '-h', f, f_])
         adjust_vol(f_)
 
         fn = cat(self.td, sha(f_))

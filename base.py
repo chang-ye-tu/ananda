@@ -725,7 +725,7 @@ class splash(QLabel):
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setAlignment(Qt.AlignCenter)
-        self.setStyleSheet(css if css else 'QLabel{background-color: rgb(0, 200, 0); color: rgb(255, 255, 255); font: {}pt "Microsoft JhengHei";}'.format(int(32 * d))   
+        self.setStyleSheet(css if css else 'QLabel{background-color: rgb(0, 200, 0); color: rgb(255, 255, 255); font: %spt "Microsoft JhengHei";}' % (int(28),))#32 * 96. / 102),))   
         
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
         
