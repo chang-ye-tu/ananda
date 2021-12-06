@@ -64,7 +64,7 @@ A collection of adaptive computer-assisted learning / memorizing subroutines.
 - Issue the following commands (for Ubuntu 20.04) 
 
 ```shell
-sudo apt install python3-djvu python3-xlib python3-poppler-qt5 python3-pyaudio pyqt5-dev-tools python3-pyqt5-qtwebengine python3-pyqt5-qtmultimedia libleptonica-dev djvulibre-bin poppler-utils libopencv-dev tesseract-ocr build-essential cmake git vim-gtk3 python3-pip pdftk libboost1.71-all-dev qt5-default google-chrome-stable gstreamer1.0-plugins-bad, gstreamer1.0-plugins-ugly, ffmpeg libopencv-dev
+sudo apt install python3-djvu python3-xlib python3-poppler-qt5 python3-pyaudio pyqt5-dev-tools python3-pyqt5-qtwebengine python3-pyqt5-qtmultimedia libleptonica-dev djvulibre-bin poppler-utils libopencv-dev tesseract-ocr build-essential cmake git vim-gtk3 python3-pip pdftk libboost1.71-all-dev qt5-default google-chrome-stable gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly ffmpeg libopencv-dev
 
 pip3 install apscheduler beautifulsoup4 selenium
 ```
