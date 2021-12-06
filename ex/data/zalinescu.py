@@ -10,8 +10,8 @@ class zalinescu(book):
         self.pgs = range(20, 368)
         self.morph0 = 'c150.6'
 
-        #self.src = u"/home/clarktu/usr/doc/math/or/Zălinescu C. Convex Analysis in General Vector Spaces.djvu"
-        self.src = u"/home/clarktu/usr/doc/math/or/Zalinescu C. Convex Analysis in General Vector Spaces.djvu"
+        #self.src = u"/home/cytu/usr/doc/math/or/Zălinescu C. Convex Analysis in General Vector Spaces.djvu"
+        self.src = u"/home/cytu/usr/doc/math/or/Zalinescu C. Convex Analysis in General Vector Spaces.djvu"
 
         self.tokens.update({
             'chap': {'class': 'top',      

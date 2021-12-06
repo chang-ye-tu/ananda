@@ -7,7 +7,7 @@ class polya1(book):
     def __init__(self):
         super(polya1, self).__init__()
 
-        self.src = u'/home/clarktu/usr/doc/math/ex/Pólya G., Szegö G. Problems and Theorems in Analysis I Series Integral Calculus Theory of Functions.pdf'
+        self.src = u'/home/cytu/usr/doc/math/ex/Pólya G., Szegö G. Problems and Theorems in Analysis I Series Integral Calculus Theory of Functions.pdf'
         self.pgs = range(22, 406)
         self.morph0 = 'c150.5'
 

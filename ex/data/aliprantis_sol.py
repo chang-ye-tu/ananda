@@ -7,7 +7,7 @@ class aliprantis_sol(book):
     def __init__(self):
         super(aliprantis_sol, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Aliprantis/Aliprantis C., Burkinshaw O. Problems in Real Analysis 2ed.djvu' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Aliprantis/Aliprantis C., Burkinshaw O. Problems in Real Analysis 2ed.djvu' 
         self.pgs = range(5, 404)
         self.tokens.update({
             'chapter':  {'class': 'first2', 

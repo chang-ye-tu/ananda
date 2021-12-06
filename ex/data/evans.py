@@ -7,7 +7,7 @@ class evans(book):
     def __init__(self):
         super(evans, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Evans/Evans L. Partial Differential Equations 2ed.djvu' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Evans/Evans L. Partial Differential Equations 2ed.djvu' 
         self.pgs = range(18, 743)
         self.range_tinyw = (3e-2, 5e-2)
         self.range_indent0r = (0., 8e-2)

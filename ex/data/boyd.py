@@ -7,7 +7,7 @@ class boyd(book):
     def __init__(self):
         super(boyd, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/or/Boyd/Boyd S., Vandenberghe L. Convex Optimization.pdf'
+        self.src = '/home/cytu/usr/doc/math/or/Boyd/Boyd S., Vandenberghe L. Convex Optimization.pdf'
 
         self.pgs = range(14, 698)
         self.range_linew = (0.84, 0.86)

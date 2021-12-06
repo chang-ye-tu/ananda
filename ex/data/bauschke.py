@@ -10,7 +10,7 @@ class bauschke(book):
         self.pgs = range(16, 579)
         self.morph0 = 'c150.6'
 
-        self.src = u"/home/clarktu/usr/doc/math/or/Bauschke H., Combettes P. Convex Analysis and Monotone Operator Theory in Hilbert Spaces 2ed.pdf"
+        self.src = u"/home/cytu/usr/doc/math/or/Bauschke H., Combettes P. Convex Analysis and Monotone Operator Theory in Hilbert Spaces 2ed.pdf"
         
         self.tokens.update({
             'chap': {'class': 'top',      

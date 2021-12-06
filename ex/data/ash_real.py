@@ -7,7 +7,7 @@ class ash_real(book):
     def __init__(self):
         super(ash_real, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Ash/Ash R. Real Variables with Basic Metric Space Topology.djvu' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Ash/Ash R. Real Variables with Basic Metric Space Topology.djvu' 
         self.range_indent1 = (7e-2, 1e-1)
         self.pgs = range(10, 210)
         self.tokens.update({

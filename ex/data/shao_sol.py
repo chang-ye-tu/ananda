@@ -6,7 +6,7 @@ class shao_sol(book):
     def __init__(self):
         super(shao_sol, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/prob/appl/Shao J. Mathematical Statistics Exercises and Solutions.pdf'
+        self.src = '/home/cytu/usr/doc/math/prob/appl/Shao J. Mathematical Statistics Exercises and Solutions.pdf'
         self.pgs = range(25, 376)
         self.tokens.update({
             'chapter':  {'class': 'top', 

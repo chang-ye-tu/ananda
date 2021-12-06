@@ -8,7 +8,7 @@ class lovasz(book):
         super(lovasz, self).__init__()
 
         self.pgs = range(12, 105) + range(158, 602)
-        self.src = '/home/clarktu/usr/doc/math/dscr/cmb/Lovasz L. Combinatorial Problems and Exercises 2ed.djvu'
+        self.src = '/home/cytu/usr/doc/math/dscr/cmb/Lovasz L. Combinatorial Problems and Exercises 2ed.djvu'
         self.tokens.update({
             'part':  {'class': 'centerh', 
                       'ocr': r'^(I. (Problems)|II. (Hints)|III. (Solutions))$',

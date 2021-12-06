@@ -11,7 +11,7 @@ class zizler(book):
         self.morph0 = 'c100.6'
         self.range_indent1 = (0., 0.045)
 
-        self.src = u"/home/clarktu/usr/doc/math/anly/th/Montesinos V., Zizler P., Zizler V. An Introduction to Modern Analysis.pdf"
+        self.src = u"/home/cytu/usr/doc/math/anly/th/Montesinos V., Zizler P., Zizler V. An Introduction to Modern Analysis.pdf"
         
         self.tokens.update({
             'sec': {'class': 'indent0',      

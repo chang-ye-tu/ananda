@@ -7,7 +7,7 @@ class dixon(book):
     def __init__(self):
         super(dixon, self).__init__()
 
-        self.src = "/home/clarktu/usr/doc/math/ex/Dixon J. Problems in Group Theory.djvu"
+        self.src = "/home/cytu/usr/doc/math/ex/Dixon J. Problems in Group Theory.djvu"
         self.pgs = range(18, 184)
         self.range_lineh = (0, 3)
         self.morph0 = 'c100.4'

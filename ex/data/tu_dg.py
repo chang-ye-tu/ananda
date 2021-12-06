@@ -7,7 +7,7 @@ class tu_dg(book):
     def __init__(self):
         super(tu_dg, self).__init__()
 
-        self.src = u'/home/clarktu/usr/doc/math/geo/Tu W.-L. Differential Geometry Connections Curvature and Characteristic Classes.pdf'
+        self.src = u'/home/cytu/usr/doc/math/geo/Tu W.-L. Differential Geometry Connections Curvature and Characteristic Classes.pdf'
         self.pgs = range(17, 340)
         self.tokens.update({
             'chap':  {'class': 'indent0', 

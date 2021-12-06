@@ -7,7 +7,7 @@ class ash_stat(book):
     def __init__(self):
         super(ash_stat, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Ash/Statistics.pdf' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Ash/Statistics.pdf' 
         self.pgs = range(1, 110)
         self.morph0 = 'c100.5'
         self.tokens.update({

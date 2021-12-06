@@ -7,7 +7,7 @@ class medvegyev(book):
     def __init__(self):
         super(medvegyev, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/prob/th/Medvegyev P. Stochastic Integration Theory/Medvegyev P. Stochastic Integration Theory.pdf' 
+        self.src = '/home/cytu/usr/doc/math/prob/th/Medvegyev P. Stochastic Integration Theory/Medvegyev P. Stochastic Integration Theory.pdf' 
         self.pgs = range(21, 614)
         self.morph0 = 'c100.5'
         self.tokens.update({

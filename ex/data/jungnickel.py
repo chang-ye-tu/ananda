@@ -8,7 +8,7 @@ class jungnickel(book):
         super(jungnickel, self).__init__()
         
         self.pgs = range(14, 625)
-        self.src = "/home/clarktu/usr/doc/math/dscr/cmb/Jungnickel D. Graphs Networks and Algorithms 4ed.pdf"
+        self.src = "/home/cytu/usr/doc/math/dscr/cmb/Jungnickel D. Graphs Networks and Algorithms 4ed.pdf"
         self.tokens.update({
             'chapter': {'class': 'top',
                         'ocr': r'^\d+$',

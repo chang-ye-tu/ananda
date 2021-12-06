@@ -7,7 +7,7 @@ class grimmett(book):
     def __init__(self):
         super(grimmett, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/prob/th/Grimmett/Grimmett G., Stirzaker D. Probability and Random Processes 3ed.djvu'
+        self.src = '/home/cytu/usr/doc/math/prob/th/Grimmett/Grimmett G., Stirzaker D. Probability and Random Processes 3ed.djvu'
 
         self.pgs = range(11, 575)
         self.tokens.update({

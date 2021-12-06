@@ -7,7 +7,7 @@ class burckel(book):
     def __init__(self):
         super(burckel, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Burckel R. An Introduction to Classical Complex Analysis.djvu' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Burckel R. An Introduction to Classical Complex Analysis.djvu' 
         self.pgs = range(22, 463)
         self.tokens.update({
             'chapter':  {'class': 'indent0', 

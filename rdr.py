@@ -545,7 +545,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
                 w.switch_mode()
             
             elif c == 'ed':
-                popen(['python', '/home/clarktu/usr/src/py/ananda/ed.py', 
+                popen(['python', '/home/cytu/usr/src/py/ananda/ed.py', 
                        '-c', json.dumps({'meta': {'name': w.dd['name'], 
                                          'key': 'page %s' % (w.pg() + 1)}})])  
     def handler_view(self, d): 
@@ -595,7 +595,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
 
             @atexit.register   
             def restart():
-                popen(['python', '/home/clarktu/usr/src/py/ananda/hrv.py',  
+                popen(['python', '/home/cytu/usr/src/py/ananda/hrv.py',  
                        '-n', w.dd['name']])
             
             self.close()

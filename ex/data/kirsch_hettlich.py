@@ -7,7 +7,7 @@ class kirsch_hettlich(book):
     def __init__(self):
         super(kirsch_hettlich, self).__init__()
 
-        self.src ="/home/clarktu/usr/doc/math/anly/appl/Kirsch A., Hettlich F. The Mathematical Theory of Time-Harmonic Maxwell's Equations Expansion Integral and Variational Methods.pdf" 
+        self.src ="/home/cytu/usr/doc/math/anly/appl/Kirsch A., Hettlich F. The Mathematical Theory of Time-Harmonic Maxwell's Equations Expansion Integral and Variational Methods.pdf" 
         self.pgs = range(14, 342)
         
         self.tokens.update({

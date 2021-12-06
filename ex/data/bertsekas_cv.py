@@ -7,7 +7,7 @@ class bertsekas_cv(book):
     def __init__(self):
         super(bertsekas_cv, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/or/Bertsekas/Convex Analysis and Optimization/convexsolall.pdf'
+        self.src = '/home/cytu/usr/doc/math/or/Bertsekas/Convex Analysis and Optimization/convexsolall.pdf'
         self.pgs = range(1, 241)
         self.tokens.update({
             'ex': {'class': 'indent0',      

@@ -2,7 +2,7 @@ import os, codecs, random
 
 def useful():
     slist = []
-    for i, line in enumerate(codecs.open('/home/clarktu/usr/doc/lang/txt/useful.txt', 'r', 'utf-8')):
+    for i, line in enumerate(codecs.open('/home/cytu/usr/doc/lang/txt/useful.txt', 'r', 'utf-8')):
         #words = line.strip().split()
         #l = len(words)
         #tests = random.sample(range(l), l/2)

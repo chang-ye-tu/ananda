@@ -7,7 +7,7 @@ class suhov2(book):
     def __init__(self):
         super(suhov2, self).__init__()
 
-        self.src = "/home/clarktu/usr/doc/math/prob/th/Suhov Y., Kelbert M. Probability and Statistics by Example 2 Markov Chains A Primer in Random Processes and their Applications.pdf"
+        self.src = "/home/cytu/usr/doc/math/prob/th/Suhov Y., Kelbert M. Probability and Statistics by Example 2 Markov Chains A Primer in Random Processes and their Applications.pdf"
 
         self.pgs = range(12, 490)
 

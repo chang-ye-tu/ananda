@@ -117,7 +117,7 @@ class gmail(QWidget):
               
                 if self.b_audio:
                     av = self.av
-                    av.setMedia(QMediaContent(QUrl.fromLocalFile('/home/clarktu/usr/src/py/ananda/res/av/gmail.mp3')))
+                    av.setMedia(QMediaContent(QUrl.fromLocalFile('/home/cytu/usr/src/py/ananda/res/av/gmail.mp3')))
                     av.play()
 
         except:

@@ -7,7 +7,7 @@ class gelbaum(book):
     def __init__(self):
         super(gelbaum, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/ex/Gelbaum B. Problems in Real and Complex Analysis.pdf'
+        self.src = '/home/cytu/usr/doc/math/ex/Gelbaum B. Problems in Real and Complex Analysis.pdf'
         self.pgs = range(9, 454)
         self.tokens.update({
             'prob_sol': {'class': 'indent0',

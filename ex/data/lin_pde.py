@@ -7,7 +7,7 @@ class lin_pde(book):
     def __init__(self):
         super(lin_pde, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Han Q., Lin F.-H. Elliptic Partial Differential Equations.djvu'
+        self.src = '/home/cytu/usr/doc/math/anly/th/Han Q., Lin F.-H. Elliptic Partial Differential Equations.djvu'
         self.pgs = range(9, 130)
         
         self.tokens.update({

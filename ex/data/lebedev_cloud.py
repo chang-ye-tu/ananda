@@ -9,7 +9,7 @@ class knapp_basic_real(book):
         
         self.pgs = range(20, 660)
 
-        self.src = "/home/clarktu/usr/doc/tech/me/Lebedev/Lebedev L., Cloud M., Eremeyev V. Tensor Analysis with Applications in Mechanics.pdf"
+        self.src = "/home/cytu/usr/doc/tech/me/Lebedev/Lebedev L., Cloud M., Eremeyev V. Tensor Analysis with Applications in Mechanics.pdf"
 
         self.tokens.update({
             'chapter': {'class': 'centerh',

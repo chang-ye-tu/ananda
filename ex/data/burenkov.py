@@ -10,7 +10,7 @@ class burenkov(book):
     def __init__(self):
         super(burenkov, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Burenkov V. Sobolev Spaces on Domains.pdf' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Burenkov V. Sobolev Spaces on Domains.pdf' 
         self.pgs = range(14, 289)
         self.range_lineh = (0, 3)
         self.range_indent0 = (0., 4e-2)        

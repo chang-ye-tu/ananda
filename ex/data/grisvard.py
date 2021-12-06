@@ -8,7 +8,7 @@ class grisvard(book):
         super(grisvard, self).__init__()
         
         self.pgs = range(12, 412)
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Grisvard P. Elliptic Problems in Nonsmooth Domains.djvu"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Grisvard P. Elliptic Problems in Nonsmooth Domains.djvu"
         
         self.tokens.update({
             'chapter': {'class': 'indent0',

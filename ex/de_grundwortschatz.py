@@ -16,7 +16,7 @@ def groups():
     dic = {'def': '', 'ex': []}
     t, all_dic = [], []
     tag = ''
-    for ii, i in enumerate(codecs.open('/home/clarktu/usr/doc/lang/txt/Grundwortschatz.txt', 'r', 'utf-8')):
+    for ii, i in enumerate(codecs.open('/home/cytu/usr/doc/lang/txt/Grundwortschatz.txt', 'r', 'utf-8')):
         if i.strip():
             lines += 1
             t.append((ii + 1, i.strip()))

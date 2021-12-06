@@ -7,7 +7,7 @@ class ash_ca(book):
     def __init__(self):
         super(ash_ca, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Ash/Commutative Algebra.pdf' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Ash/Commutative Algebra.pdf' 
         self.pgs = range(4, 99)
         self.morph0 = 'c100.5'
         self.tokens.update({

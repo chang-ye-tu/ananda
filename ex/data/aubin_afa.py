@@ -7,7 +7,7 @@ class aubin_afa(book):
         super(aubin_afa, self).__init__()
         
         self.pgs = range(18, 461)
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Aubin/Aubin J.-P. Applied Functional Analysis 2ed.djvu"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Aubin/Aubin J.-P. Applied Functional Analysis 2ed.djvu"
 
         self.tokens.update({
             'section': {'class': 'indent0', 

@@ -7,7 +7,7 @@ class evans_gariepy(book):
     def __init__(self):
         super(evans_gariepy, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Evans/Evans L., Gariepy R. Measure Theory and Fine Properties of Functions rev.ed.pdf' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Evans/Evans L., Gariepy R. Measure Theory and Fine Properties of Functions rev.ed.pdf' 
         self.pgs = range(16, 304)
         self.range_tinyw = (1e-2, 5e-2)
         self.range_indent0r = (0., 8e-2)

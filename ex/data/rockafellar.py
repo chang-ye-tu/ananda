@@ -8,7 +8,7 @@ class rockafellar(book):
 
         #self.morph_sym = 'c5.3' 
         self.pgs = range(19, 440)
-        self.src = "/home/clarktu/usr/doc/math/or/Rockafellar/Rockafellar T. Convex Analysis.djvu"
+        self.src = "/home/cytu/usr/doc/math/or/Rockafellar/Rockafellar T. Convex Analysis.djvu"
 
         self.tokens.update({
             'part': {'class': 'first2',      

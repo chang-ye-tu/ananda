@@ -10,7 +10,7 @@ class necas(book):
         self.pgs = range(17, 374)
         self.morph0 = 'c150.6'
 
-        self.src = u"/home/clarktu/usr/doc/math/anly/th/Nečas J. Direct Methods in the Theory of Elliptic Equations.pdf"
+        self.src = u"/home/cytu/usr/doc/math/anly/th/Nečas J. Direct Methods in the Theory of Elliptic Equations.pdf"
         
         self.tokens.update({
             'chapter': {'class': 'first',      

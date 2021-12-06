@@ -8,5 +8,5 @@ class kaczor3(kaczor1):
     def __init__(self):
         super(kaczor3, self).__init__()
         
-        self.src = u"/home/clarktu/usr/doc/math/ex/Kaczor W., Nowak M. Problems in Mathematical Analysis III Integration.djvu"
+        self.src = u"/home/cytu/usr/doc/math/ex/Kaczor W., Nowak M. Problems in Mathematical Analysis III Integration.djvu"
         self.pgs = range(11, 361)

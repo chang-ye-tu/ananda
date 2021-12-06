@@ -7,7 +7,7 @@ class aliprantis(book):
     def __init__(self):
         super(aliprantis, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Aliprantis/Aliprantis C., Burkinshaw O. Principles of Real Analysis 3ed.djvu' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Aliprantis/Aliprantis C., Burkinshaw O. Principles of Real Analysis 3ed.djvu' 
         self.pgs = range(7, 402)
         self.range_indent0 = (0., 1e-2)
         self.range_indent1 = (1e-2, 6e-2)

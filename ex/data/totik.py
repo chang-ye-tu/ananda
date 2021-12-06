@@ -6,7 +6,7 @@ class totik(book):
     def __init__(self):
         super(totik, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/ex/Komjath P., Totik V. Problems and Theorems in Classical Set Theory.pdf'
+        self.src = '/home/cytu/usr/doc/math/ex/Komjath P., Totik V. Problems and Theorems in Classical Set Theory.pdf'
         self.pgs = range(13, 504)
         
         self.range_linew = (0.9, 1)

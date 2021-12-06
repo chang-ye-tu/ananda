@@ -7,7 +7,7 @@ class kadison_sol(book):
     def __init__(self):
         super(kadison_sol, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Kadison R., Ringrose J. Fundamentals of the Theory of Operator Algebras Volume III Elementary Theory An Exercise Approach.djvu' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Kadison R., Ringrose J. Fundamentals of the Theory of Operator Algebras Volume III Elementary Theory An Exercise Approach.djvu' 
         self.pgs = range(14, 276)
         self.range_indent1 = (0.065, 0.078)
         self.morph0 = 'c80.4'

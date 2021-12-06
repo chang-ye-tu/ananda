@@ -30,7 +30,7 @@ def make_db(cn):
 
     cn.commit()
 
-db_loci = '/home/clarktu/usr/src/py/ananda/db/loci.db'
+db_loci = '/home/cytu/usr/src/py/ananda/db/loci.db'
 if not os.path.isfile(db_loci):
     make_db(sqlite3.connect(db_loci))
 
@@ -355,7 +355,7 @@ def save_all_path():
         dd = json.loads(d[0])
         ids = dd['loci']
         name = dd['name']
-        fd = '/home/clarktu/Downloads/loci/' + name
+        fd = '/home/cytu/Downloads/loci/' + name
         if not os.path.isdir(fd):
             os.makedirs(fd) 
         for index, ii in enumerate(ids): 
@@ -368,7 +368,7 @@ if __name__ == '__main__':
     
     #save_all_path(); sys.exit()
 
-    driver = webdriver.Chrome('/home/clarktu/usr/src/py/ananda/chromedriver')
+    driver = webdriver.Chrome('/home/cytu/usr/src/py/ananda/chromedriver')
     driver.maximize_window()
 
     DBusQtMainLoop(set_as_default=True) 

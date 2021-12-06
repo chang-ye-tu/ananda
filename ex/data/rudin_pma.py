@@ -7,7 +7,7 @@ class rudin_pma(book):
     def __init__(self):
         super(rudin_pma, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Rudin/Rudin W. Principles of Mathematical Analysis 3ed.djvu' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Rudin/Rudin W. Principles of Mathematical Analysis 3ed.djvu' 
         self.pgs = range(19, 345)
         self.morph_sym = 'c12.2'
         self.tokens.update({

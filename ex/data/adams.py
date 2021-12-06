@@ -7,7 +7,7 @@ class adams(book):
         super(adams, self).__init__()
         
         self.pgs = range(15, 310)
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Adams R., Fournier J. Sobolev Spaces 2ed.djvu"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Adams R., Fournier J. Sobolev Spaces 2ed.djvu"
         self.tokens.update({
             'essay': {'class': 'indent0',
                       'ocr': r'^(\d+\.\d+) ',

@@ -7,7 +7,7 @@ class kaczor1(book):
     def __init__(self):
         super(kaczor1, self).__init__()
 
-        self.src = "/home/clarktu/usr/doc/math/ex/Kaczor W., Nowak M. Problems in Mathematical Analysis I Real Numbers Sequences and Series.djvu"
+        self.src = "/home/cytu/usr/doc/math/ex/Kaczor W., Nowak M. Problems in Mathematical Analysis I Real Numbers Sequences and Series.djvu"
         self.pgs = range(15, 393)
         self.morph0 = 'c150.10' 
 

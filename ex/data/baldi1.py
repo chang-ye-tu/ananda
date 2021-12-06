@@ -11,7 +11,7 @@ class baldi1(book):
         self.morph0 = 'c150.6'
         self.range_indent0 = (0., 6e-2)
 
-        self.src = "/home/clarktu/usr/doc/math/prob/th/Baldi P. Stochastic Calculus An Introduction Through Theory and Exercises.pdf"
+        self.src = "/home/cytu/usr/doc/math/prob/th/Baldi P. Stochastic Calculus An Introduction Through Theory and Exercises.pdf"
         
         self.tokens.update({
             'chap': {'class': 'top',      

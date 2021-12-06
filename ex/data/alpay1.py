@@ -6,7 +6,7 @@ class alpay1(book):
     def __init__(self):
         super(alpay1, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/ex/Alpay D. A Complex Analysis Problem Book.pdf'
+        self.src = '/home/cytu/usr/doc/math/ex/Alpay D. A Complex Analysis Problem Book.pdf'
         self.pgs = range(20, 513)
 
         self.tokens.update({

@@ -7,7 +7,7 @@ class ash_ant(book):
     def __init__(self):
         super(ash_ant, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Ash/Algebraic Number Theory.pdf'
+        self.src = '/home/cytu/usr/doc/math/anly/th/Ash/Algebraic Number Theory.pdf'
         self.pgs = range(3, 92)
         self.morph0 = 'c100.5'
         self.tokens.update({

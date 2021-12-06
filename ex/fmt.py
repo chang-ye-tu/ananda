@@ -2,7 +2,7 @@ import os, codecs, unicodedata
 from fnmatch import fnmatch
 
 cat = os.path.join
-repo = '/home/clarktu/usr/doc/lang/txt/'
+repo = '/home/cytu/usr/doc/lang/txt/'
 
 def fmt(c, d):
     w_min, w_max, w_par = d['w_min'], d['w_max'], d['w_par']
@@ -104,4 +104,4 @@ dd = [
 for d in dd:
     n = d['n']
     l = ['\n'.join(fmt(bl.strip(), d)) for bl in codecs.open(cat(repo, '%s.txt' % n), 'r', 'utf-8').read().split('\n\n') if bl.strip()]
-    codecs.open(cat('/home/clarktu/usr/src/py/ananda/tmp/', '%s.txt' % n), 'w', 'utf-8').write('\n\n'.join([ll for ll in l if '\n' in ll]))
+    codecs.open(cat('/home/cytu/usr/src/py/ananda/tmp/', '%s.txt' % n), 'w', 'utf-8').write('\n\n'.join([ll for ll in l if '\n' in ll]))

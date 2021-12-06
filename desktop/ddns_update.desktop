@@ -2,7 +2,7 @@
 Name=ddns_update
 GenericName=ddns_update
 Comment=ddns_update
-Exec=python3 /home/clarktu/usr/src/py/test/ddns_update.py
+Exec=python3 /home/cytu/usr/src/py/test/ddns_update.py
 Terminal=false
 Type=Application
 Categories=System;Utility;

@@ -18,7 +18,7 @@ def bk(name):
     return getattr(m, name)()
 
 def boxes(i, s):
-    p = popen(['/home/clarktu/usr/src/cpp/text_mask', i, s], stdout=pipe)
+    p = popen(['/home/cytu/usr/src/cpp/text_mask', i, s], stdout=pipe)
     r = p.communicate()[0]
     try:
         return [tuple(int(n) for n in b.split(',')) for b in r.split('\n') if ',' in b]
@@ -26,7 +26,7 @@ def boxes(i, s):
         return []
 
 def matches(f_i, f_t, score=70):
-    p = popen(['/home/clarktu/usr/src/cpp/match', f_i, f_t, str(score)], stdout=pipe)
+    p = popen(['/home/cytu/usr/src/cpp/match', f_i, f_t, str(score)], stdout=pipe)
     r = p.communicate()[0]
     if r.find('ERROR') != -1:
         return []
@@ -890,7 +890,7 @@ class win_fact(QMainWindow):
         shutil.rmtree(self.td)
 
 def group(name):
-    cn = sqlite3.connect('/home/clarktu/usr/src/py/ananda/db/ananda.db')
+    cn = sqlite3.connect('/home/cytu/usr/src/py/ananda/db/ananda.db')
     cr = cn.cursor()
 
     def ks2ids(ks):
@@ -962,7 +962,7 @@ if __name__ == '__main__':
     #wipe_all('kirsch', [str(i) for i in range(1, 15)])
     
     for i in ['baldi1', 'knapp_basic_real']:
-        folder = cat('/home/clarktu/thm', i)
+        folder = cat('/home/cytu/thm', i)
         if os.path.isdir(folder):
             shutil.rmtree(folder)
         render_all(i, folder)

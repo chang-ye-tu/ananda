@@ -7,7 +7,7 @@ class kadison(book):
         super(kadison, self).__init__()
         
         self.pgs = range(16, 399)
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Kadison R., Ringrose J. Fundamentals of Operator Algebras Volume I Fundamental Theory.djvu"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Kadison R., Ringrose J. Fundamentals of Operator Algebras Volume I Fundamental Theory.djvu"
 
         self.tokens.update({
             'chapter': {'class': 'first2',      

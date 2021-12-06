@@ -14,8 +14,8 @@ port = 8082
 cam_ip = '192.168.0.106'
 cam_port = 8081
 
-ico = '/home/clarktu/usr/src/py/ananda/res/img/motion_detector.ico'
-fname = '/home/clarktu/usr/src/py/ananda/tmp/md_log.txt'
+ico = '/home/cytu/usr/src/py/ananda/res/img/motion_detector.ico'
+fname = '/home/cytu/usr/src/py/ananda/tmp/md_log.txt'
 
 logging.basicConfig(filename=fname,
                     format='%(asctime)s %(message)s', 

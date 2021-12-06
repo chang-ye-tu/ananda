@@ -128,13 +128,13 @@ class wdg_tm(QWidget, Ui_wdg_tm):
             m = self.mode
             set_audio(audio_pc, 2**15)
             if m == m_once:
-                self.play_audio('/home/clarktu/usr/src/py/ananda/res/av/alarm.mp3')
+                self.play_audio('/home/cytu/usr/src/py/ananda/res/av/alarm.mp3')
                 self.splash = mysplash() 
                 self.splash.showFullScreen()
                 self.stop()
 
             elif m == m_cycle:
-                self.play_audio('/home/clarktu/usr/src/py/ananda/res/av/alarm_orig.mp3')
+                self.play_audio('/home/cytu/usr/src/py/ananda/res/av/alarm_orig.mp3')
                 self.splash = mysplash(cnt=2) 
                 self.splash.showFullScreen()
                 self.cnt = self.cnt_s

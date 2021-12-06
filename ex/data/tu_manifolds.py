@@ -7,7 +7,7 @@ class tu_manifolds(book):
     def __init__(self):
         super(tu_manifolds, self).__init__()
 
-        self.src = u'/home/clarktu/usr/doc/math/geo/Tu W.-L. An Introduction to Manifolds 2ed.pdf'
+        self.src = u'/home/cytu/usr/doc/math/geo/Tu W.-L. An Introduction to Manifolds 2ed.pdf'
         self.pgs = range(21, 402)
         self.tokens.update({
             'chap':  {'class': 'indent0', 

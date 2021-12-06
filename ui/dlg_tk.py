@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file '/home/clarktu/usr/src/py/ananda/designer/dlg_tk.ui'
+# Form implementation generated from reading ui file '/home/cytu/usr/src/py/ananda/designer/dlg_tk.ui'
 #
 # Created by: PyQt5 UI code generator 5.14.1
 #

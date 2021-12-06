@@ -9,7 +9,7 @@ class mitrea_pipher(book):
         
         self.pgs = range(5, 57)
 
-        self.src = "/home/clarktu/usr/work/thesis/paper/Mitrea D., Mitrea M., Pipher J. Vector Potential Theory on Nonsmooth Domain in $R^3$ and Applications to Electromagnetic Theory.pdf"
+        self.src = "/home/cytu/usr/work/thesis/paper/Mitrea D., Mitrea M., Pipher J. Vector Potential Theory on Nonsmooth Domain in $R^3$ and Applications to Electromagnetic Theory.pdf"
 
         self.tokens.update({
             'section': {'class': 'allbx',

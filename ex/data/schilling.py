@@ -9,7 +9,7 @@ class schilling(book):
         
         self.pgs = range(14, 650)
 
-        self.src = "/home/clarktu/usr/doc/math/prob/th/Schilling/all.pdf"
+        self.src = "/home/cytu/usr/doc/math/prob/th/Schilling/all.pdf"
 
         self.tokens.update({
             'chapter': {'class': 'first',

@@ -36,7 +36,7 @@ from db.db import *
 from db.dt import *
 from av import wdg_a
 
-cwd = '/home/clarktu/usr/src/py/ananda/ex/data'
+cwd = '/home/cytu/usr/src/py/ananda/ex/data'
 sys.path.insert(0, cwd)
 tmp = 'tmp'
 sts = QSettings(cat('res', 'ananda.ini'), QSettings.IniFormat)
@@ -50,11 +50,11 @@ w_desktop = int(re.compile(r'current (\d+) x').search(os.popen('xrandr -q -d :0'
 im_width = .945 * w_desktop
 
 # XXX
-logging.basicConfig(filename='/home/clarktu/usr/src/py/ananda/tmp/log.txt', 
+logging.basicConfig(filename='/home/cytu/usr/src/py/ananda/tmp/log.txt', 
                     format='%(asctime)s %(levelname)s: %(message)s', 
                     datefmt='%Y-%m-%d %H:%M:%S', 
                     level=logging.INFO)
-logger = logging.getLogger('clarktu')
+logger = logging.getLogger('cytu')
 
 def log(s, b_file=False):
     print(s)
@@ -78,7 +78,7 @@ def ellipsis(s, n=90, typ='middle'):
         elif typ == 'last':
             return '%s...' % s[:n]
         elif typ == 'middle':
-            return '%s...%s' % (s[:n/2], s[-n/2:]) 
+            return '%s...%s' % (s[:n//2], s[-n//2:]) 
 
 def is_lang(s):
     return s.split('_')[0] in ['de', 'en', 'jp', 'fr', 'ru', 'tw', 'cs', 'gen']
@@ -105,7 +105,7 @@ def save_ana(d):
 
 # reference ~~
 def htm(s, css='', b_math=False):
-    css = css if css else '/home/clarktu/usr/src/py/ananda/res/ananda.css'
+    css = css if css else '/home/cytu/usr/src/py/ananda/res/ananda.css'
     
     s_math = r'''<script type='text/javascript'>
 window.MathJax = {
@@ -121,7 +121,7 @@ window.MathJax = {
   }
 };
 </script>
-<script type='text/javascript' src="/home/clarktu/bin/mathjax/tex-chtml.js" id="MathJax-script"></script>
+<script type='text/javascript' src="/home/cytu/bin/mathjax/tex-chtml.js" id="MathJax-script"></script>
 ''' if b_math else ''
 
     return r'''<?xml version='1.0' encoding='utf-8'?>
@@ -603,7 +603,7 @@ class mgr_due(thread):
         # language contents are rendered with hr, bigger font and no frames
         self.send(cnd='rev', rev_id=rev_id, fact_id=fact_id, 
                   qas=self.fact_to_htm(fact_id, cr, b_hr=b, b_math=(not b),
-                  css=('/home/clarktu/usr/src/py/ananda/res/ananda_noframe.css' if b else ''),))
+                  css=('/home/cytu/usr/src/py/ananda/res/ananda_noframe.css' if b else ''),))
 
 class overlay(QWidget):
 
@@ -657,7 +657,7 @@ class browser(QWebEngineView):
     def __init__(self, par=None):
         super(browser, self).__init__(par)
 
-    def set_htm(self, h='', ref='/home/clarktu/sample.html', b_raw=False):
+    def set_htm(self, h='', ref='/home/cytu/sample.html', b_raw=False):
         self.setHtml(h if b_raw else htm(h), QUrl.fromLocalFile(str(Path(__file__).resolve().parent)))
 
 class win_b(QMainWindow):
@@ -853,7 +853,6 @@ class nb(QTcpServer):
         self.s.close()
 
 def args(l, name):
-    #a = ['/home/clarktu/bin/vim/bin/gvim', '--servername', name]
     a = ['gvim', '--servername', name]
     a.extend(l)
     return a
@@ -867,7 +866,7 @@ def vim_mv(name):
     call(args(['--remote-send', r'<c-\><c-n>:winpos 0 560<cr>'], name))
 
 def vim_nb(name, port):
-    call(args(['--remote-send', r'<c-\><c-n>:nbs :localhost:%s:clarktu<cr>' % port], name))
+    call(args(['--remote-send', r'<c-\><c-n>:nbs :localhost:%s:cytu<cr>' % port], name))
 
 def vim_buf(name, td, src):
     f = cat(td, 'hrv.vim')

@@ -7,7 +7,7 @@ class lacombe(book):
     def __init__(self):
         super(lacombe, self).__init__()
 
-        self.src = "/home/clarktu/usr/doc/math/ex/Lacombe G., Mallat P. Analyse Fonctionnelle Exercices Corriges.djvu"
+        self.src = "/home/cytu/usr/doc/math/ex/Lacombe G., Mallat P. Analyse Fonctionnelle Exercices Corriges.djvu"
         self.pgs = range(7, 346)
 
         self.range_linew = (0.85, 1.0)

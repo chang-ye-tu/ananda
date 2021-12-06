@@ -10,7 +10,7 @@ class rosenthal(book):
         self.pgs = range(17, 224)
         self.morph0 = 'c150.6'
 
-        self.src = u"/home/clarktu/usr/doc/math/prob/th/Rosenthal J. A First Look at Rigorous Probability Theory 2ed.pdf"
+        self.src = u"/home/cytu/usr/doc/math/prob/th/Rosenthal J. A First Look at Rigorous Probability Theory 2ed.pdf"
 
         self.tokens.update({
             'sec': {'class': 'indent0',      

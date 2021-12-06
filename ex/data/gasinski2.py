@@ -11,7 +11,7 @@ class gasinski2(book):
         self.morph0 = 'c150.6'
         self.b_sep_sym_before = True 
 
-        self.src = u"/home/clarktu/usr/doc/math/ex/Gasiński L., Papageorgiou N. Exercises in Analysis Part 2 Nonlinear Analysis.pdf"
+        self.src = u"/home/cytu/usr/doc/math/ex/Gasiński L., Papageorgiou N. Exercises in Analysis Part 2 Nonlinear Analysis.pdf"
         
         self.tokens.update({
             'bib': {'class': 'top',      

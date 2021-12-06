@@ -9,7 +9,7 @@ class zastawniak(book):
         
         self.pgs = range(9, 225)
 
-        self.src = "/home/clarktu/usr/doc/math/prob/th/Brzezniak Z., Zastawniak T. Basic Stochastic Processes A Course Through Exercises.pdf"
+        self.src = "/home/cytu/usr/doc/math/prob/th/Brzezniak Z., Zastawniak T. Basic Stochastic Processes A Course Through Exercises.pdf"
 
         self.tokens.update({
             'chapter': {'class': 'first',

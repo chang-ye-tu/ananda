@@ -6,7 +6,7 @@ class tkachuk_1(book):
     def __init__(self):
         super(tkachuk_1, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/gt/Tkachuk V. A C_p-Theory Problem Book Topological and Function Spaces.pdf'
+        self.src = '/home/cytu/usr/doc/math/anly/th/gt/Tkachuk V. A C_p-Theory Problem Book Topological and Function Spaces.pdf'
         self.pgs = range(69, 450)
         
         self.tokens.update({

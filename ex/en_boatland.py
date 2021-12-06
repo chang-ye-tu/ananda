@@ -1,7 +1,7 @@
 import os, codecs, re
 
 def groups():
-    s = codecs.open('/home/clarktu/usr/doc/lang/txt/boatland.txt', 'r', 'utf-8').read()
+    s = codecs.open('/home/cytu/usr/doc/lang/txt/boatland.txt', 'r', 'utf-8').read()
     p = re.compile(r'(\d+)\n')
 
     spans = [m.span() for m in p.finditer(s)]

@@ -3,38 +3,38 @@ from base import *
 
 # tasks def
 def gmail():
-    popen(['python3', '/home/clarktu/usr/src/py/ananda/gmail-notify.py'])
+    popen(['python3', '/home/cytu/usr/src/py/ananda/gmail-notify.py'])
 
 def hrv(n):
-    popen(['python3', '/home/clarktu/usr/src/py/ananda/hrv.py', '-t', str(hrv_read_rev), '-n', n])
+    popen(['python3', '/home/cytu/usr/src/py/ananda/hrv.py', '-t', str(hrv_read_rev), '-n', n])
 
 def hrv_temp(n):
-    popen(['python3', '/home/clarktu/usr/src/py/ananda/hrv.py', '-t', str(hrv_read_rev), '-n', n, '-d', '/home/clarktu/usr/src/py/ananda/db/ananda_temp.db'])
+    popen(['python3', '/home/cytu/usr/src/py/ananda/hrv.py', '-t', str(hrv_read_rev), '-n', n, '-d', '/home/cytu/usr/src/py/ananda/db/ananda_temp.db'])
 
 def rev(ns=None):
     if ns:
-        l = ['python3', '/home/clarktu/usr/src/py/ananda/rev.py', '-n']
+        l = ['python3', '/home/cytu/usr/src/py/ananda/rev.py', '-n']
         l.extend(ns)
     else:
-        l = ['python3', '/home/clarktu/usr/src/py/ananda/rev.py',]
+        l = ['python3', '/home/cytu/usr/src/py/ananda/rev.py',]
 
     popen(l)
 
 def rev_temp(ns=None):
     if ns:
-        l = ['python3', '/home/clarktu/usr/src/py/ananda/rev.py', '-d', '/home/clarktu/usr/src/py/ananda/db/ananda_temp.db', '-n']
+        l = ['python3', '/home/cytu/usr/src/py/ananda/rev.py', '-d', '/home/cytu/usr/src/py/ananda/db/ananda_temp.db', '-n']
         l.extend(ns)
     else:
-        l = ['python3', '/home/clarktu/usr/src/py/ananda/rev.py', '-d', '/home/clarktu/usr/src/py/ananda/db/ananda_temp.db']
+        l = ['python3', '/home/cytu/usr/src/py/ananda/rev.py', '-d', '/home/cytu/usr/src/py/ananda/db/ananda_temp.db']
 
     popen(l)
 
 def word(n):
-    popen(['python3', '/home/clarktu/usr/src/py/ananda/rev.py', '-n', n, 
-           '-d', '/home/clarktu/usr/src/py/ananda/db/word.db',])
+    popen(['python3', '/home/cytu/usr/src/py/ananda/rev.py', '-n', n, 
+           '-d', '/home/cytu/usr/src/py/ananda/db/word.db',])
 
 def drill(ns=None):
-    l = ['python3', '/home/clarktu/usr/src/py/ananda/drill.py',]
+    l = ['python3', '/home/cytu/usr/src/py/ananda/drill.py',]
     if ns:
         l.extend(['-n'])
         l.extend(ns)
@@ -109,11 +109,11 @@ class ananda(QWidget):
         ti = self.ti
         st = d['state'] 
         if st == st_learn:
-            self.play_audio('/home/clarktu/usr/src/py/ananda/res/av/learn.mp3')
+            self.play_audio('/home/cytu/usr/src/py/ananda/res/av/learn.mp3')
             ti.setIcon(QIcon(self.p_on))
             
         elif st == st_rest:
-            self.play_audio('/home/clarktu/usr/src/py/ananda/res/av/rest.mp3')
+            self.play_audio('/home/cytu/usr/src/py/ananda/res/av/rest.mp3')
             ti.setIcon(QIcon(self.p_off))
     
     def timerEvent(self, e):

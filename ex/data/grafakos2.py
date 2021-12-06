@@ -9,4 +9,4 @@ class grafakos2(grafakos1):
         super(grafakos2, self).__init__()
         
         self.pgs = range(14, 493)
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Grafakos L. Modern Fourier Analysis 3ed.pdf"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Grafakos L. Modern Fourier Analysis 3ed.pdf"

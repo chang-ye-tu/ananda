@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=goldendict
 Comment=goldendict
-Exec=/home/clarktu/bin/goldendict/goldendict
+Exec=/home/cytu/bin/goldendict/goldendict
 Terminal=false
 Type=Application
 Categories=Accessories;Utility;

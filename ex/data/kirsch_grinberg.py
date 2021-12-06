@@ -7,7 +7,7 @@ class kirsch_grinberg(book):
     def __init__(self):
         super(kirsch_grinberg, self).__init__()
 
-        self.src ='/home/clarktu/usr/doc/math/anly/appl/Kirsch A., Grinberg N. The Factorization Method for Inverse Problems.pdf' 
+        self.src ='/home/cytu/usr/doc/math/anly/appl/Kirsch A., Grinberg N. The Factorization Method for Inverse Problems.pdf' 
         self.pgs = range(15, 206)
         
         self.tokens.update({

@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from books import *
 
 class gadea(book):
@@ -6,7 +5,7 @@ class gadea(book):
     def __init__(self):
         super(gadea, self).__init__()
 
-        self.src = u'/home/clarktu/usr/doc/math/geo/Gadea P., Munoz Masqué J., Mykytyuk I. Analysis and Algebra on Differentiable Manifolds A Workbook for Students and Teachers 2ed.pdf'
+        self.src = u'/home/cytu/usr/doc/math/geo/Gadea P., Munoz Masqué J., Mykytyuk I. Analysis and Algebra on Differentiable Manifolds A Workbook for Students and Teachers 2ed.pdf'
         self.pgs = range(19, 563)
 
         self.tokens.update({

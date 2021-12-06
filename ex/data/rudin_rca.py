@@ -7,7 +7,7 @@ class rudin_rca(book):
     def __init__(self):
         super(rudin_rca, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Rudin/Rudin W. Real and Complex Analysis 3ed.djvu' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Rudin/Rudin W. Real and Complex Analysis 3ed.djvu' 
         self.pgs = range(19, 409)
         self.morph_sym = 'c12.2'
         self.tokens.update({

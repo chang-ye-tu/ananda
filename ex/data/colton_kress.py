@@ -9,7 +9,7 @@ class colton_kress(book):
         
         self.pgs = range(27, 403)
 
-        self.src = "/home/clarktu/usr/doc/math/anly/appl/Colton D., Kress R. Inverse Acoustic and Electromagnetic Scattering Theory 3ed.pdf"
+        self.src = "/home/cytu/usr/doc/math/anly/appl/Colton D., Kress R. Inverse Acoustic and Electromagnetic Scattering Theory 3ed.pdf"
 
         self.tokens.update({
             'chapter': {'class': 'top',

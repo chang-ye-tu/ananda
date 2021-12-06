@@ -7,7 +7,7 @@ class halmos(book):
     def __init__(self):
         super(halmos, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Halmos P. A Hilbert Space Problem Book 2ed.djvu'
+        self.src = '/home/cytu/usr/doc/math/anly/th/Halmos P. A Hilbert Space Problem Book 2ed.djvu'
         self.pgs = range(18, 365)
         self.tokens.update({
             'intro': {'class': 'indent0', 

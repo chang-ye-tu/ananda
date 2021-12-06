@@ -7,7 +7,7 @@ class baldi(book):
     def __init__(self):
         super(baldi, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/prob/th/Baldi P., Mazliak L., Priouret P. Martingales and Markov Chains Solved Exercises and Elements of Theory.djvu'
+        self.src = '/home/cytu/usr/doc/math/prob/th/Baldi P., Mazliak L., Priouret P. Martingales and Markov Chains Solved Exercises and Elements of Theory.djvu'
 
         self.pgs = range(8, 195)
         self.tokens.update({

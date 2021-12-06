@@ -7,7 +7,7 @@ class abadir(book):
     def __init__(self):
         super(abadir, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/ex/Abadir K., Magnus J. Matrix Algebra.pdf'
+        self.src = '/home/cytu/usr/doc/math/ex/Abadir K., Magnus J. Matrix Algebra.pdf'
         self.pgs = range(32, 427)
         self.tokens.update({
             'notes':  {'class': 'indent0', 

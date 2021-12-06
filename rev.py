@@ -218,7 +218,7 @@ class win_rev(QMainWindow):
                                 if len(txt_) >= len(txt):
                                     txt = txt_
                 subprocess.Popen(['gvim', '+/%s' % txt, 
-                    '/home/clarktu/usr/doc/lang/txt/Grundwortschatz.txt'])
+                    '/home/cytu/usr/doc/lang/txt/Grundwortschatz.txt'])
         
         elif c == 'reset':
             self.stw.reset()

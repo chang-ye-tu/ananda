@@ -8,7 +8,7 @@ class burkill(book):
         super(burkill, self).__init__()
         
         self.pgs = range(8, 529)
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Burkill J. A Second Course in Mathematical Analysis.djvu"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Burkill J. A Second Course in Mathematical Analysis.djvu"
 
         self.tokens.update({
             'thm': {'class': 'indent0',      

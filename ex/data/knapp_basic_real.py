@@ -9,7 +9,7 @@ class knapp_basic_real(book):
         
         self.pgs = range(30, 822)
 
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Knapp/Knapp A. Basic Real Analysis Digital Second Edition.pdf"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Knapp/Knapp A. Basic Real Analysis Digital Second Edition.pdf"
         self.tokens.update({
             'chapter': {'class': 'centerh',
                         'ocr': r'^((C[Hh][Aa][Pp][Tt][Ee][Rr]|A[Pp][Pp][Ee][Nn][Dd][Ii][Xx]) (\w+))$',

@@ -8,5 +8,5 @@ class kaczor2_fr(kaczor1_fr):
     def __init__(self):
         super(kaczor2_fr, self).__init__()
         
-        self.src = "/home/clarktu/usr/doc/math/ex/Kaczor W., Nowak M. Problemes d'analyse II.pdf"
+        self.src = "/home/cytu/usr/doc/math/ex/Kaczor W., Nowak M. Problemes d'analyse II.pdf"
         self.pgs = range(13, 382)

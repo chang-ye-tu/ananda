@@ -9,7 +9,7 @@ class amrouche(book):
         
         self.pgs = range(2, 40)
 
-        self.src = u"/home/clarktu/usr/doc/math/paper/Amrouche C., Bernardi C., Dauge M., Girault V. Vector Potentials in Three-dimensional Non-smooth Domains.pdf"
+        self.src = u"/home/cytu/usr/doc/math/paper/Amrouche C., Bernardi C., Dauge M., Girault V. Vector Potentials in Three-dimensional Non-smooth Domains.pdf"
 
         self.tokens.update({
             'section': {'class': 'indent0',

@@ -10,7 +10,7 @@ class grafakos1(book):
         self.pgs = range(14, 428)
         self.morph0 = 'c150.6'
 
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Grafakos L. Classical Fourier Analysis 3ed.pdf"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Grafakos L. Classical Fourier Analysis 3ed.pdf"
         
         self.tokens.update({
             'chap': {'class': 'top',      

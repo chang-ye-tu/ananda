@@ -7,7 +7,7 @@ class sato(book):
     def __init__(self):
         super(sato, self).__init__()
 
-        self.src = u'/home/clarktu/usr/doc/math/prob/th/Sato K.-I. Levy Processes and Inifinitely Divisible Distributions.djvu' 
+        self.src = u'/home/cytu/usr/doc/math/prob/th/Sato K.-I. Levy Processes and Inifinitely Divisible Distributions.djvu' 
         self.pgs = range(12, 462)
 
         self.tokens.update({

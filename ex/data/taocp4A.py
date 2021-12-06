@@ -8,7 +8,7 @@ class taocp4A(book):
         super(taocp4A, self).__init__()
         
         self.pgs = range(17, 834)
-        self.src = '/home/clarktu/usr/doc/math/dscr/cs/Knuth/TAOCP/TAOCP 4A.pdf'
+        self.src = '/home/cytu/usr/doc/math/dscr/cs/Knuth/TAOCP/TAOCP 4A.pdf'
         
         self.range_indent0 = (0., 5e-2) # because of scattered stars and wedges
         self.tokens.update({

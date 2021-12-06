@@ -81558,10 +81558,10 @@
   "err_a_no_q": [],
   "err_q_no_a": [],
   "last_state": {
-    "h": 85,
-    "pg": 140,
-    "v": 215,
-    "z": 1.9147733839469792
+    "h": 138,
+    "pg": 153,
+    "v": 135,
+    "z": 2.821575237492084
   },
   "name": "abadir",
   "qa": {
@@ -98508,7 +98508,7 @@
     }
   },
   "sha": "ab9031f1b38103492b385abc55f7911b38176d22c8f737c43fd60c11",
-  "src": "/home/clarktu/usr/doc/math/ex/Abadir K., Magnus J. Matrix Algebra.pdf",
+  "src": "/home/cytu/usr/doc/math/ex/Abadir K., Magnus J. Matrix Algebra.pdf",
   "sym": {},
   "tkd": {
     "100": [

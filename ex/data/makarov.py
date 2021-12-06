@@ -7,7 +7,7 @@ class makarov(book):
     def __init__(self):
         super(makarov, self).__init__()
 
-        self.src = "/home/clarktu/usr/doc/math/ex/Makarov B. et al. Selected Problems in Real Analysis.djvu"
+        self.src = "/home/cytu/usr/doc/math/ex/Makarov B. et al. Selected Problems in Real Analysis.djvu"
         self.pgs = range(10, 374)
         self.morph0 = 'c50.1'
         #self.nn_corr = (-4, 0, 4, 0)

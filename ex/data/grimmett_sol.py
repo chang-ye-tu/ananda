@@ -7,7 +7,7 @@ class grimmett_sol(book):
     def __init__(self):
         super(grimmett_sol, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/prob/th/Grimmett/Grimmett G., Stirzaker D. One Thousand Exercises in Probability.djvu'
+        self.src = '/home/cytu/usr/doc/math/prob/th/Grimmett/Grimmett G., Stirzaker D. One Thousand Exercises in Probability.djvu'
         self.replace_title = 0 
         self.pgs = range(9, 437)
 

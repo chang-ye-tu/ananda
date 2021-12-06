@@ -7,7 +7,7 @@ class lam1_sol(book):
     def __init__(self):
         super(lam1_sol, self).__init__()
 
-        self.src = "/home/clarktu/usr/doc/math/alg/Lam/Lam T.-Y. Exercises in Classical Ring Theory 2ed.pdf"
+        self.src = "/home/cytu/usr/doc/math/alg/Lam/Lam T.-Y. Exercises in Classical Ring Theory 2ed.pdf"
         self.pgs = range(21, 369)
 
         self.morph0 = 'c100.6'

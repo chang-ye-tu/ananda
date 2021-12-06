@@ -7,7 +7,7 @@ class costara(book):
     def __init__(self):
         super(costara, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/ex/Costara C., Popa D. Exercises in Functional Analysis.pdf'
+        self.src = '/home/cytu/usr/doc/math/ex/Costara C., Popa D. Exercises in Functional Analysis.pdf'
         self.pgs = range(11, 451)
         self.tokens.update({
             'chapter':  {'class': 'top', 

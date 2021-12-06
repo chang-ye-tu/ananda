@@ -7,7 +7,7 @@ class lam1(book):
     def __init__(self):
         super(lam1, self).__init__()
 
-        self.src = "/home/clarktu/usr/doc/math/alg/Lam/Lam T.-Y. A First Course in Noncommutative Rings 2ed.djvu"
+        self.src = "/home/cytu/usr/doc/math/alg/Lam/Lam T.-Y. A First Course in Noncommutative Rings 2ed.djvu"
         self.pgs = range(18, 390)
 
         self.morph0 = 'c100.5'

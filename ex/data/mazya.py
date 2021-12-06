@@ -10,7 +10,7 @@ class mazya(book):
         self.pgs = range(28, 820)
         self.morph0 = 'c150.6'
 
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Maz'ya/Maz'ya V. Sobolev Spaces With Applications to Elliptic Partial Differential Equations 2ed.pdf"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Maz'ya/Maz'ya V. Sobolev Spaces With Applications to Elliptic Partial Differential Equations 2ed.pdf"
         
         self.tokens.update({
             'sec': {'class': 'indent0',      

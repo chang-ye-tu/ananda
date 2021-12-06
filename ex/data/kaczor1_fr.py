@@ -7,7 +7,7 @@ class kaczor1_fr(book):
     def __init__(self):
         super(kaczor1_fr, self).__init__()
 
-        self.src = "/home/clarktu/usr/doc/math/ex/Kaczor W., Nowak M. Problemes d'analyse I.pdf"
+        self.src = "/home/cytu/usr/doc/math/ex/Kaczor W., Nowak M. Problemes d'analyse I.pdf"
         self.pgs = range(11, 374)
         self.w_line = 0.85
         self.morph0 = 'c150.10'

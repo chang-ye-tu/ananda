@@ -9,7 +9,7 @@ class girault(book):
         
         self.pgs = range(10, 377)
         
-        self.src = "/home/clarktu/usr/doc/math/anly/appl/Girault V., Raviart P.-A. Finite Element Methods for Navier-Stokes Equations Theory and Algorithms.pdf"
+        self.src = "/home/cytu/usr/doc/math/anly/appl/Girault V., Raviart P.-A. Finite Element Methods for Navier-Stokes Equations Theory and Algorithms.pdf"
 
         self.tokens.update({
             'chapter': {'class': 'top',

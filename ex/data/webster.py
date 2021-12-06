@@ -8,7 +8,7 @@ class webster(book):
         super(webster, self).__init__()
         
         self.pgs = range(18, 442)
-        self.src = "/home/clarktu/usr/doc/math/or/Webster R. Convexity.djvu"
+        self.src = "/home/cytu/usr/doc/math/or/Webster R. Convexity.djvu"
 
         self.tokens.update({
             'thm': {'class': 'indent0',      

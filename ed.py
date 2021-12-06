@@ -271,7 +271,7 @@ class win_ed(QMainWindow):
         else:
             self.reset()
         self.send(cnd='saved')
-        self.play_audio('/home/clarktu/usr/src/py/ananda/res/av/saved.mp3')
+        self.play_audio('/home/cytu/usr/src/py/ananda/res/av/saved.mp3')
 
     def update_slide(self, b=True):
         slide = self.slide

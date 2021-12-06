@@ -10,7 +10,7 @@ class lerner(book):
         self.pgs = range(19, 493)
         self.morph0 = 'c150.6'
 
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Lerner N. A Course on Integration Theory.pdf"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Lerner N. A Course on Integration Theory.pdf"
         
         self.tokens.update({
             'chap': {'class': 'top',      

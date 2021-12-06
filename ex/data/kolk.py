@@ -10,7 +10,7 @@ class kolk(book):
         self.pgs = range(17, 449)
         self.morph0 = 'c150.6'
 
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Duistermaat J. J., Kolk J. A. C. Distributions Theory and Applications.pdf"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Duistermaat J. J., Kolk J. A. C. Distributions Theory and Applications.pdf"
         
         self.tokens.update({
             'thm': {'class': 'indent0',      

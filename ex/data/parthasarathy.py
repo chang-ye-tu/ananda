@@ -7,7 +7,7 @@ class parthasarathy(book):
         super(parthasarathy, self).__init__()
         
         self.pgs = range(10, 277)
-        self.src = "/home/clarktu/usr/doc/math/prob/th/Parthasarathy K. Probability Measures on Metric Spaces.djvu"
+        self.src = "/home/cytu/usr/doc/math/prob/th/Parthasarathy K. Probability Measures on Metric Spaces.djvu"
 
         self.tokens.update({
             'chapter': {'class': 'first2',      

@@ -10,4 +10,4 @@ class knapp_adv_real(knapp_basic_real):
         
         self.pgs = range(30, 631)
         self.morph0 = 'c150.4'
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Knapp/Knapp A. Advanced Real Analysis Digital Second Edition.pdf"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Knapp/Knapp A. Advanced Real Analysis Digital Second Edition.pdf"

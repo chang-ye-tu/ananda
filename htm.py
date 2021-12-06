@@ -2,7 +2,7 @@ from base import *
 from bs4 import BeautifulSoup, Tag
 
 fs = []
-repo = '/home/clarktu/usr/doc/lang/txt/Collins-English-Grammar/'
+repo = '/home/cytu/usr/doc/lang/txt/Collins-English-Grammar/'
 for root, dirs, files in os.walk(cat(repo, 'html')):
     for f in files:
         if fnmatch(f, '*.html'):

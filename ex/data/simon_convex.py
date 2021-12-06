@@ -10,7 +10,7 @@ class simon_convex(book):
         self.pgs = range(12, 298)
         self.morph0 = 'c150.6'
 
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Simon/Simon B. Convexity An Analytic Viewpoint.pdf"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Simon/Simon B. Convexity An Analytic Viewpoint.pdf"
         
         self.tokens.update({
             'thm': {'class': 'indent0',      

@@ -1167,7 +1167,7 @@ class view(QGraphicsView):
 
     def deskew(self):
         f = self.get_orig() 
-        call(['/home/clarktu/usr/src/cpp/deskew', f])
+        call(['/home/cytu/usr/src/cpp/deskew', f])
         self.replace(f)
     
     def restore(self):
@@ -1175,9 +1175,9 @@ class view(QGraphicsView):
         pg = str(self.pg() + 1)
         f1 = cat(self.td, '1.djvu')
         # XXX hack!
-        if src.find('/home/clarktu') != 0:
+        if src.find('/home/cytu') != 0:
             return
-        call(['djvused', src.replace('/home/clarktu', '/media/Elements'), '-e', 
+        call(['djvused', src.replace('/home/cytu', '/media/Elements'), '-e', 
               'select %s; save-page-with %s' % (pg, f1)])
         call(['djvm', '-d', src, pg])
         call(['djvm', '-i', src, f1, pg]) 
@@ -1795,7 +1795,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
                 w.switch_mode()
             
             elif c == 'ed':
-                popen(['python', '/home/clarktu/usr/src/py/ananda/ed.py', 
+                popen(['python', '/home/cytu/usr/src/py/ananda/ed.py', 
                        '-c', json.dumps({'meta': {'name': w.dd['name'], 
                                          'key': 'page %s' % (w.pg() + 1)}})])
             elif c == 'vim':
@@ -1857,7 +1857,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
 
             @atexit.register   
             def restart():
-                popen(['python', '/home/clarktu/usr/src/py/ananda/hrv.py',  
+                popen(['python', '/home/cytu/usr/src/py/ananda/hrv.py',  
                        '-n', w.dd['name']])
             
             self.close()
@@ -2126,8 +2126,8 @@ if __name__ == '__main__':
         #al = ['-n', 'baldi1']
         #al = ['-n', 'knapp_adv_real']
         #al = ['-n', 'schilling'] 
-        al = ['-n', 'aliprantis'] 
-        #al = ['-n', 'kirsch_grinberg', '-t', str(hrv_read_rev), '-d', '/home/clarktu/usr/src/py/ananda/db/ananda_temp.db']    
+        al = ['-n', 'gadea'] 
+        #al = ['-n', 'kirsch_grinberg', '-t', str(hrv_read_rev), '-d', '/home/cytu/usr/src/py/ananda/db/ananda_temp.db']    
 
     elif argc == 2:
         # use in *.ana file browsing 

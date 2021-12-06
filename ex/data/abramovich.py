@@ -7,7 +7,7 @@ class abramovich(book):
     def __init__(self):
         super(abramovich, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Aliprantis/Abramovich Y., Aliprantis C. An Invitation to Operator Theory.djvu' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Aliprantis/Abramovich Y., Aliprantis C. An Invitation to Operator Theory.djvu' 
         self.pgs = range(15, 520)
         self.range_lineh = (0, 4)
         self.range_indent1 = (3e-2, 7e-2)

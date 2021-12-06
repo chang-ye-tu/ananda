@@ -9,7 +9,7 @@ from ed import qas2db, db2qas
 from db.make_db import make_db
 
 def get_words():
-    root = '/home/clarktu/usr/src/py/ananda/tmp/words'
+    root = '/home/cytu/usr/src/py/ananda/tmp/words'
     shutil.rmtree(root)
     os.mkdir(root)
 

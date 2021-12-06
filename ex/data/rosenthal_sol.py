@@ -10,7 +10,7 @@ class rosenthal_sol(book):
         self.pgs = range(6, 89)
         self.morph0 = 'c150.6'
 
-        self.src = u"/home/clarktu/usr/doc/math/prob/th/Soltanifar M., Li L.-H., Rosenthal J. A Collection of Exercises in Advanced Probability Theory.pdf"
+        self.src = u"/home/cytu/usr/doc/math/prob/th/Soltanifar M., Li L.-H., Rosenthal J. A Collection of Exercises in Advanced Probability Theory.pdf"
 
         self.tokens.update({
             'chap': {'class': 'first2',      

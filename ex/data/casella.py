@@ -7,7 +7,7 @@ class casella(book):
     def __init__(self):
         super(casella, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/prob/appl/Casella/Casella G., Berger R. Statistical Inference 2ed.pdf'
+        self.src = '/home/cytu/usr/doc/math/prob/appl/Casella/Casella G., Berger R. Statistical Inference 2ed.pdf'
         self.pgs =  range(28, 883)#range(219, 231) + range(732, 745)
         self.tokens.update({
             'prob_sol':  {'class': 'indent0', 

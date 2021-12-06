@@ -7,7 +7,7 @@ class hoermander1(book):
         super(hoermander1, self).__init__()
         
         self.pgs = range(14, 427)
-        self.src = u"/home/clarktu/usr/work/thesis/essential/Hoermander L. The Analysis of Linear Partial Differential Operators 1 Distribution Theory and Fourier Analysis 2ed.djvu"
+        self.src = u"/home/cytu/usr/work/thesis/essential/Hoermander L. The Analysis of Linear Partial Differential Operators 1 Distribution Theory and Fourier Analysis 2ed.djvu"
         self.b_sep_heu = True
 
         self.tokens.update({

@@ -27,7 +27,7 @@ class yor(book):
             'bar': {'class': 'line',},
         })
 
-        self.src = '/home/clarktu/usr/doc/math/prob/th/Yor/Chaumont L., Yor M. Exercises in Probability A Guided Tour from Measure Theory to Random Processes via Conditioning 2ed.pdf' 
+        self.src = '/home/cytu/usr/doc/math/prob/th/Yor/Chaumont L., Yor M. Exercises in Probability A Guided Tour from Measure Theory to Random Processes via Conditioning 2ed.pdf' 
         self.pgs = range(21, 289)
 
     def ym(self, bx):

@@ -7,7 +7,7 @@ class kirsch_angell(book):
     def __init__(self):
         super(kirsch_angell, self).__init__()
 
-        self.src ="/home/clarktu/usr/doc/math/anly/appl/Angell T., Kirsch A. Optimization Methods in Electromagnetic Radiation.pdf" 
+        self.src ="/home/cytu/usr/doc/math/anly/appl/Angell T., Kirsch A. Optimization Methods in Electromagnetic Radiation.pdf" 
         self.pgs = range(15, 333)
         
         self.tokens.update({

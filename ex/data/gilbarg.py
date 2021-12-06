@@ -10,7 +10,7 @@ class gilbarg(book):
         self.pgs = range(25, 506)
         
         self.range_indent0 = (0., 3e-2)
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Gilbarg D., Trudinger N. Elliptic Partial Differential Equations of Second Order 2ed.djvu"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Gilbarg D., Trudinger N. Elliptic Partial Differential Equations of Second Order 2ed.djvu"
         self.tokens.update({
             'chapter': {'class': 'top',
                         'ocr': r'Chapter \d+',

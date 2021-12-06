@@ -79736,10 +79736,10 @@
     "9.4.3 Corollary"
   ],
   "last_state": {
-    "h": 123,
-    "pg": 375,
-    "v": 352,
-    "z": 2.2678497998285874
+    "h": 122,
+    "pg": 296,
+    "v": 74,
+    "z": 2.1791959731543624
   },
   "name": "falmagne",
   "qa": {
@@ -82836,7 +82836,7 @@
     }
   },
   "sha": "d30f93401ac482681f879d0bacfe99490f9f1d0fae1dd8c035218f7a",
-  "src": "/home/clarktu/usr/src/py/ananda/theory/Falmagne J.-C., Doignon J.-P. Learning Spaces.pdf",
+  "src": "/home/cytu/usr/src/py/ananda/theory/Falmagne J.-C., Doignon J.-P. Learning Spaces.pdf",
   "sym": {
     "tome": [
       "SUkqAJgKAADX19fX19fX19fX19fXrNfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACB19cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgdfXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIHX1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACB19cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgdesAAAAAADXrNfX16zX19es19es19es19fXrNfX16zX19es19fXrNfX16zX19esAAAAAADX1wAAAAAA19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1wAAAAAA19cAAAAAANfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19cAAAAAANfXAAAAAADX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXAAAAAACs1wAAAAAA19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1wAAAAAA16wAAAAAAKzX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19cAAAAAANfXAAAAAADX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19esAAAAAADX1wAAAAAA19fX16zX19es19fXrNfX16zX19es19fXrNfX16zX19es19fX19fX1wAAAAAA19cAAAAAANfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXrNfX19cAAAAAANfXAAAAAADX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXAAAAAACsrAAAAAAA19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1wAAAAAA19cAAAAAAKzX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19cAAAAAANfXAAAAAADX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19esAAAAAADX1wAAAAAA19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1wAAAAAArNcAAAAAANfX19fX16zX19es19fXrNfX16zX19es19fXrNfX16zX19es19fX19cAAAAAANfXAAAAAACs19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXAAAAAADXrAAAAAAA19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXrAAAAAAA19cAAAAAANfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19cAAAAAANfXAAAAAADX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXAAAAAADX1wAAAAAA19fXrNfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1wAAAAAArNcAAAAAANfX19fX19fXrNfX16zX19es19fXrNfX16zX19es19fXrNfX16zX19cAAAAAANesAAAAAACs19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXAAAAAADX1wAAAAAA19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXrAAAAAAA19cAAAAAANfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19cAAAAAAKzXAAAAAADX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXAAAAAADX1wAAAAAA19fX16zX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1wAAAAAA16wAAAAAAKzX19fX19fX19es19fX19fX19fX19fX19fX19fX19fX19fX19fX19cAAAAAANfXAAAAAADX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19esAAAAAADX1wAAAAAA19fX19fX19fX19fX19fXrNfX16zX19es19fXrNfX16zX19es19fX1wAAAAAA19cAAAAAANfX19fX19es19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19cAAAAAAKzXAAAAAADX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXAAAAAADX1wAAAAAArNfX16zX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1wAAAAAA16wAAAAAANfX19fX19fX19fX16zX19fX19fX19fX19fX19fX19fX19fX19fX16wAAAAAANfXAAAAAADX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXAAAAAADX1wAAAAAA19fX19fX19fX19fX19fX19fXrNfX16zX19es19fXrNfX16zX19fX1wAAAAAA19cAAAAAANfX19fX19fX19fX19fX16zX19fX19fX19fX19fX19fX19fX19fX19cAAAAAAKysAAAAAADX19fX19fX19es19fX19fX19fX19fX19fX19fX19fX19fX19fX19esAAAAAADX1wAAAAAArNfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX1wAAAAAA19cAAAAAANfX19fXrNfX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19cAAAAAANfXK1YrVivX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fX19fXK1YrVivX1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACB19cAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgdfXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIHX1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACB16wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgdfX19fXrNfX16zX16zX16zX16zX16zX16zX16zX16zX16zX16zX16zX16zX16zX19fX19fXDAAAAQMAAQAAADQAAAABAQMAAQAAADQAAAACAQMAAQAAAAgAAAADAQMAAQAAAAEAAAAGAQMAAQAAAAMAAAARAQQAAQAAAAgAAAAXAQQAAQAAAJAKAAAaAQUAAQAAAC4LAAAbAQUAAQAAADYLAAAcAQMAAQAAAAEAAAAoAQMAAQAAAAIAAABAAQMAAAMAAD4LAAAAAAAAAAAAYAAAAAEAAABgAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzM2ZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZpmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmZmczMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzMzP///////////////////////////////////////////////////////////////////////////////////////////////wAAZWV7e21tsrJVVXJyrKzk5IGBWlp3d8bGaGiJicjITU3S0nl5hoZ6em5uubm8vGdnV1dra5aWyspqakRERkafn4ODMDCKillZ3t6cnGJiAAAAAAAAAAAAAAAAMzMzMzMzMzMzMzMzZmZmZmZmZmZmZmZmmZmZmZmZmZmZmZmZzMzMzMzMzMzMzMzM////////////////AAAAAAAAAAAAAAAAMzMzMzMzMzMzMzMzZmZmZmZmZmZmZmZmmZmZmZmZmZmZmZmZzMzMzMzMzMzMzMzM////////////////AAAAAAAAAAAAAAAAMzMzMzMzMzMzMzMzZmZmZmZmZmZmZmZmmZmZmZmZmZmZmZmZzMzMzMzMzMzMzMzM////////////////AAAAAAAAAAAAAAAAMzMzMzMzMzMzMzMzZmZmZmZmZmZmZmZmmZmZmZmZmZmZmZmZzMzMzMzMzMzMzMzM////////////////AAAAAAAAAAAAAAAAMzMzMzMzMzMzMzMzZmZmZmZmZmZmZmZmmZmZmZmZmZmZmZmZzMzMzMzMzMzMzMzM////////////////AAAAAAAAAAAAAAAAMzMzMzMzMzMzMzMzZmZmZmZmZmZmZmZmmZmZmZmZmZmZmZmZzMzMzMzMzMzMzMzM////////////////AABlZXt7bW2yslVVcnKsrOTkgYFaWnd3xsZoaImJyMhNTdLSeXmGhnp6bm65uby8Z2dXV2trlpbKympqRERGRp+fg4MwMIqKWVne3pycYmIAADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AADMzZmaZmczM//8AAGVle3ttbbKyVVVycqys5OSBgVpad3fGxmhoiYnIyE1N0tJ5eYaGenpubrm5vLxnZ1dXa2uWlsrKampEREZGn5+DgzAwiopZWd7enJxiYg=="
@@ -89940,8 +89940,8 @@
     "105": [
       [
         [
-          973.86867661509211,
-          1439.5742699283039,
+          973.8686766150921,
+          1439.574269928304,
           1000,
           0
         ],
@@ -89964,7 +89964,7 @@
       ],
       [
         [
-          890.93647091854507,
+          890.9364709185451,
           170.46318128187409,
           1000,
           0
@@ -89975,7 +89975,7 @@
       ],
       [
         [
-          913.57611218254397,
+          913.576112182544,
           1772.5507366107377,
           1000,
           0
@@ -90010,7 +90010,7 @@
       ],
       [
         [
-          837.91012121560141,
+          837.9101212156014,
           178.9839657659908,
           1000,
           0
@@ -90071,8 +90071,8 @@
       ],
       [
         [
-          896.91447601062987,
-          359.56186834153948,
+          896.9144760106299,
+          359.5618683415395,
           1000,
           0
         ],
@@ -90095,7 +90095,7 @@
       ],
       [
         [
-          904.20047890670912,
+          904.2004789067091,
           1609.529884740095,
           1000,
           0
@@ -90119,7 +90119,7 @@
       ],
       [
         [
-          897.57144313759829,
+          897.5714431375983,
           1972.8010448873654,
           1000,
           0
@@ -90143,7 +90143,7 @@
       ],
       [
         [
-          807.03662388137263,
+          807.0366238813726,
           1924.3695074399066,
           1000,
           0
@@ -90177,8 +90177,8 @@
     "124": [
       [
         [
-          804.76494237004749,
-          1524.6782268954771,
+          804.7649423700475,
+          1524.678226895477,
           1000,
           0
         ],
@@ -90204,8 +90204,8 @@
     "127": [
       [
         [
-          805.36551322256264,
-          1220.6528371742299,
+          805.3655132225626,
+          1220.65283717423,
           1000,
           0
         ],
@@ -90265,8 +90265,8 @@
     "140": [
       [
         [
-          795.48429229329247,
-          1480.9265908193461,
+          795.4842922932925,
+          1480.926590819346,
           1000,
           0
         ],
@@ -90291,8 +90291,8 @@
       ],
       [
         [
-          855.14561421528936,
-          2279.0624974202829,
+          855.1456142152894,
+          2279.062497420283,
           1000,
           0
         ],
@@ -90302,8 +90302,8 @@
       ],
       [
         [
-          855.14561421528936,
-          2279.0624974202829,
+          855.1456142152894,
+          2279.062497420283,
           1000,
           0
         ],
@@ -90316,7 +90316,7 @@
       [
         [
           806.0907495238697,
-          1524.6782268954771,
+          1524.678226895477,
           1000,
           0
         ],
@@ -90328,8 +90328,8 @@
     "145": [
       [
         [
-          688.90522765917126,
-          170.90148916929439,
+          688.9052276591713,
+          170.9014891692944,
           1000,
           0
         ],
@@ -90339,8 +90339,8 @@
       ],
       [
         [
-          692.87968089566652,
-          408.04386561350913,
+          692.8796808956665,
+          408.0438656135091,
           1000,
           0
         ],
@@ -90445,7 +90445,7 @@
     "158": [
       [
         [
-          771.46343700934142,
+          771.4634370093414,
           1195.9017985473529,
           1000,
           0
@@ -90456,7 +90456,7 @@
       ],
       [
         [
-          780.80641981049257,
+          780.8064198104926,
           1649.7038203175537,
           1000,
           0
@@ -90542,7 +90542,7 @@
       ],
       [
         [
-          856.47142136911157,
+          856.4714213691116,
           1279.4039034383786,
           1000,
           0
@@ -90591,7 +90591,7 @@
     "175": [
       [
         [
-          810.18294235089104,
+          810.182942350891,
           2196.2312113727585,
           1000,
           0
@@ -90604,8 +90604,8 @@
     "176": [
       [
         [
-          802.44477985085871,
-          2240.9900651224648,
+          802.4447798508587,
+          2240.990065122465,
           1000,
           0
         ],
@@ -90661,7 +90661,7 @@
       ],
       [
         [
-          744.88792943347369,
+          744.8879294334737,
           177.92332004293309,
           1000,
           0
@@ -90709,8 +90709,8 @@
       ],
       [
         [
-          843.21334983089002,
-          363.27116014727022,
+          843.21334983089,
+          363.2711601472702,
           1000,
           0
         ],
@@ -90762,8 +90762,8 @@
       ],
       [
         [
-          820.46487365127882,
-          303.18637146270919,
+          820.4648736512788,
+          303.1863714627092,
           1000,
           0
         ],
@@ -90773,7 +90773,7 @@
       ],
       [
         [
-          823.12440322551311,
+          823.1244032255131,
           171.53965753811178,
           1000,
           0
@@ -90837,7 +90837,7 @@
       [
         [
           836.5843140617792,
-          583.35514768174778,
+          583.3551476817478,
           1000,
           0
         ],
@@ -90847,8 +90847,8 @@
       ],
       [
         [
-          822.00043536973556,
-          1161.4070667482069,
+          822.0004353697356,
+          1161.407066748207,
           1000,
           0
         ],
@@ -90919,7 +90919,7 @@
     "199": [
       [
         [
-          813.09081341438593,
+          813.0908134143859,
           379.26494570065466,
           1000,
           0
@@ -90947,7 +90947,7 @@
     "213": [
       [
         [
-          818.63347884402162,
+          818.6334788440216,
           1724.8355307896727,
           1000,
           0
@@ -91045,7 +91045,7 @@
     "237": [
       [
         [
-          815.47825569958968,
+          815.4782556995897,
           1838.7975603356008,
           1000,
           0
@@ -91123,8 +91123,8 @@
     "244": [
       [
         [
-          865.10598781045928,
-          2146.2047477074179,
+          865.1059878104593,
+          2146.204747707418,
           1000,
           0
         ],
@@ -91149,7 +91149,7 @@
     "246": [
       [
         [
-          834.91023517799783,
+          834.9102351779978,
           1205.685068052572,
           1000,
           0
@@ -91162,8 +91162,8 @@
     "247": [
       [
         [
-          732.39170230453794,
-          173.81034964111319,
+          732.391702304538,
+          173.8103496411132,
           1000,
           0
         ],
@@ -91173,8 +91173,8 @@
       ],
       [
         [
-          735.04529542882983,
-          770.86880260676912,
+          735.0452954288298,
+          770.8688026067691,
           1000,
           0
         ],
@@ -91207,8 +91207,8 @@
     "267": [
       [
         [
-          807.53528567654178,
-          303.15668921299681,
+          807.5352856765418,
+          303.1566892129968,
           1000,
           0
         ],
@@ -91234,7 +91234,7 @@
       ],
       [
         [
-          800.05832697397898,
+          800.058326973979,
           1984.8876569702695,
           1000,
           0
@@ -91260,8 +91260,8 @@
     "272": [
       [
         [
-          795.79100887365428,
-          626.78522605266085,
+          795.7910088736543,
+          626.7852260526608,
           1000,
           0
         ],
@@ -91308,8 +91308,8 @@
       ],
       [
         [
-          797.12176306909521,
-          916.88964065877565,
+          797.1217630690952,
+          916.8896406587756,
           1000,
           0
         ],
@@ -91320,7 +91320,7 @@
       [
         [
           782.4834669192453,
-          1212.3170720466539,
+          1212.317072046654,
           1000,
           0
         ],
@@ -91332,7 +91332,7 @@
     "275": [
       [
         [
-          792.83267798564816,
+          792.8326779856482,
           1374.8620185135737,
           1000,
           0
@@ -91343,7 +91343,7 @@
       ],
       [
         [
-          795.48429229329247,
+          795.4842922932925,
           2293.6463761123264,
           1000,
           0
@@ -91369,7 +91369,7 @@
       [
         [
           774.271377832138,
-          1547.2169485104539,
+          1547.216948510454,
           1000,
           0
         ],
@@ -91381,8 +91381,8 @@
     "278": [
       [
         [
-          772.94557067831579,
-          2204.8172968062422,
+          772.9455706783158,
+          2204.817296806242,
           1000,
           0
         ],
@@ -91397,7 +91397,7 @@
       [
         [
           765.9237398046771,
-          541.04112190002229,
+          541.0411219000223,
           1000,
           0
         ],
@@ -91409,8 +91409,8 @@
     "281": [
       [
         [
-          796.94465897914449,
-          173.42151216988029,
+          796.9446589791445,
+          173.4215121698803,
           1000,
           0
         ],
@@ -91475,8 +91475,8 @@
     "298": [
       [
         [
-          992.12919663818263,
-          2144.3219036673258,
+          992.1291966381826,
+          2144.321903667326,
           1000,
           0
         ],
@@ -91501,8 +91501,8 @@
       ],
       [
         [
-          850.53299260997676,
-          898.22643144791948,
+          850.5329926099768,
+          898.2264314479195,
           1000,
           0
         ],
@@ -91515,8 +91515,8 @@
     "302": [
       [
         [
-          790.32551729327122,
-          747.96301050368209,
+          790.3255172932712,
+          747.9630105036821,
           1000,
           0
         ],
@@ -91587,7 +91587,7 @@
     "315": [
       [
         [
-          845.16941008693971,
+          845.1694100869397,
           1093.2803672082234,
           1000,
           0
@@ -91653,7 +91653,7 @@
     "353": [
       [
         [
-          787.52944937035954,
+          787.5294493703595,
           473.31315391450903,
           1000,
           0
@@ -91664,7 +91664,7 @@
       ],
       [
         [
-          841.88754267706781,
+          841.8875426770678,
           1571.0814772792526,
           1000,
           0
@@ -91729,7 +91729,7 @@
       ],
       [
         [
-          884.31337159937675,
+          884.3133715993768,
           1634.720220662716,
           1000,
           0
@@ -91765,7 +91765,7 @@
       ],
       [
         [
-          780.73815063615416,
+          780.7381506361542,
           171.28439019058484,
           1000,
           0
@@ -91781,7 +91781,7 @@
     "366": [
       [
         [
-          781.64246984405963,
+          781.6424698440596,
           180.17521338778326,
           1000,
           0
@@ -91805,7 +91805,7 @@
       ],
       [
         [
-          780.90041360124872,
+          780.9004136012487,
           173.68073715070219,
           1000,
           0
@@ -91823,7 +91823,7 @@
     "372": [
       [
         [
-          781.05871893304857,
+          781.0587189330486,
           1074.9486097858228,
           1000,
           0
@@ -91854,7 +91854,7 @@
       ],
       [
         [
-          827.30366398502417,
+          827.3036639850242,
           1036.7811942889246,
           1000,
           0
@@ -91893,7 +91893,7 @@
     "47": [
       [
         [
-          825.97785683120196,
+          825.977856831202,
           1637.3718349703604,
           1000,
           0
@@ -91932,7 +91932,7 @@
       ],
       [
         [
-          808.01910634685441,
+          808.0191063468544,
           464.37879675106575,
           1000,
           0
@@ -91956,7 +91956,7 @@
       ],
       [
         [
-          770.29395637067148,
+          770.2939563706715,
           429.56151783837794,
           1000,
           0
@@ -91969,8 +91969,8 @@
     "53": [
       [
         [
-          812.71978529298042,
-          819.34882106209125,
+          812.7197852929804,
+          819.3488210620912,
           1000,
           0
         ],
@@ -92061,8 +92061,8 @@
       ],
       [
         [
-          758.92763354745603,
-          249.43775368342961,
+          758.927633547456,
+          249.4377536834296,
           1000,
           0
         ],
@@ -92112,8 +92112,8 @@
       ],
       [
         [
-          721.23909167925183,
-          930.71662198315221,
+          721.2390916792518,
+          930.7166219831522,
           1000,
           0
         ],
@@ -92138,7 +92138,7 @@
     "71": [
       [
         [
-          757.79575042508839,
+          757.7957504250884,
           349.75188481157926,
           1000,
           0
@@ -92163,7 +92163,7 @@
       ],
       [
         [
-          871.70534132985767,
+          871.7053413298577,
           1115.8359087647036,
           1000,
           0
@@ -92194,8 +92194,8 @@
     "80": [
       [
         [
-          784.39698261737374,
-          1084.0392934644181,
+          784.3969826173737,
+          1084.039293464418,
           1000,
           0
         ],
@@ -92242,7 +92242,7 @@
       ],
       [
         [
-          857.64288082442897,
+          857.642880824429,
           1076.0488318418302,
           1000,
           0
@@ -92304,8 +92304,8 @@
     "86": [
       [
         [
-          861.81224750070294,
-          587.77978170554843,
+          861.8122475007029,
+          587.7797817055484,
           1000,
           0
         ],
@@ -92317,7 +92317,7 @@
     "87": [
       [
         [
-          888.95072841278295,
+          888.950728412783,
           1084.2807090954125,
           1000,
           0
@@ -92378,7 +92378,7 @@
       ],
       [
         [
-          918.90308659760251,
+          918.9030865976025,
           1353.0515014248756,
           1000,
           0
@@ -92391,7 +92391,7 @@
     "92": [
       [
         [
-          861.09096883269046,
+          861.0909688326905,
           1298.9338343408383,
           1000,
           0
@@ -92402,7 +92402,7 @@
       ],
       [
         [
-          877.01252757844134,
+          877.0125275784413,
           1726.1623273518187,
           1000,
           0
@@ -93648,7 +93648,7 @@
     ],
     "52": [
       144,
-      2289.0588987407191
+      2289.058898740719
     ],
     "53": [
       144,
@@ -93831,6 +93831,6 @@
       9223372036854775807
     ]
   },
-  "z": 2.8420134228187921,
+  "z": 2.842013422818792,
   "zo": 6.0
 }

@@ -7,7 +7,7 @@ class torchinsky(book):
         super(torchinsky, self).__init__()
         
         self.pgs = range(13, 457)
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Torchinsky A. Real-Variable Methods in Harmonic Analysis.djvu"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Torchinsky A. Real-Variable Methods in Harmonic Analysis.djvu"
         self.tokens.update({
             'chapter': {'class': 'first2',      
                      'ocr': r'^((X|V|I)+)',

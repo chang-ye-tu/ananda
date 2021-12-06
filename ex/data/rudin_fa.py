@@ -7,7 +7,7 @@ class rudin_fa(book):
     def __init__(self):
         super(rudin_fa, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Rudin/Rudin W. Functional Analysis 2ed.djvu' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Rudin/Rudin W. Functional Analysis 2ed.djvu' 
         self.pgs = range(21, 404)
         self.range_indent1 = (6e-2, 9e-2)
         self.morph_sym = 'c12.2'

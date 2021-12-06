@@ -6,7 +6,7 @@ class alpay2(book):
     def __init__(self):
         super(alpay2, self).__init__()
 
-        self.src = '/home/clarktu/usr/doc/math/ex/Alpay D. An Advanced Complex Analysis Problem Book Topological Vector Spaces Functional Analysis and Hilbert Spaces of Analytic Functions.pdf'
+        self.src = '/home/cytu/usr/doc/math/ex/Alpay D. An Advanced Complex Analysis Problem Book Topological Vector Spaces Functional Analysis and Hilbert Spaces of Analytic Functions.pdf'
         self.pgs = range(20, 488)
 
         self.tokens.update({

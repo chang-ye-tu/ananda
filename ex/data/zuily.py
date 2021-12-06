@@ -19,7 +19,7 @@ class zuily(book):
             'bar': {'class': 'line',},
         })
 
-        self.src = '/home/clarktu/usr/doc/math/anly/th/Zuily C. Problems in Distributions and Partial Differential Equations.pdf'
+        self.src = '/home/cytu/usr/doc/math/anly/th/Zuily C. Problems in Distributions and Partial Differential Equations.pdf'
 
         self.pgs = range(5, 224)
 

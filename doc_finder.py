@@ -97,7 +97,7 @@ def make_db(cn):
     cn.commit()
 
 def recreate_db():
-    folders = ['/home/clarktu/usr/',]
+    folders = ['/home/cytu/usr/',]
     doc_types = ['.pdf', '.djvu', '.ps', '.chm']
     r = None
     try:
@@ -310,7 +310,7 @@ class win(QMainWindow):
         r = self.cr.execute('select * from doc where filename like ? order by ' + self.otype, (str(txt),)).fetchall()
         def s_htm(l):
             ftype = os.path.splitext(l[2])[1][1:].lower()
-            return """<p><img src='/home/clarktu/usr/src/py/ananda/res/img/{}_icon.png' width='56' height='56' /><a href='' onClick="doc_finder.open_file('{}'); return false;">{}</a><br /><span class='ctime'>{}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='fsize'>{}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='fpath'>{}</span><br /></p>""".format(ftype, l[0], l[1], l[3], l[4], l[2])
+            return """<p><img src='/home/cytu/usr/src/py/ananda/res/img/{}_icon.png' width='56' height='56' /><a href='' onClick="doc_finder.open_file('{}'); return false;">{}</a><br /><span class='ctime'>{}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='fsize'>{}</span>&nbsp;&nbsp;&nbsp;&nbsp;<span class='fpath'>{}</span><br /></p>""".format(ftype, l[0], l[1], l[3], l[4], l[2])
         b = self.wdg.browser
         hhh = htm(''.join([s_htm(rr) for rr in r]))
         b.set_htm(hhh)

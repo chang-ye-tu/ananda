@@ -9,7 +9,7 @@ class milman(book):
         
         self.pgs = range(18, 329)
         self.morph0 = 'c150.8'
-        self.src = "/home/clarktu/usr/doc/math/anly/th/Eidelman Y., Milman V., Tsolomitis A. Functional Analysis An Introduction.djvu"
+        self.src = "/home/cytu/usr/doc/math/anly/th/Eidelman Y., Milman V., Tsolomitis A. Functional Analysis An Introduction.djvu"
         self.tokens.update({
             'chapter': {'class': 'indent0',
                         'ocr': r'^Chapter',

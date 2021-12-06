@@ -7,7 +7,7 @@ class kirsch(book):
     def __init__(self):
         super(kirsch, self).__init__()
 
-        self.src ="/home/clarktu/usr/doc/math/anly/appl/Kirsch A. An Introduction to the Mathematical Theory of Inverse Problems 2ed.pdf" 
+        self.src ="/home/cytu/usr/doc/math/anly/appl/Kirsch A. An Introduction to the Mathematical Theory of Inverse Problems 2ed.pdf" 
         self.pgs = range(16, 301)
         
         self.tokens.update({

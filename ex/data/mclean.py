@@ -9,7 +9,7 @@ class mclean(book):
         
         self.pgs = range(14, 355)
 
-        self.src = "/home/clarktu/usr/doc/math/anly/th/McLean W. Strongly Elliptic Systems and Boundary Integral Equations.djvu"
+        self.src = "/home/cytu/usr/doc/math/anly/th/McLean W. Strongly Elliptic Systems and Boundary Integral Equations.djvu"
         
         self.tokens.update({
             'thm': {'class': 'indent0',      
