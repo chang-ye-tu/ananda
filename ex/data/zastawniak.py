@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from books import *
 
 class zastawniak(book):
@@ -9,7 +7,7 @@ class zastawniak(book):
         
         self.pgs = range(9, 225)
 
-        self.src = "/home/cytu/usr/doc/math/prob/th/Brzezniak Z., Zastawniak T. Basic Stochastic Processes A Course Through Exercises.pdf"
+        self.src = u"/home/cytu/usr/doc/econ/Capiński-Kopp/Brzezniak Z., Zastawniak T. Basic Stochastic Processes A Course Through Exercises.pdf"
 
         self.tokens.update({
             'chapter': {'class': 'first',

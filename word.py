@@ -1,5 +1,3 @@
-#-*- coding: utf-8 -*-
-
 from base import *
 from img import *
 
@@ -31,8 +29,7 @@ def get_words():
         if 'v' in atoms or 'vm' in atoms:
             vl.append('\n'.join([str(vi if vi else NVI), tq, ta]))
             if vi == 0:
-                codecs.open(cat(root, 'verbs_%s.txt' % str(vii).zfill(2)), 
-                            'w', 'utf-8').write('\n\n'.join(vl))
+                codecs.open(cat(root, 'verbs_%s.txt' % str(vii).zfill(2)), 'w', 'utf-8').write('\n\n'.join(vl))
                 vii += 1
                 vl = []
             vi += 1
@@ -42,8 +39,7 @@ def get_words():
         elif 'n' in atoms:
             nl.append('\n'.join([str(ni if ni else NNI), tq, ta]))
             if ni == 0:
-                codecs.open(cat(root, 'nouns_%s.txt' % str(nii).zfill(2)), 
-                            'w', 'utf-8').write('\n\n'.join(nl))
+                codecs.open(cat(root, 'nouns_%s.txt' % str(nii).zfill(2)), 'w', 'utf-8').write('\n\n'.join(nl))
                 nii += 1
                 nl = []
             ni += 1
@@ -53,8 +49,7 @@ def get_words():
         else:
             tl.append('\n'.join([str(i if i else NI), tq, ta]))
             if i == 0:
-                codecs.open(cat(root, 'others_%s.txt' % str(ii).zfill(2)), 
-                            'w', 'utf-8').write('\n\n'.join(tl))
+                codecs.open(cat(root, 'others_%s.txt' % str(ii).zfill(2)), 'w', 'utf-8').write('\n\n'.join(tl))
                 ii += 1
                 tl = []
             i += 1
@@ -62,14 +57,11 @@ def get_words():
             ok.append(k)
             
     if vl:    
-        codecs.open(cat(root, 'verbs_%s.txt' % str(vii).zfill(2)), 
-                        'w', 'utf-8').write('\n\n'.join(vl))
+        codecs.open(cat(root, 'verbs_%s.txt' % str(vii).zfill(2)), 'w', 'utf-8').write('\n\n'.join(vl))
     if nl:
-        codecs.open(cat(root, 'nouns_%s.txt' % str(nii).zfill(2)), 
-                        'w', 'utf-8').write('\n\n'.join(nl))
+        codecs.open(cat(root, 'nouns_%s.txt' % str(nii).zfill(2)), 'w', 'utf-8').write('\n\n'.join(nl))
     if tl:
-        codecs.open(cat(root, 'others_%s.txt' % str(ii).zfill(2)), 
-                        'w', 'utf-8').write('\n\n'.join(tl))
+        codecs.open(cat(root, 'others_%s.txt' % str(ii).zfill(2)), 'w', 'utf-8').write('\n\n'.join(tl))
     
     new = False 
     wdb = cat('db', 'word.db')
@@ -92,12 +84,10 @@ def get_words():
 def get_loci(lid):
     cn = sqlite3.connect(cat('db', 'loci.db'))
     cr = cn.cursor()
-    ids = json.loads(cr.execute('select data from route where id = ?', 
-                                (lid,)).fetchone()[0])['loci']
+    ids = json.loads(cr.execute('select data from route where id = ?', (lid,)).fetchone()[0])['loci']
     pxs = []
     for i in ids:
-        pxs.append(cr.execute('select pix from loci where id = ?', 
-                               (i,)).fetchone()[0])
+        pxs.append(cr.execute('select pix from loci where id = ?', (i,)).fetchone()[0])
     return pxs
 
 class it_p(QGraphicsPixmapItem):
@@ -250,8 +240,7 @@ class wdg_w(wdg_i):
             p = QPixmap(fn)
             ow, oh = p.width(), p.height()
             if not ow or not oh:
-                self.send(cnd='msg', sct='pix', to=20000,
-                    msg='<font color="red">error: selected pix is null</font>')
+                self.send(cnd='msg', sct='pix', to=20000, msg='<font color="red">error: selected pix is null</font>')
                 return
             self.show_pix(p, 'it_r') 
             pw, ph = p.width(), p.height()
@@ -377,8 +366,7 @@ class win_word(QMainWindow):
         self.lbl_side.setText('<font color="blue">%s</font>' % s.upper())
 
     def timerEvent(self, e):
-        self.msg({'sct': 'stw', 
-            'msg': '<font color="purple">%s</font>' % nr2t(self.stw.cnt / 10)})
+        self.msg({'sct': 'stw', 'msg': '<font color="purple">%s</font>' % nr2t(self.stw.cnt / 10)})
             
     def handler(self, i):
         w = self.w

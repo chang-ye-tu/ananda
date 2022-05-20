@@ -123,8 +123,7 @@ class rubber(QGraphicsObject):
         self.update()
 
     def hds(self): 
-        return [self.hd_tl, self.hd_tr, self.hd_bl, self.hd_br, 
-                self.hd_l,  self.hd_t,  self.hd_r,  self.hd_b]
+        return [self.hd_tl, self.hd_tr, self.hd_bl, self.hd_br, self.hd_l,  self.hd_t,  self.hd_r,  self.hd_b]
 
     def update_hds(self):
         r = self.boundingRect()
@@ -656,19 +655,16 @@ class dlg_op(QDialog, Ui_dlg_op):
                 b, r = parse_range(led.text(), self.tp)
                 setattr(self, 'pgl_%s' % i, r)
                 if i == 'bxd':
-                    setattr(self, 'morph', 
-                            getattr(self, 'led_bxd_morph').text())
+                    setattr(self, 'morph', getattr(self, 'led_bxd_morph').text())
                 if not b:
-                    QMessageBox.warning(self, 'Error', 
-                    'Range specification in %s is wrong. Please correct it.' % i)
+                    QMessageBox.warning(self, 'Error', 'Range specification in %s is wrong. Please correct it.' % i)
                     led.selectAll()
                     led.setFocus()
                     return  
 
         n = self.n()
         for i in self.l:
-            sts.setValue('%s/chk_%s/check_state' % (n, i), 
-                         QVariant(getattr(self, 'chk_%s' % i).checkState()))
+            sts.setValue('%s/chk_%s/check_state' % (n, i), QVariant(getattr(self, 'chk_%s' % i).checkState()))
         QDialog.accept(self)
     
     def n(self):
@@ -870,8 +866,7 @@ class mgr(thread):
             # check if name in self.names is in prefab
             l = []
             for n in self.names:
-                r = cr.execute('select * from prefab where name = ?', 
-                               (n,)).fetchone()
+                r = cr.execute('select * from prefab where name = ?', (n,)).fetchone()
                 if r:
                     l.append(n)
             if not l:
@@ -1063,8 +1058,8 @@ class view(QGraphicsView):
                 r = mm.mapRect(QRectF(*a))
                 rx, ry = r.x(), r.y()
                 s_f = {'pg': pg, 'z': self.z(), 
-        'v': int((vs.maximum() - vs.minimum() + vs.pageStep()) * (ry - 10) / ph), 
-        'h': int((hs.maximum() - hs.minimum() + hs.pageStep()) * (rx - 10) / pw),}
+                       'v': int((vs.maximum() - vs.minimum() + vs.pageStep()) * (ry - 10) / ph), 
+                       'h': int((hs.maximum() - hs.minimum() + hs.pageStep()) * (rx - 10) / pw),}
 
                 if s_f != s_i and s_i:
                     self.hst.push(cmd_view(self, s_i, s_f, '%s --> %s' % (s_i, s_f)))
@@ -1135,9 +1130,7 @@ class view(QGraphicsView):
                     except:
                         tk = [b, '', '', ''] 
                     
-                    scn.addItem(box(
-                        mm.map(QPointF(*b[:2])), 
-                        mm.mapRect(QRectF(QPointF(0, 0), QPointF(*b[2:]))), tk))
+                    scn.addItem(box(mm.map(QPointF(*b[:2])), mm.mapRect(QRectF(QPointF(0, 0), QPointF(*b[2:]))), tk))
             
                 yd1, yd2 = dd['yd'][pg]
                 for n, y in enumerate([max(yd1, y), min(yd2, y + h)]):
@@ -1177,8 +1170,7 @@ class view(QGraphicsView):
         # XXX hack!
         if src.find('/home/cytu') != 0:
             return
-        call(['djvused', src.replace('/home/cytu', '/media/Elements'), '-e', 
-              'select %s; save-page-with %s' % (pg, f1)])
+        call(['djvused', src.replace('/home/cytu', '/media/Elements'), '-e', 'select %s; save-page-with %s' % (pg, f1)])
         call(['djvm', '-d', src, pg])
         call(['djvm', '-i', src, f1, pg]) 
         self.restart()
@@ -1230,10 +1222,7 @@ class view(QGraphicsView):
             scn.addItem(QGraphicsPixmapItem(pix))
             
             for b in bx:
-                scn.addItem(box_sym(
-                    mm.map(QPointF(*b[:2])), 
-                    mm.mapRect(QRectF(QPointF(0, 0), QPointF(*b[2:]))), 
-                    md.mapRect(QRect(*b))))
+                scn.addItem(box_sym(mm.map(QPointF(*b[:2])), mm.mapRect(QRectF(QPointF(0, 0), QPointF(*b[2:]))),md.mapRect(QRect(*b))))
         except:
             pass
     
@@ -1268,6 +1257,7 @@ class view(QGraphicsView):
 
     def op(self):
         dlg = dlg_op(self)
+
         if dlg.exec_():
             d = dict.fromkeys(dlg.l)
             for i in dlg.l:
@@ -1628,10 +1618,8 @@ class win_hrv(QMainWindow, Ui_win_hrv):
             a.triggered.connect(partial(self.handler, i))
             self.addAction(a)
 
-        for i in [#'open', 'open_new', 'tab_close', 'tab_close_all', 'save', 
-                  #'tab_next', 'tab_prev', 
-                  'z_in', 'z_out', 'fst', 'last', 'prev', 'next', 
-                  'fwd', 'bwd']:
+        for i in [#'open', 'open_new', 'tab_close', 'tab_close_all', 'save', 'tab_next', 'tab_prev', 
+                  'z_in', 'z_out', 'fst', 'last', 'prev', 'next', 'fwd', 'bwd']:
             a = getattr(self, 'act_%s' % i)
             a.triggered.connect(partial(self.handler, i))
             self.addAction(a)
@@ -1795,9 +1783,8 @@ class win_hrv(QMainWindow, Ui_win_hrv):
                 w.switch_mode()
             
             elif c == 'ed':
-                popen(['python', '/home/cytu/usr/src/py/ananda/ed.py', 
-                       '-c', json.dumps({'meta': {'name': w.dd['name'], 
-                                         'key': 'page %s' % (w.pg() + 1)}})])
+                popen(['python', '/home/cytu/usr/src/py/ananda/ed.py', '-c', 
+                       json.dumps({'meta': {'name': w.dd['name'], 'key': 'page %s' % (w.pg() + 1)}})])
             elif c == 'vim':
                 w.vim() 
 
@@ -1857,8 +1844,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
 
             @atexit.register   
             def restart():
-                popen(['python', '/home/cytu/usr/src/py/ananda/hrv.py',  
-                       '-n', w.dd['name']])
+                popen(['python', '/home/cytu/usr/src/py/ananda/hrv.py', '-n', w.dd['name']])
             
             self.close()
 
@@ -1945,8 +1931,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
                     fl_failed.append(f) 
             
             if fl_failed:
-                QMessageBox.warning(self, 'Ebook Harvester: Failed to Open File(s)',
-            'The following files could not be opened:\n%s' % '\n'.join(fl_failed))
+                QMessageBox.warning(self, 'Ebook Harvester: Failed to Open File(s)', 'The following files could not be opened:\n%s' % '\n'.join(fl_failed))
          
     # =======================================
     #  neutral code  
@@ -2026,8 +2011,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
 
         l = ['mnb', 'stb', 'tb',]
         for i in l:
-            sts.setValue('%s/%s/visible' % (n, i), 
-                QVariant(getattr(self, i).isVisible()))
+            sts.setValue('%s/%s/visible' % (n, i), QVariant(getattr(self, i).isVisible()))
 
     def alarm(self, s):
         d = json.loads(s)
@@ -2070,8 +2054,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
 
             if st == st_learn:
                 t = (t1 - t0) if t1 > t0 else (t0 - t1)
-                tp = ('orange', '[ %d%% ]' % int(100. * t.seconds / T.seconds), 
-                        nr2t(t.seconds))
+                tp = ('orange', '[ %d%% ]' % int(100. * t.seconds / T.seconds), nr2t(t.seconds))
 
             elif st == st_rest:
                 t = (t2 - t1) if t2 > t1 else (t1 - t2)
@@ -2082,9 +2065,8 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         else:
             tp = ('red', '?', '')
        
-        self.update_stb([
-            ('stw', '<font color="purple">%s</font>' % (nr2t(self.stw.cnt / 10) if st == st_learn else '')),
-            ('aux', '<font color="%s">%s&nbsp; %s</font>' % tp if tp != ('red', '?', '') else ''),])
+        self.update_stb([('stw', '<font color="purple">%s</font>' % (nr2t(self.stw.cnt / 10) if st == st_learn else '')),
+                         ('aux', '<font color="%s">%s&nbsp; %s</font>' % tp if tp != ('red', '?', '') else ''),])
 
         if self.busy:
             return
@@ -2105,10 +2087,11 @@ class win_hrv(QMainWindow, Ui_win_hrv):
 if __name__ == '__main__':
     DBusQtMainLoop(set_as_default=True) 
     argv = sys.argv
-
     app = QApplication(argv)
     app.setApplicationName('hrv')
-    app.setFont(QFont('Microsoft JhengHei'))
+    font = QFont('Microsoft JhengHei')
+    #font.setPointSize(16)
+    app.setFont(font)
     
     # never put the following before the creation of qt loop 
     bus = dbus.SessionBus()
@@ -2126,7 +2109,7 @@ if __name__ == '__main__':
         #al = ['-n', 'baldi1']
         #al = ['-n', 'knapp_adv_real']
         #al = ['-n', 'schilling'] 
-        al = ['-n', 'gadea'] 
+        al = ['-n', 'zastawniak'] 
         #al = ['-n', 'kirsch_grinberg', '-t', str(hrv_read_rev), '-d', '/home/cytu/usr/src/py/ananda/db/ananda_temp.db']    
 
     elif argc == 2:

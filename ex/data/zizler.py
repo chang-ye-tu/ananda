@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from books import *
 
 class zizler(book):
@@ -31,11 +29,12 @@ class zizler(book):
                    },
             
             'defn': {'class': 'indent0',      
-                     'ocr': r'^(Deﬁnition (\d+)) ', 
+                     'ocr': r'^(Definition (\d+)) ', 
                     },
             
             'remark': {'class': 'indent0',      
-                    'ocr': r'^(Remark (\d+))', 
+                    #'ocr': r'^(Remark (\d+))', 
+                    'ocr': r'^Remark ', 
                    },
 
             'example': {'class': 'indent0',      

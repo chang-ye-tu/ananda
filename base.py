@@ -49,6 +49,11 @@ hrv_edt, hrv_read, hrv_read_rev = [1 << i for i in range(3)]
 w_desktop = int(re.compile(r'current (\d+) x').search(os.popen('xrandr -q -d :0').readlines()[0]).groups()[0])
 im_width = .945 * w_desktop
 
+#_ = QApplication.instance()
+#screen = _.screens()[0]
+#dpi = screen.physicalDotsPerInch()
+#_.quit()
+
 # XXX
 logging.basicConfig(filename='/home/cytu/usr/src/py/ananda/tmp/log.txt', 
                     format='%(asctime)s %(levelname)s: %(message)s', 
@@ -286,8 +291,7 @@ def lapse(dlt):
 def prefab_fact(name, cn):
     cr = cn.cursor()
     try:
-        keys = json.loads(cr.execute('select keys from prefab where name = ?', 
-                          (name,)).fetchone()[0])
+        keys = json.loads(cr.execute('select keys from prefab where name = ?', (name,)).fetchone()[0])
         if not keys:
             return False, None
     except:
@@ -500,14 +504,15 @@ class mgr_due(thread):
                 doc = doc_djvu()
             
             if doc.open(f, render=False):
-                z = meta.get('z', 2.7) * w_desktop / 1366 * 0.96
+                z = meta.get('z', 2.7) * w_desktop / 1366 * 0.97
                 doc.set_z(z, render=False)
                 meta['z'] = z
                 self.cache[doc.sha] = {'doc': doc, 'meta': meta}
         
         zo = meta['zo']
         z = meta['z']
-        zz = 2. * z / zo * 101 / 96
+        # XXX 12/13/21 23:22:14
+        zz = 2. * z / zo * 102 / 96
         mm = QTransform(zz, 0, 0, zz, 0, 0)
         return doc.render(d['pg']).copy(mm.mapRect(QRectF(*d['path'])).toRect())
 
@@ -601,8 +606,7 @@ class mgr_due(thread):
         
         b = is_lang(get_name_key(fact_id, cr)[0]) 
         # language contents are rendered with hr, bigger font and no frames
-        self.send(cnd='rev', rev_id=rev_id, fact_id=fact_id, 
-                  qas=self.fact_to_htm(fact_id, cr, b_hr=b, b_math=(not b),
+        self.send(cnd='rev', rev_id=rev_id, fact_id=fact_id, qas=self.fact_to_htm(fact_id, cr, b_hr=b, b_math=(not b),
                   css=('/home/cytu/usr/src/py/ananda/res/ananda_noframe.css' if b else ''),))
 
 class overlay(QWidget):
@@ -725,7 +729,7 @@ class splash(QLabel):
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setAlignment(Qt.AlignCenter)
-        self.setStyleSheet(css if css else 'QLabel{background-color: rgb(0, 200, 0); color: rgb(255, 255, 255); font: %spt "Microsoft JhengHei";}' % (int(28),))#32 * 96. / 102),))   
+        self.setStyleSheet(css if css else 'QLabel{background-color: rgb(0, 200, 0); color: rgb(255, 255, 255); font: %spt "Microsoft JhengHei";}' % (int(28),))   
         
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
         
@@ -943,10 +947,7 @@ def all_w(name_vim):
 def focus(lw):
     if not lw:
         return 
-    root.send_event(Xlib.protocol.event.ClientMessage(window=lw[0], 
-        client_type=dpy.intern_atom('_NET_ACTIVE_WINDOW'), 
-        data=(32, [0, 0, 0, 0, 0])), 
-        event_mask=X.SubstructureRedirectMask|X.SubstructureNotifyMask)
+    root.send_event(Xlib.protocol.event.ClientMessage(window=lw[0], client_type=dpy.intern_atom('_NET_ACTIVE_WINDOW'), data=(32, [0, 0, 0, 0, 0])), event_mask=X.SubstructureRedirectMask|X.SubstructureNotifyMask)
     dpy.flush()
 
 # ==============================================================================
@@ -1005,8 +1006,7 @@ def revamp(name, dbf):
     cr = cn.cursor()
     ids = cr.execute('select id from fact where meta_name(data) = ? order by fact_order(data)', (name,)).fetchall()
     for ii, i in enumerate(ids):
-        cr.execute('update rev set sched = ? where at = "" and fact_id = ?', 
-                (t_add(t_delta(seconds=ii), now()), i[0]))
+        cr.execute('update rev set sched = ? where at = "" and fact_id = ?', (t_add(t_delta(seconds=ii), now()), i[0]))
     cn.commit()
 
 def rebuild_db(name, dbf):

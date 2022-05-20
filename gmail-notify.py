@@ -3,9 +3,40 @@
 # caveat: in qt-linux it is not safe to use qpixmap in threads, a naive approach is not feasible -- hence the indirect dbus call.
 
 from base import *
-import imaplib
-
 ifc = 'gmail.ctrl'
+
+from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.errors import HttpError
+
+from inspect import getsourcefile
+os.chdir(os.path.dirname(os.path.abspath(getsourcefile(lambda:0))))
+
+def get_creds():
+    # If modifying these scopes, delete the file token.json.
+    SCOPES = ['https://www.googleapis.com/auth/gmail.readonly']
+    TOKEN = 'res/token.json'
+    CREDENTIALS = 'res/credentials.json'
+
+    creds = None
+    # The file token.json stores the user's access and refresh tokens, and is
+    # created automatically when the authorization flow completes for the first
+    # time.
+    if os.path.exists(TOKEN):
+        creds = Credentials.from_authorized_user_file(TOKEN, SCOPES)
+    # If there are no (valid) credentials available, let the user log in.
+    if not creds or not creds.valid:
+        if creds and creds.expired and creds.refresh_token:
+            creds.refresh(Request())
+        else:
+            flow = InstalledAppFlow.from_client_secrets_file(CREDENTIALS, SCOPES)
+            creds = flow.run_local_server(port=0)
+        # Save the credentials for the next run
+        with open(TOKEN, 'w') as token:
+            token.write(creds.to_json())
+    return creds
 
 class dso(dbus.service.Object): 
     
@@ -17,16 +48,6 @@ class dso(dbus.service.Object):
     def check(self):
         pass
 
-user, pwd = 'changye.tu', 'Tu1106,.123' 
-
-def channel(user=user, pwd=pwd):
-    try:
-        ch = imaplib.IMAP4_SSL('imap.gmail.com', 993)
-        ch.login(user, pwd)
-    except: 
-        ch = None
-    return ch
-
 class gmail(QWidget):
 
     p_on = './res/img/gmail_on.ico'
@@ -35,7 +56,6 @@ class gmail(QWidget):
     def __init__(self, par=None):
         super(gmail, self).__init__(par)
         
-        self.ch = None
         self.ti = ti = QSystemTrayIcon(self)
         #ti.setIcon(QIcon(self.p_off))
         ti.show()
@@ -53,26 +73,23 @@ class gmail(QWidget):
         self.b_pass, self.b_audio = False, False 
         self.set_tp()
 
-        def f():
-            self.login()
-            self.dso = dso()
-            self.sched = sc = QtScheduler()
-            sc.start()
-            QTimer.singleShot(1000 * 3, self.dso.check)
-            sc.add_job(self.dso.check, trigger='interval', minutes=1)
-        # XXX
-        f()
-        #QTimer.singleShot(1000 * 120, f)
-        
+        try:    
+            creds = get_creds()
+            self.service = build('gmail', 'v1', credentials=creds)
+
+        except HttpError as error:
+            # TODO(developer) - Handle errors from gmail API.
+            ti.showMessage('Error', f'An Error Occurred: {error}\nPlease Check the OAuth 2.0 Credentials !!', QSystemTrayIcon.Critical)
+
+        self.dso = dso()
+        self.sched = sc = QtScheduler()
+        sc.start()
+        sc.add_job(self.dso.check, trigger='interval', seconds=30)
+
         self.av = QMediaPlayer(self)
 
         dbus.SessionBus().add_signal_receiver(self.check, dbus_interface=ifc, signal_name='check')
          
-    def login(self):
-        try:
-            self.ch = channel()
-        except:
-            self.ti.showMessage('Login Error', 'Please Check Connection!', QSystemTrayIcon.Critical)
     def quit(self):
         self.ti.hide()  # Trick to cleanup the icon
         qApp.quit()
@@ -87,7 +104,8 @@ class gmail(QWidget):
     
     def set_tp(self):
         self.ti.setToolTip('audio:%s [%s]' % ('on' if self.b_audio else 'off', 
-                           'idle' if self.b_pass else 'listening')) 
+                           'idle' if self.b_pass else 'listening'))
+
     def act(self, i):
         if i == QSystemTrayIcon.Trigger:
             subprocess.Popen(['google-chrome', 'https://mail.google.com/mail/u/0/?shva=1#all']) 
@@ -96,20 +114,10 @@ class gmail(QWidget):
         if self.b_pass:
             return
         
-        ch = self.ch 
         ti = self.ti
-
-        if ch is None:
-            ti.showMessage('Gmail Connection Error', 'Please check your network settings.', QSystemTrayIcon.Critical)
-            # try to reconnect after 10 secs
-            QTimer.singleShot(1000 * 10, self.login)
-            return
-
         try:
-            ch.select('"[Gmail]/All Mail"', readonly=True) 
-            r, m = ch.search(None, 'UnSeen')
-            msgs = m[0].split()
-            n = len(msgs)
+            results = self.service.users().messages().list(userId='me', q='', labelIds=['UNREAD',], includeSpamTrash=False).execute()
+            n = results.get('resultSizeEstimate', 0)
             ti.setIcon(QIcon(self.p_on if n else ''))#self.p_off))
             if n:
                 ss = '' if n == 1 else 's'
@@ -120,11 +128,9 @@ class gmail(QWidget):
                     av.setMedia(QMediaContent(QUrl.fromLocalFile('/home/cytu/usr/src/py/ananda/res/av/gmail.mp3')))
                     av.play()
 
-        except:
-            ti.showMessage('Connection Error', 'Reconnection Needed!', QSystemTrayIcon.Critical)
-
-            # try to reconnect after 2 secs
-            QTimer.singleShot(1000 * 2, self.login)
+        except HttpError as error:
+            # TODO(developer) - Handle errors from gmail API.
+            ti.showMessage('Error', f'An Error Occurred: {error}\nPlease Check the OAuth 2.0 Credentials !!', QSystemTrayIcon.Critical)
 
 if __name__ == '__main__':
     DBusQtMainLoop(set_as_default=True) 

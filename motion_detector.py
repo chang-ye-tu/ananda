@@ -17,9 +17,7 @@ cam_port = 8081
 ico = '/home/cytu/usr/src/py/ananda/res/img/motion_detector.ico'
 fname = '/home/cytu/usr/src/py/ananda/tmp/md_log.txt'
 
-logging.basicConfig(filename=fname,
-                    format='%(asctime)s %(message)s', 
-                    level=logging.INFO)
+logging.basicConfig(filename=fname, format='%(asctime)s %(message)s', level=logging.INFO)
 
 #for i in open(fname, 'rb'):
 #    date, time, typ = i.strip().split(' ')
@@ -126,8 +124,7 @@ class motion_detector(QWidget):
 
         self.receiver = receiver(self)
         if not self.receiver.listen(QHostAddress(ip), port):
-            QMessageBox.critical(self, 'Building Services Server',
-                    'Failed to start server: %s' % (self.receiver.errorString(), ))
+            QMessageBox.critical(self, 'Building Services Server', 'Failed to start server: %s' % (self.receiver.errorString(), ))
             self.close()
             return
         self.receiver.msg_receiver.connect(self.handler_receiver)
@@ -160,8 +157,7 @@ class motion_detector(QWidget):
         self.set_tp()
     
     def set_tp(self):
-        self.ti.setToolTip('audio:%s [%s]' % ('on' if self.b_audio else 'off', 
-                           'idle' if self.b_pass else 'listening'))
+        self.ti.setToolTip('audio:%s [%s]' % ('on' if self.b_audio else 'off', 'idle' if self.b_pass else 'listening'))
 
     def act(self, i):
         if i == QSystemTrayIcon.Trigger:

@@ -80,8 +80,7 @@ class win_rev(QMainWindow):
         self.b_prefab = False
         if mgr is None:
             self.b_prefab = True
-            mgr = mgr_due(self, db_file if db_file else cat('db', 'ananda_temp.db'),
-                          names=names)
+            mgr = mgr_due(self, db_file if db_file else cat('db', 'ananda_temp.db'), names=names)
         self.setup_mgr(mgr)
 
         # vim netbean interfaces
@@ -117,8 +116,7 @@ class win_rev(QMainWindow):
             elif k == 'F11':
                 if getattr(self, 'w_prv', None) is None:
                     self.w_prv = win_b(self, nb_name=nn) 
-                self.w_prv.set_htm(htm(vim_get(nn), 
-                    css='usr/src/py/ananda/res/ananda_prv.css', b_math=True))
+                self.w_prv.set_htm(htm(vim_get(nn), css='usr/src/py/ananda/res/ananda_prv.css', b_math=True))
                 self.w_prv.show()
             
             elif k == 'F12':
@@ -200,7 +198,7 @@ class win_rev(QMainWindow):
             self.ed = ed = win_ed(self, fact_id=fact_id, slide=self.slide)
             ed.setWindowModality(Qt.WindowModal)
             ed.show()
-            ed.msg_ed.connect(self.edited)
+            ed.msg_win_ed.connect(self.edited)
 
             cn = self.cn
             cr = cn.cursor()
@@ -217,8 +215,7 @@ class win_rev(QMainWindow):
                                 txt_ = comp['txt']
                                 if len(txt_) >= len(txt):
                                     txt = txt_
-                subprocess.Popen(['gvim', '+/%s' % txt, 
-                    '/home/cytu/usr/doc/lang/txt/Grundwortschatz.txt'])
+                subprocess.Popen(['gvim', '+/%s' % txt, '/home/cytu/usr/doc/lang/txt/Grundwortschatz.txt'])
         
         elif c == 'reset':
             self.stw.reset()
@@ -278,8 +275,7 @@ class win_rev(QMainWindow):
 
             if st == st_learn:
                 t = (t1 - t0) if t1 > t0 else (t0 - t1)
-                tp = ('orange', '[ %d%% ]' % int(100. * t.seconds / T.seconds), 
-                        nr2t(t.seconds))
+                tp = ('orange', '[ %d%% ]' % int(100. * t.seconds / T.seconds), nr2t(t.seconds))
 
             elif st == st_rest:
                 t = (t2 - t1) if t2 > t1 else (t1 - t2)
@@ -302,8 +298,7 @@ class win_rev(QMainWindow):
                 self.rev(d)
 
         elif c in ['none: no active category', 'none: all done']:
-            s = 'No Active Category ...' if c == 'none: no active category' else \
-                'All Done!'
+            s = 'No Active Category ...' if c == 'none: no active category' else 'All Done!'
             self.b.set_htm(s)
             #self.busy = False
             if self.par:
@@ -347,8 +342,7 @@ class win_rev(QMainWindow):
             #if self.par is None:
             #    self.play_audio('res/av/rest.mp3')
             #    self.reset('Take a Rest Now.')
-            #    self.update_stb([('descr', ''), ('typ', ''), ('n_span', ''),
-            #                     ('n_rev', ''), ('n_fact', ''),])
+            #    self.update_stb([('descr', ''), ('typ', ''), ('n_span', ''), ('n_rev', ''), ('n_fact', ''),])
         
         elif st == st_none:
             self.close()

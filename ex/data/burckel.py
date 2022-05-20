@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from books import *
 
 class burckel(book):
@@ -7,8 +5,9 @@ class burckel(book):
     def __init__(self):
         super(burckel, self).__init__()
 
-        self.src = '/home/cytu/usr/doc/math/anly/th/Burckel R. An Introduction to Classical Complex Analysis.djvu' 
-        self.pgs = range(22, 463)
+        self.src = '/home/cytu/usr/doc/math/anly/th/Burckel R. B. Classical Analysis in the Complex Plane.pdf' 
+        self.pgs = range(50, 920)
+        self.morph0 = 'c150.10' 
         self.tokens.update({
             'chapter':  {'class': 'indent0', 
                          'ocr': r'^Chapter ([IXV]+)',
@@ -23,7 +22,7 @@ class burckel(book):
                    },
             
             'defn': {'class': 'indent0',      
-                     'ocr': r'^(Deﬁnition (\d+\.\d+))',
+                     'ocr': r'^(Definition (\d+\.\d+))',
                     },
 
             'proof': {'class': 'indent0',      
@@ -39,7 +38,7 @@ class burckel(book):
                   },
 
             'hint': {'class': 'indent0',
-                     'ocr': r'^Hints?',
+                     'ocr': r'^Hints',
                     },
 
             'remark': {'class': 'indent0',

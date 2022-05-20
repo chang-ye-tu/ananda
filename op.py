@@ -8,7 +8,8 @@ from base import *
 import books
 span = books.span
 zo = books.zo
-# XXX hardcoded magic
+# XXX hardcoded magic; 
+md = QTransform(2 * 102 / 96, 0, 0, 2 * 102 / 96, 0, 0)
 md = QTransform(2, 0, 0, 2, 0, 0)
 
 prf_fit_width, prf_fit_height = range(2)
@@ -18,7 +19,7 @@ def bk(name):
     return getattr(m, name)()
 
 def boxes(i, s):
-    p = popen(['/home/cytu/usr/src/cpp/text_mask', i, s], stdout=pipe)
+    p = popen(['/home/cytu/usr/src/cpp/text_mask', i, s], stdout=pipe, universal_newlines=True)
     r = p.communicate()[0]
     try:
         return [tuple(int(n) for n in b.split(',')) for b in r.split('\n') if ',' in b]
@@ -26,7 +27,7 @@ def boxes(i, s):
         return []
 
 def matches(f_i, f_t, score=70):
-    p = popen(['/home/cytu/usr/src/cpp/match', f_i, f_t, str(score)], stdout=pipe)
+    p = popen(['/home/cytu/usr/src/cpp/match', f_i, f_t, str(score)], stdout=pipe, universal_newlines=True)
     r = p.communicate()[0]
     if r.find('ERROR') != -1:
         return []
@@ -34,14 +35,13 @@ def matches(f_i, f_t, score=70):
     return l
 
 def ocr(f_i, f_w):
-    p = popen(['tesseract', f_i, f_w, '-psm', '6', '-l', 'eng'], stdout=pipe)
+    p = popen(['tesseract', f_i, f_w, '--psm', '7'], stdout=pipe, universal_newlines=True)
     r = p.communicate()[0]
     try:
         # Note that tesseract will automatically add suffix '.txt' to output file!
         if os.path.isfile(f_w + '.txt'):
             return True
         return False
-
     except:
         return False 
 
@@ -76,8 +76,8 @@ def get_bx(i, td, book, morph=''):
 def get_corr(i, td, book, nn=(-1, 0, 1, 0)):
     bxl = get_bx(i, td, book, 'c3.1')
     n = len(bxl) 
-    rw = sum(sorted([bb[2] for bb in bxl])) / n
-    rh = sum(sorted([bb[-1] for bb in bxl])) / n
+    rw = sum(sorted([bb[2] for bb in bxl])) // n
+    rh = sum(sorted([bb[-1] for bb in bxl])) // n
     return (nn[0] * rw, nn[1] * rh, nn[2] * rw, nn[3] * rh)
 
 def get_y(book, bx):
@@ -238,9 +238,7 @@ def get_qa(book, tkd, bxd, yd, tkd_man=None):
     s_q = set(qa['q'].keys())
     s_a = set(qa['a'].keys())
 
-    return {'qa': qa, 
-            'err_q_no_a': sorted(list(s_q - s_a)),
-            'err_a_no_q': sorted(list(s_a - s_q)),}
+    return {'qa': qa, 'err_q_no_a': sorted(list(s_q - s_a)), 'err_a_no_q': sorted(list(s_a - s_q)),}
 
 def tk_k_real(book, tkd, yd, tkd_man=None):
     yd = dict((int(k), i) for k, i in yd.items())
@@ -322,15 +320,13 @@ def parse(name):
             tkd.update({n_pg: tk})
     
     try:
-        z = sorted(lz)[len(lz) / 2]
+        z = sorted(lz)[len(lz) // 2]
 
     except:
         z = 2.7
     
-    d = {'src': book.src, 'sha': sha(book.src), 'name': name, 
-         'zo': zo, 'z': z, 'w_desktop': w_desktop, 'dpix': dpix,
-         'bxd': bxd, 'tkd': tkd, 'yd': yd,
-         'tkd_man': {}}
+    d = {'src': book.src, 'sha': sha(book.src), 'name': name, 'zo': zo, 'z': z, 'w_desktop': w_desktop, 
+         'dpix': dpix, 'bxd': bxd, 'tkd': tkd, 'yd': yd, 'tkd_man': {}}
     
     book.post(d)
 
@@ -422,8 +418,7 @@ def render(qa, k, book, dc, mm, td):
 
     l = []
     for nn in range(2):
-        sz = QSize(max([v.width() for v in c.values()]) + pl + pr + 2 * wp, 
-                   c[nn].height() + pt + pb + 2 * wp)
+        sz = QSize(max([v.width() for v in c.values()]) + pl + pr + 2 * wp, c[nn].height() + pt + pb + 2 * wp)
         i = QImage(sz, QImage.Format_RGB32)
         i.fill(QColor('white').rgb())
         p = QPainter(i)
@@ -961,11 +956,11 @@ if __name__ == '__main__':
     
     #wipe_all('kirsch', [str(i) for i in range(1, 15)])
     
-    for i in ['baldi1', 'knapp_basic_real']:
-        folder = cat('/home/cytu/thm', i)
-        if os.path.isdir(folder):
-            shutil.rmtree(folder)
-        render_all(i, folder)
+    #for i in ['ash_real',]:#'baldi1', 'knapp_basic_real']:
+    #    folder = cat('/home/cytu/thm', i)
+    #    if os.path.isdir(folder):
+    #        shutil.rmtree(folder)
+    #    render_all(i, folder)
 
     ## detect which problems are not in the list; designed only for tkachuk books
     #d = get_ana('tkachuk_3')
@@ -975,9 +970,9 @@ if __name__ == '__main__':
     #d = get_ana('baldi1')
     #update_qa(d)
     
-    #for name in ['tu_dg',]:
-    #    d = parse(name)
-    #    save_ana(d)
+    for name in ['zizler',]:
+        d = parse(name)
+        save_ana(d)
 
     print('end:     %s' % now(utc=False))
     print('elapsed: %s' % nr2t(int(time.perf_counter() - begin)))

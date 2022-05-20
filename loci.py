@@ -40,8 +40,7 @@ cr = cn.cursor()
 def n_fact(interval=None):
     try:
         count = 'select count(*) from loci'
-        sql = (count,) if interval is None else \
-              (' '.join([count, 'where created between ? and ?']), interval)
+        sql = (count,) if interval is None else (' '.join([count, 'where created between ? and ?']), interval)
         return cr.execute(*sql).fetchone()[0]
     except:
         return 0
@@ -116,8 +115,7 @@ class win_loci(QMainWindow):
         spl.restoreState(sts.value('%s/spl/state' % n, type=QByteArray))
         self.restoreState(sts.value('%s/state' % n, type=QByteArray))        
         
-        dbus.SessionBus().add_signal_receiver(self.select, 
-                            dbus_interface='ananda.snapshot', signal_name='select')
+        dbus.SessionBus().add_signal_receiver(self.select, dbus_interface='ananda.snapshot', signal_name='select')
         
         # XXX
         #n, ok = sts.value('%s/id' % self.n()).toInt()
@@ -234,13 +232,11 @@ class win_loci(QMainWindow):
             self.navigate(True if i == 'next' else False)
         
         elif i == 'new':
-            name, ok = QInputDialog.getText(self, 'Create New Route', 
-                        'Enter New Route Name:', text='Route')
+            name, ok = QInputDialog.getText(self, 'Create New Route', 'Enter New Route Name:', text='Route')
             if ok:
                 # save unfinished work before starting new route
                 self.save()
-                cr.execute('insert into route (data) values (?)', 
-                           (json.dumps({'name': name, 'loci': []}),))
+                cr.execute('insert into route (data) values (?)', (json.dumps({'name': name, 'loci': []}),))
                 cn.commit()
                 i = cr.execute('select last_insert_rowid()').fetchone()[0]
                 self.setup(i)
@@ -289,8 +285,7 @@ class win_loci(QMainWindow):
         rct = json.dumps(d.get('rct', []))
         
         def insert():
-            cr.execute('insert into loci (link, pix, rct) values (?, ?, ?)',  
-                       (link, pix, rct))
+            cr.execute('insert into loci (link, pix, rct) values (?, ?, ?)', (link, pix, rct))
             cn.commit()
             self.d['loci'].insert(self.ix + 1, 
                 cr.execute('select last_insert_rowid()').fetchone()[0])
@@ -302,8 +297,7 @@ class win_loci(QMainWindow):
 
         else:
             try:
-                cr.execute('update loci set link = ?, pix = ?, rct = ? where id =?',
-                           (link, pix, rct, self.d['loci'][self.ix]))
+                cr.execute('update loci set link = ?, pix = ?, rct = ? where id =?', (link, pix, rct, self.d['loci'][self.ix]))
                 cn.commit()
                 self.display()
 

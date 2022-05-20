@@ -35,8 +35,7 @@ class camera(QWidget):
         self.setCursor(Qt.CrossCursor)
         
     def grab(self, p, rct=None):
-        fp = os.path.join('/home/cytu/usr/src/py/test/pix', 
-            '%s.png' % datetime.datetime.utcnow().strftime('%Y-%m-%d-%H-%M-%S'))
+        fp = os.path.join('/home/cytu/usr/src/py/test/pix', '%s.png' % datetime.datetime.utcnow().strftime('%Y-%m-%d-%H-%M-%S'))
         p.save(fp) 
         d = {'f': fp}
         if rct:

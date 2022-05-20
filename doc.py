@@ -115,8 +115,7 @@ class doc_djvu(doc):
         pg = self.src.pages[n]
         dpi = pg.dpi
         z = z if z else self.z
-        return QTransform(z * self.physicalDpiX() / dpi, 0, 0, 
-                          z * self.physicalDpiY() / dpi, 0, 0)     
+        return QTransform(z * self.physicalDpiX() / dpi, 0, 0, z * self.physicalDpiY() / dpi, 0, 0)     
     
     def render(self, n, z=0):
         try:            
@@ -124,8 +123,7 @@ class doc_djvu(doc):
             job = pg.decode()
             dpi = pg.dpi
             z = z if z else self.z
-            r = (0, 0, int(z * self.physicalDpiX() * pg.width / dpi), 
-                       int(z * self.physicalDpiY() * pg.height / dpi))
+            r = (0, 0, int(z * self.physicalDpiX() * pg.width / dpi), int(z * self.physicalDpiY() * pg.height / dpi))
             im = Image.frombytes('RGB', r[2:], job.render(RENDER_COLOR, r, r, PixelFormatRgb()))
             return ImageQt(im).mirrored()
 
@@ -162,8 +160,7 @@ class doc_pdf(doc):
 
     def matrix(self, n=0, z=0):
         z = z if z else self.z
-        return QTransform(z * self.physicalDpiX() / 72., 0, 0, 
-                          z * self.physicalDpiY() / 72., 0, 0)
+        return QTransform(z * self.physicalDpiX() / 72., 0, 0, z * self.physicalDpiY() / 72., 0, 0)
     
     def render(self, n, z=0):
         try:
