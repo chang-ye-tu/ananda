@@ -1,0 +1,11 @@
+*.swp
+theory/
+tmp/
+designer/
+db/
+__pycache__/
+*.py[cod]
+*.egg
+.cache
+res/credentials.json
+res/token.json

@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=ana
+Comment=Ananda Ebook Harvester Format
+Exec=python3 /home/cytu/usr/src/py/ananda/hrv.py %f
+Terminal=false
+Type=Application
+NoDisplay=true

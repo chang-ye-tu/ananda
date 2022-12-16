@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=goldendict
+Comment=goldendict
+Exec=/home/cytu/bin/goldendict/goldendict
+Terminal=false
+Type=Application
+Categories=Accessories;Utility;
+StartupNotify=false
+X-GNOME-Autostart-Phase=Applications
+X-GNOME-AutoRestart=false
+X-GNOME-Autostart-Notify=false
+X-KDE-autostart-after=panel
+X-KDE-StartupNotify=false
