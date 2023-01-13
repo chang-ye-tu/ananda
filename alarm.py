@@ -29,12 +29,12 @@ class wdg_tm(QWidget, Ui_wdg_tm):
         self.setFixedSize(260, 85)
 
         for s, i in [('30 seconds', 30),
-                     ('100 seconds', 100),
                      ('1 minute',  60),
+                     ('3 minute',  180),
                      ('5 minutes', 300),
                      ('7 minutes', 420),
-                     ('8 minutes', 480),
-                     ('10 minutes', 600),
+                     ('9 minutes', 540),
+                     ('11 minutes', 660),
                      ('15 minutes', 900),
                      ('30 minutes', 1800),
                      ('1 hour', 3600),]:

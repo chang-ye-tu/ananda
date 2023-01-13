@@ -98,7 +98,7 @@ def make_db(cn):
 
 def recreate_db():
     folders = ['/home/cytu/usr/',]
-    doc_types = ['.pdf', '.djvu', '.ps', '.chm']
+    doc_types = ['.pdf', '.djvu', '.ps', '.chm', '.epub']
     r = None
     try:
         # copy old history items if any
