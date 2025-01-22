@@ -123948,10 +123948,10 @@
   "err_a_no_q": [],
   "err_q_no_a": [],
   "last_state": {
-    "h": 151,
-    "pg": 514,
-    "v": 412,
-    "z": 2.2797858514066323
+    "h": 272,
+    "pg": 91,
+    "v": 189,
+    "z": 3.799778313253012
   },
   "name": "tkachuk_2",
   "qa": {
@@ -138677,7 +138677,7 @@
       ]
     }
   },
-  "sha": "62b2b199e089c1391337c87dfe2019d6c92fa7d6d307be0b35bda404",
+  "sha": "4606b7cf191dbd74f225248607b7ac50a50b928054841403edbc9100",
   "src": "/home/cytu/usr/doc/math/anly/th/gt/Tkachuk V. A C_p-Theory Problem Book Special Features of Function Spaces.pdf",
   "tkd": {
     "100": [
@@ -150269,7 +150269,7 @@
     "539": [
       [
         [
-          922.30467241464783,
+          922.3046724146478,
           909,
           1000,
           0

@@ -1,16 +1,8 @@
-import os, sys, math, re, base64, datetime, subprocess, shutil, tempfile, codecs, atexit, bisect, copy, traceback, logging, hashlib, time, argparse
+import os, sys, math, re, datetime, subprocess, shutil, tempfile, codecs, atexit, bisect, copy, traceback, logging, hashlib, time, argparse, json
 from random import choice, uniform, shuffle
 from functools import partial
 from fnmatch import fnmatch
-
-try: 
-    import simplejson as json
-except ImportError: 
-    import json
-
-import dbus
-import dbus.service
-from dbus.mainloop.pyqt5 import DBusQtMainLoop
+from pathlib import Path
 
 os.chdir(os.path.dirname(__file__))
 cat = os.path.join
@@ -21,15 +13,13 @@ pipe = subprocess.PIPE
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
 from PyQt5.QtWebEngineWidgets import *
 from PyQt5.QtWebChannel import *
 from PyQt5.QtNetwork import *
-from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
-
-from pathlib import Path
+from PyQt5.QtDBus import QDBusConnection, QDBusMessage, QDBusError
 
 from apscheduler.schedulers.qt import QtScheduler
-from apscheduler.events import EVENT_JOB_EXECUTED, EVENT_JOB_ERROR
 
 from doc import * 
 from db.db import * 
@@ -41,32 +31,25 @@ sys.path.insert(0, cwd)
 tmp = 'tmp'
 sts = QSettings(cat('res', 'ananda.ini'), QSettings.IniFormat)
 
-ifc = 'ananda.ctrl'
 st_none, st_learn, st_rest = range(3)
 rev_normal, rev_drill = range(2) 
 hrv_edt, hrv_read, hrv_read_rev = [1 << i for i in range(3)]
 
 w_desktop = int(re.compile(r'current (\d+) x').search(os.popen('xrandr -q -d :0').readlines()[0]).groups()[0])
-im_width = .945 * w_desktop
+im_width = .935 * w_desktop
 
-#_ = QApplication.instance()
-#screen = _.screens()[0]
-#dpi = screen.physicalDotsPerInch()
-#_.quit()
+# XXX 11/03/24 15:27:20
+def get_physical_dpi():
+    return 102
+physical_dpi = get_physical_dpi()
 
-# XXX
-logging.basicConfig(filename='/home/cytu/usr/src/py/ananda/tmp/log.txt', 
-                    format='%(asctime)s %(levelname)s: %(message)s', 
-                    datefmt='%Y-%m-%d %H:%M:%S', 
-                    level=logging.INFO)
-logger = logging.getLogger('cytu')
-
+#logging.basicConfig(filename='/home/cytu/usr/src/py/ananda/tmp/log.txt', format='%(asctime)s %(levelname)s: %(message)s', datefmt='%Y-%m-%d %H:%M:%S', level=logging.INFO)
+#logger = logging.getLogger('cytu')
 def log(s, b_file=False):
-    print(s)
-    #if b_file:
-    #    logger.info(s) 
-    #else:
-    #    print(s)
+    if b_file:
+        logger.info(s) 
+    else:
+        print(s)
 
 def attrs_from_dict(d):
     self = d.pop('self')
@@ -79,17 +62,17 @@ def ellipsis(s, n=90, typ='middle'):
         return s
     else:
         if typ == 'front':
-            return '...%s' % s[:n]
+            return f'...{s[:n]}' 
         elif typ == 'last':
-            return '%s...' % s[:n]
+            return f'{s[:n]}...'
         elif typ == 'middle':
-            return '%s...%s' % (s[:n//2], s[-n//2:]) 
+            return f'{s[:n//2]}...{s[-n//2:]}' 
 
 def is_lang(s):
-    return s.split('_')[0] in ['de', 'en', 'jp', 'fr', 'ru', 'tw', 'cs', 'gen']
-                                                                   #XXX cs, gen
+    return s.split('_')[0] in ['de', 'en', 'jp', 'fr', 'ru', 'tw', 'cs', 'gen'] #XXX cs, gen
+
 def f_ana(n):
-    return cat(cwd, n if is_lang(n) else ('%s.ana' % n))
+    return cat(cwd, n if is_lang(n) else (f'{n}.ana'))
 
 def f_no_ext(n):
     return os.path.splitext(os.path.split(n)[1])[0] 
@@ -175,7 +158,7 @@ def fact_key(ks, d, klist=None):
             else:
                 dd = {}
                 for j in ['q', 'a']:
-                    dd[j] = [{'sha':sha,'pg':n_pg,'path':a} for n_pg, a in qa[j][k]]
+                    dd[j] = [{'sha': sha, 'pg': n_pg, 'path': a} for n_pg, a in qa[j][k]]
                 
             l.append(dd)
     
@@ -273,12 +256,6 @@ def combine(li, w, space=15):
     p.end()
     return im
 
-def bin_dumps(b):
-    return base64.b64encode(b)
-
-def bin_loads(s):
-    return base64.b64decode(s)
-
 def dt_now():
     return datetime.datetime.now()
 
@@ -286,7 +263,7 @@ def lapse(dlt):
     n = (1 if dlt.microseconds > 5e5 else 0) + dlt.seconds + dlt.days * 24 * 3600 
     mm, ss = divmod(n, 60)
     hh, mm = divmod(mm, 60)
-    return '%02d:%02d:%02d' % (hh, mm, ss)
+    return f'{hh:02d}:{mm:02d}:{ss:02d}'
 
 def prefab_fact(name, cn):
     cr = cn.cursor()
@@ -307,9 +284,12 @@ def prefab_fact(name, cn):
 
     return True, fact_key(k, get_ana(n)) 
 
-# XXX 09/10/15 
+# XXX 06/19/23 12:22:42 
 def width_qa(l):
-    return max([i.width() for i in l]) 
+    try:
+        return max([i.width() for i in l]) 
+    except:
+        return 0
 
 # XXX best sched algorithm? 
 def compute_sched(fact_id, grade, cr):
@@ -392,31 +372,144 @@ def compute_sched(fact_id, grade, cr):
 
     return t_add(t_d, now())
 
-class dso(dbus.service.Object): 
-    
-    def __init__(self): 
-        dbus.service.Object.__init__(self, dbus.service.BusName(ifc, bus=dbus.SessionBus()), '/')  
-        self.s = json.dumps({'state': st_rest, 'interval': None}) 
+# service must be unique
+class ScheduleService(QObject):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.bus = QDBusConnection.sessionBus()
+        self.bus.registerService("ananda.schedule")
+        self.bus.registerObject("/", self, QDBusConnection.ExportAllSlots | QDBusConnection.ExportAllSignals)
 
-    @dbus.service.signal(ifc)
-    def alarm(self, s):
-        self.s = s
+    @pyqtSlot(str)
+    def schedule(self, schedule_json):
+        """Send schedule signal"""
+        msg = QDBusMessage.createSignal("/", "ananda.schedule", "schedule")
+        msg.setArguments([schedule_json])
+        self.bus.send(msg)
 
-    @dbus.service.signal(ifc)
+class AnandaService(QObject):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self._state = json.dumps({'state': st_rest, 'interval': None})
+        self.bus = QDBusConnection.sessionBus()
+        self.bus.registerService("ananda.ctrl")
+        self.bus.registerObject("/", self, QDBusConnection.ExportAllSlots | QDBusConnection.ExportAllSignals)
+
+    @pyqtSlot(str)
+    def alarm(self, state_json):
+        """Send alarm signal"""
+        self._state = state_json
+        msg = QDBusMessage.createSignal("/", "ananda.ctrl", "alarm")
+        msg.setArguments([state_json])
+        self.bus.send(msg)
+
+    @pyqtSlot()
     def show_splash(self):
-        pass
-
-    @dbus.service.signal(ifc)
-    def schedule(self, s):
-        pass 
+        """Send show_splash signal"""
+        msg = QDBusMessage.createSignal("/", "ananda.ctrl", "show_splash")
+        self.bus.send(msg)
     
-    @dbus.service.signal(ifc)
-    def auto(self):
-        pass
-
-    @dbus.service.method(ifc, in_signature='', out_signature='s')
+    @pyqtSlot(result=str)
     def state(self):
-        return self.s
+        """Return current state"""
+        return self._state
+    
+class DBusSignalHandler(QObject):
+    """Handler for receiving D-Bus signals"""
+    
+    # Define qt signals that will be emitted when D-Bus signals are received
+    alarmReceived = pyqtSignal(str)
+    showSplashReceived = pyqtSignal()
+    scheduleReceived = pyqtSignal(str)
+    autoReceived = pyqtSignal()
+    selectReceived = pyqtSignal(str)
+
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.bus = QDBusConnection.sessionBus()
+        
+        self.bus.connect(
+            "ananda.ctrl",    # service
+            "/",              # path
+            "ananda.ctrl",    # interface
+            "alarm",          # name
+            self.handleAlarm  # slot
+        )
+        
+        self.bus.connect(
+            "ananda.ctrl",
+            "/",
+            "ananda.ctrl",
+            "show_splash",
+            self.handleShowSplash
+        )
+        
+        self.bus.connect(
+            "ananda.schedule",
+            "/",
+            "ananda.schedule",
+            "schedule",
+            self.handleSchedule
+        )
+        
+        self.bus.connect(
+            "ananda.drill",
+            "/",
+            "ananda.drill",
+            "auto",
+            self.handleAuto
+        )
+
+        self.bus.connect(
+            "ananda.snapshot",
+            "/",
+            "ananda.snapshot",
+            "select",
+            self.handleSelect
+        )
+
+    @pyqtSlot(QDBusMessage)
+    def handleAlarm(self, message):
+        """Handle alarm signal"""
+        if message.arguments():
+            self.alarmReceived.emit(message.arguments()[0])
+
+    @pyqtSlot(QDBusMessage)
+    def handleShowSplash(self, message):
+        """Handle show_splash signal"""
+        self.showSplashReceived.emit()
+
+    @pyqtSlot(QDBusMessage)
+    def handleSchedule(self, message):
+        """Handle schedule signal"""
+        if message.arguments():
+            self.scheduleReceived.emit(message.arguments()[0])
+
+    @pyqtSlot(QDBusMessage)
+    def handleAuto(self, message):
+        """Handle auto signal"""
+        self.autoReceived.emit()
+
+    @pyqtSlot(QDBusMessage)
+    def handleSelect(self, message):
+        """Handle select signal"""
+        if message.arguments():
+            self.selectReceived.emit(message.arguments()[0])
+
+class SnapshotService(QObject):
+    """D-Bus service for Snapshot application"""
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.bus = QDBusConnection.sessionBus()
+        self.bus.registerService("ananda.snapshot")
+        self.bus.registerObject("/", self, QDBusConnection.ExportAllSlots | QDBusConnection.ExportAllSignals)
+
+    @pyqtSlot(str)
+    def select(self, data_json):
+        """Send select signal with screenshot data"""
+        msg = QDBusMessage.createSignal("/", "ananda.snapshot", "select")
+        msg.setArguments([data_json])
+        self.bus.send(msg)
 
 class stopwatch(QTimer):
 
@@ -493,9 +586,10 @@ class mgr_due(thread):
         
         else:
             f = cat(td, sha)
-            if not os.path.isfile(f):
-                f, meta = load_f(sha, td, cr)
-            
+            #if not os.path.isfile(f):
+            #    f, meta = load_f(sha, td, cr)
+            f, meta = load_f(sha, td, cr)
+
             typ = test_f(f)
             if typ == PDF:
                 doc = doc_pdf()
@@ -504,15 +598,17 @@ class mgr_due(thread):
                 doc = doc_djvu()
             
             if doc.open(f, render=False):
-                z = meta.get('z', 2.7) * w_desktop / 1366 * 0.97
+                z = meta.get('z', 2.7) #* w_desktop / meta.get('w_desktop', 1366) * 0.93
                 doc.set_z(z, render=False)
                 meta['z'] = z
+                meta['dpix'] = 102#meta.get('dpix', 96)
                 self.cache[doc.sha] = {'doc': doc, 'meta': meta}
         
         zo = meta['zo']
         z = meta['z']
-        # XXX 12/13/21 23:22:14
-        zz = 2. * z / zo * 102 / 96
+        # XXX 11/03/24 13:27:20 
+        base_dpix = meta.get('dpix', 96)
+        zz = 2. * z / zo * physical_dpi / base_dpix
         mm = QTransform(zz, 0, 0, zz, 0, 0)
         return doc.render(d['pg']).copy(mm.mapRect(QRectF(*d['path'])).toRect())
 
@@ -557,27 +653,23 @@ class mgr_due(thread):
                     b_txt = True
 
                 if pl[i]:
-                    hl[i] += '<img src="%s">' % self.p2f(self.combine_p(pl[i], cr, w_pl))
+                    hl[i] += f'<img src="{self.p2f(self.combine_p(pl[i], cr, w_pl))}">' 
                 
                 if al[i]:
                     # XXX only the first of recs
                     f = load_f(al[i][0]['sha'], td, cr)[0]
-                    a[i] = '<audio src="%s" autoplay></audio>' % f if f else ''
+                    a[i] = f'<audio src="{f}" autoplay></audio>' if f else ''
                 
                 hl[i] += ''.join(['<img src="%s">' % load_f(xx['sha'], td, cr)[0] for xx in xl[i]]) 
                    
             b = b_math and b_txt
-            s = ['<div class="%s">%s</div>' % (('answer' if ii else 'question') + ('' if b_all else '_pre'), h) \
-                 if h else '' for ii, h in enumerate(hl)] 
+            s = ['<div class="%s">%s</div>' % (('answer' if ii else 'question') + ('' if b_all else '_pre'), h) if h else '' for ii, h in enumerate(hl)] 
             all_s.append([
-            htm((a[0] + 'Listen to the Question ...') if (a[0] and hl[0] == '') \
-                else (a[0] + s[0]), css, b),  
-            htm((a[1] + 'Listen to the Answer ...') if (a[1] and hl == ['', '']) \
-                else (a[1] + ('<hr />' if b_hr else '').join(s)), css, b)
-            ])
+                htm((a[0] + 'Listen to the Question ...') if (a[0] and hl[0] == '') else (a[0] + s[0]), css, b),  
+                htm((a[1] + 'Listen to the Answer ...') if (a[1] and hl == ['', '']) else (a[1] + ('<hr />' if b_hr else '').join(s)), css, b)])
             preview_s.append((a[1] + 'Listen to the Answer ...') if (a[1] and hl == ['', '']) else (a[1] + ('<hr />' if b_hr else '').join(s)))
 
-        return all_s if b_all else htm('\n'.join(['<div class="fact">%s</div>' % s for s in preview_s]), css, b)
+        return all_s if b_all else htm('\n'.join([f'<div class="fact">{s}</div>' for s in preview_s]), css, b)
 
     def run(self):
         cn = sqlite3.connect(self.db)
@@ -587,6 +679,7 @@ class mgr_due(thread):
         
         # check due rev
         r = due_rev(cr, names=self.names)
+
         if r:
             rev_id, fact_id = r[:2]
 
@@ -603,7 +696,7 @@ class mgr_due(thread):
                 return
             fact_id, rev_id = insert_new_fact(fa, cr)
             cn.commit()
-        
+
         b = is_lang(get_name_key(fact_id, cr)[0]) 
         # language contents are rendered with hr, bigger font and no frames
         self.send(cnd='rev', rev_id=rev_id, fact_id=fact_id, qas=self.fact_to_htm(fact_id, cr, b_hr=b, b_math=(not b),
@@ -629,14 +722,14 @@ class overlay(QWidget):
             p.setPen(QPen(Qt.NoPen))
             n = 8 
             for i in range(n):
-                if (self.cnt / (n - 1)) % n == i:
-                    p.setBrush(QBrush(QColor(127 + (self.cnt % (n - 1)) * 128 / (n - 1), 127, 127)))
+                if (self.cnt // (n - 1)) % n == i:
+                    p.setBrush(QBrush(QColor(127 + (self.cnt % (n - 1)) * 128 // (n - 1), 127, 127)))
                 else:
                     p.setBrush(QBrush(QColor(127, 127, 127)))
 
-                p.drawEllipse(self.width() / 2 + 30 * math.cos(2 * math.pi * i / (n * 1.)) - 10,
+                p.drawEllipse(QRectF(self.width() / 2 + 30 * math.cos(2 * math.pi * i / (n * 1.)) - 10,
                               self.height() / 2 + 30 * math.sin(2 * math.pi * i / (n * 1.)) - 10,
-                              14, 14)
+                              14, 14))
         p.end()
     
     def showEvent(self, e):
@@ -663,6 +756,9 @@ class browser(QWebEngineView):
 
     def set_htm(self, h='', ref='/home/cytu/sample.html', b_raw=False):
         self.setHtml(h if b_raw else htm(h), QUrl.fromLocalFile(str(Path(__file__).resolve().parent)))
+        #fn = cat(Path(__file__).resolve().parent, 'tmp', 'browser_.htm')
+        #codecs.open(fn, 'w', 'utf-8').write(h)   
+        #self.load(QUrl.fromLocalFile(fn))
 
 class win_b(QMainWindow):
     
@@ -684,14 +780,13 @@ class win_b(QMainWindow):
                      ('quit',  ('Esc', 'Ctrl+Q',)),
                      ('vim',   ('F12',)),
                      ]:
-            n = 'act_%s' % i
+            n = f'act_{i}'
             setattr(self, n, QAction(self))
             a = getattr(self, n)
             a.setShortcuts([QKeySequence(kk) for kk in k])
 
             #if i in ('pg_dn', 'pg_up'):
-            #    f = partial(b.page().currentFrame().scroll, 
-            #                0, (1 if i == 'pg_dn' else -1) * 50)
+            #    f = partial(b.page().currentFrame().scroll, 0, (1 if i == 'pg_dn' else -1) * 50)
             #else:
             f = partial(self.handler, {'cnd': i})
             a.triggered.connect(f)
@@ -699,8 +794,8 @@ class win_b(QMainWindow):
             self.addAction(a)
     
         n = self.n()
-        self.restoreState(sts.value('%s/state' % n, type=QByteArray))        
-        self.resize(sts.value('%s/size' % n, type=QSize))
+        self.restoreState(sts.value(f'{n}/state', type=QByteArray))        
+        self.resize(sts.value(f'{n}/size', type=QSize))
 
     def set_htm(self, htm):
         self.b.set_htm(htm)
@@ -715,8 +810,8 @@ class win_b(QMainWindow):
     def closeEvent(self, e):
         n = self.n()
         if not self.isFullScreen() and not self.isMaximized():
-            sts.setValue('%s/size' % n, QVariant(self.size()))
-            sts.setValue('%s/state' % n, QVariant(self.saveState()))        
+            sts.setValue(f'{n}/size', QVariant(self.size()))
+            sts.setValue(f'{n}/state', QVariant(self.saveState()))        
     
     def n(self):
         return self.__class__.__name__
@@ -729,7 +824,7 @@ class splash(QLabel):
         self.setWindowFlags(Qt.WindowStaysOnTopHint)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setAlignment(Qt.AlignCenter)
-        self.setStyleSheet(css if css else 'QLabel{background-color: rgb(0, 200, 0); color: rgb(255, 255, 255); font: %spt "Microsoft JhengHei";}' % (int(28),))   
+        self.setStyleSheet(css if css else 'QLabel{background-color: rgb(0, 200, 0); color: rgb(255, 255, 255); font: 28pt "Microsoft JhengHei";}')   
         
         self.setContextMenuPolicy(Qt.ActionsContextMenu)
         
@@ -749,16 +844,10 @@ class splash(QLabel):
         self.display()
         self.startTimer(1000)
         
-        try:
-            o = dbus.SessionBus().get_object('ananda.loci', '/loci')
-        except:
-            p = self.cursor().pos()
-            #QTimer.singleShot(1000, partial(click, (p.x(), p.y())))
-
     def display(self):
         if self.cnt:
             if self.show_txt:
-                self.setText('Time to Take a Break and Do Eye Exercises!  %s Left' % nr2t(self.cnt))
+                self.setText(f'Time to Take a Break and Do Eye Exercises! {nr2t(self.cnt)} Left')
             self.cnt -= 1
         else:
             self.close()
@@ -863,8 +952,7 @@ def args(l, name):
 
 def vim_gui(name):
     call(args(['-geom', '200x5+0+0', #'20x25+1100', 
-               '-c', 'set gfn=DejaVu\ Sans\ Mono\ 18', 
-             ], name))
+               '-c', 'set gfn=DejaVu\\ Sans\\ Mono\\ 18',], name))
 
 def vim_mv(name):
     call(args(['--remote-send', r'<c-\><c-n>:winpos 0 560<cr>'], name))
@@ -890,13 +978,12 @@ def vim_get(name):
 
 def vim_set(name, s, b_append=False):
     expr = '--remote-expr'
-    sl = json.dumps(s.encode('utf-8').split('\n'))
+    sl = json.dumps(s.split('\n'))
     if b_append:
-        call(args([expr, 'append(line("$"), %s)' % sl], name))
-    
+        call(args([expr, f'append(line("$"), {sl})'], name))
     else:
         #vim_cls()
-        call(args([expr, 'setline(0, %s)' % sl], name))
+        call(args([expr, f'setline(0, {sl})'], name))
 
 # ==============================================================================
 #  xlib focus 
@@ -1010,7 +1097,7 @@ def revamp(name, dbf):
     cn.commit()
 
 def rebuild_db(name, dbf):
-    # 1. find all existing facts of 'name'
+    # 1. find all existing facts with the same 'name'
     # 2. delete all corresponding facts AND reviews
     # 3. reinsert fact AND reschedule  
     cn = sqlite3.connect(dbf)

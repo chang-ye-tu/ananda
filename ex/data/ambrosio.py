@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from books import *
 
 class ambrosio(book):
@@ -7,7 +5,7 @@ class ambrosio(book):
     def __init__(self):
         super(ambrosio, self).__init__()
 
-        self.src = '/home/cytu/usr/doc/math/anly/th/Ambrosio L., Da Prato G., Mennucci A. Introduction to Measure Theory and Integration.pdf' 
+        self.src = '/home/cytu/usr/doc/math/anly/th/Ambrosio/Ambrosio L., Da Prato G., Mennucci A. Introduction to Measure Theory and Integration.pdf' 
         self.pgs = range(12, 189)
         self.range_indent0 = (0, 5e-2)
         self.range_indent1 = (6e-2, 8e-2) 

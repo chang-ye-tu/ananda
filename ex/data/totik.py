@@ -12,6 +12,7 @@ class totik(book):
         self.range_linew = (0.9, 1)
 
         self.replace_title = 1
+        self.morph1 = 'c6.2'
         self.tokens.update({
             'problems': {'class': 'first2',      
                          'ocr': r'^Part I$',},

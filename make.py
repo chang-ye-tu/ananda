@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 import os, fnmatch, subprocess, codecs
 
 os.chdir(os.path.dirname(__file__))
@@ -35,9 +33,9 @@ files = []
 for tp in ('*.png', '*.ico'):
     for path in all_files('./res/img', tp, yield_folders=False):
         files.append(path.replace('\\', '/'))
-open(cat('res', pr + '.qrc'), 'w').write(QRC % ('\n'.join(['<file>../%s</file>' % f[2:] for f in files])))
+open(cat('res', pr + '.qrc'), 'w').write(QRC % ('\n'.join([f'<file>../{f[2:]}</file>' for f in files])))
 
-subprocess.call(['pyrcc5', '-o', './ui/%s_rc.py' % pr, cat('res', '%s.qrc' % pr)])
+subprocess.call(['pyrcc5', '-o', f'./ui/{pr}_rc.py', cat('res', f'{pr}.qrc')])
 
 for i, path in enumerate(all_files('./designer', '*.ui')):
     f = os.path.basename(path)[:-3]
@@ -48,4 +46,4 @@ for i, path in enumerate(all_files('./designer', '*.ui')):
     
     codecs.open(ff, 'w', 'utf-8').write(s.replace('微軟正黑體', 'Microsoft JhengHei'))
     open(ff, 'w').write(s)    
-    subprocess.call(['pyuic5', '--from-imports', '-x', '-o', './ui/%s.py' % f, ff])
+    subprocess.call(['pyuic5', '--from-imports', '-x', '-o', f'./ui/{f}.py', ff])

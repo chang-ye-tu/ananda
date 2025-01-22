@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=gmail-notify
+Comment=gmail-notify
+Exec=/home/cytu/usr/src/py/ananda/res/gmail-notify.sh
+Terminal=false
+Type=Application
+NoDisplay=true

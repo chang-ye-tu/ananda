@@ -14,16 +14,16 @@ class kolk(book):
         
         self.tokens.update({
             'thm': {'class': 'indent0',      
-             'ocr': r'^((Lemma|Corollary|Theorem|Proposition) (\d+\.\d+))', 
+                    'ocr': r'^((Lemma|Corollary|Theorem|Proposition) (\d+\.\d+))', 
                    },
             
             'remark': {'class': 'indent0',      
-                    'ocr': r'^(Remark (\d+\.\d+))', 
-                   },
+                       'ocr': r'^(Remark (\d+\.\d+))', 
+                      },
 
             'example': {'class': 'indent0',      
-                    'ocr': r'^(Example (\d+\.\d+))', 
-                   },
+                        'ocr': r'^(Example (\d+\.\d+))', 
+                       },
 
             'defn': {'class': 'indent0',      
                      'ocr': r'^(Deﬁnition (\d+\.\d+))', 

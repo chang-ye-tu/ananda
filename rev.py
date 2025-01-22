@@ -3,9 +3,9 @@ from ed import win_ed
 
 class win_rev(QMainWindow):
 
-    l_stw = ['stw', 'stw1'] 
     msg_win_rev = pyqtSignal(dict)
-    
+
+    lstw = ['stw', 'stw1'] 
     lstb = [('descr', 18, 'q-a info'),
             ('typ',    8, 'q-a type | part'), 
             ('stw',    6, 'active time of this fact'),
@@ -21,7 +21,7 @@ class win_rev(QMainWindow):
         self.setWindowIcon(QIcon(':/res/img/x-office-presentation.png'))
 
         self.par = par
-        self.td = getattr(par, 'td') if par else tempfile.mkdtemp(prefix='%s_%s_' % (self.n(), now().replace(':', '').replace(' ', '_')), dir=cat(os.getcwd(), tmp)) 
+        self.td = getattr(par, 'td') if par else tempfile.mkdtemp(prefix=f"{self.n()}_{now().replace(':', '').replace(' ', '_')}_", dir=cat(os.getcwd(), tmp))
     
         self.b = b = browser(self)
         self.setCentralWidget(b)
@@ -46,12 +46,11 @@ class win_rev(QMainWindow):
                      ('vim',     ('V',)),
                     ]:
 
-            s = 'act_%s' % i
+            s = f'act_{i}'
             setattr(self, s, QAction(self))
             a = getattr(self, s)
             a.setShortcuts([QKeySequence(kk) for kk in k])
             a.triggered.connect(partial(self.handler, {'cnd': i}))
-            
             self.addAction(a)
             
         self.setup_stb()
@@ -60,7 +59,7 @@ class win_rev(QMainWindow):
         t.timeout.connect(self.handler_tmr)
         t.start(1000)
         
-        for i in self.l_stw:
+        for i in self.lstw:
             setattr(self, i, stopwatch(self))
         
         self.busy = False
@@ -69,9 +68,9 @@ class win_rev(QMainWindow):
         self.startTimer(1000)
     
         n = self.n()
-        self.restoreState(sts.value('%s/state' % n, type=QByteArray))        
-        self.resize(sts.value('%s/size' % n, type=QSize))
-        self.move(sts.value('%s/pos' % n, type=QPoint))
+        self.restoreState(sts.value(f'{n}/state', type=QByteArray))        
+        self.resize(sts.value(f'{n}/size', type=QSize))
+        self.move(sts.value(f'{n}/pos', type=QPoint))
 
         self.av = av = wdg_a(self)
         av.hide()
@@ -89,7 +88,11 @@ class win_rev(QMainWindow):
         self.nb_name = 'rev'
         self.nb.listen(QHostAddress('127.0.0.1'), self.nb_port)
         self.nb.msg_vim.connect(self.handler_vim)
-    
+        
+        # ananda signal handler
+        self.signal_handler = DBusSignalHandler(self)
+        self.signal_handler.alarmReceived.connect(self.alarm)
+        
     def send(self, **d):
         self.msg_win_rev.emit(d)
 
@@ -116,7 +119,7 @@ class win_rev(QMainWindow):
             elif k == 'F11':
                 if getattr(self, 'w_prv', None) is None:
                     self.w_prv = win_b(self, nb_name=nn) 
-                self.w_prv.set_htm(htm(vim_get(nn), css='usr/src/py/ananda/res/ananda_prv.css', b_math=True))
+                self.w_prv.set_htm(htm(vim_get(nn), css='/home/cytu/usr/src/py/ananda/res/ananda_prv.css', b_math=True))
                 self.w_prv.show()
             
             elif k == 'F12':
@@ -146,7 +149,7 @@ class win_rev(QMainWindow):
         t = ['set ft=tex bt=nofile bh=unload noswf']
         t.extend([r'imap <%s> <c-\><c-n><%s>a' % (k, k) for k in ks])
         
-        sh(1500, ff(self.nb.send, '1:create!1\n' + ''.join(['1:specialKeys!%s "%s"\n' % (i + 2, k) for i, k in enumerate(ks)])))        
+        sh(1500, ff(self.nb.send, '1:create!1\n' + ''.join([f'1:specialKeys!{i + 2} "{k}"\n' for i, k in enumerate(ks)])))        
         sh(2000, ff(vim_buf, nn, self.td, '\n'.join(t)))
         sh(2200, ff(vim_set, nn, content, True))
 
@@ -155,7 +158,7 @@ class win_rev(QMainWindow):
         self.setStatusBar(stb)
         
         for ii, (i, l, tlt) in enumerate(self.lstb):
-            n = 'lbl_%s' % i
+            n = f'lbl_{i}'
             setattr(self, n, QLabel(self))
             w = getattr(self, n)
             w.setToolTip(tlt)
@@ -215,7 +218,7 @@ class win_rev(QMainWindow):
                                 txt_ = comp['txt']
                                 if len(txt_) >= len(txt):
                                     txt = txt_
-                subprocess.Popen(['gvim', '+/%s' % txt, '/home/cytu/usr/doc/lang/txt/Grundwortschatz.txt'])
+                subprocess.Popen(['gvim', f'+/{txt}', '/home/cytu/usr/doc/lang/txt/Grundwortschatz.txt'])
         
         elif c == 'reset':
             self.stw.reset()
@@ -230,9 +233,9 @@ class win_rev(QMainWindow):
                     d['del'] = []
                 d['del'].append(k)
                 save_ana(d)
-
                 delete_fact(fact_id, cn) 
-                self.prepare(s='Fact [%s %s] deleted. Waiting for due fact...' % (name, k))
+                self.prepare(s=f'Fact [{name} {k}] deleted. Waiting for due fact...')
+
             elif c == 'ebk':
                 if self.par is None and not is_lang(name):
                     from hrv import win_hrv
@@ -242,7 +245,7 @@ class win_rev(QMainWindow):
             
             elif (c == 'defer' or c == 'defer_1d'):
                 defer_rev(self.d.get('rev_id', 0), 6 if c == 'defer' else 24, cn)
-                self.prepare(s='Fact [%s %s] deferred for %s hours. Waiting for due fact...' % (name, k, '6' if c == 'defer' else '24'))
+                self.prepare(s=f"Fact [{name} {k}] deferred for {'6' if c == 'defer' else '24'} hours. Waiting for due fact...")
 
         # XXX update fact
         #elif c in ('doubt', 'important'):
@@ -275,7 +278,7 @@ class win_rev(QMainWindow):
 
             if st == st_learn:
                 t = (t1 - t0) if t1 > t0 else (t0 - t1)
-                tp = ('orange', '[ %d%% ]' % int(100. * t.seconds / T.seconds), nr2t(t.seconds))
+                tp = ('orange', f'[ {int(100. * t.seconds / T.seconds)}% ]', nr2t(t.seconds))
 
             elif st == st_rest:
                 t = (t2 - t1) if t2 > t1 else (t1 - t2)
@@ -287,14 +290,14 @@ class win_rev(QMainWindow):
             tp = ('red', '?', '')
        
         self.update_stb([
-            ('stw', '<font color="purple">%s</font>' % (nr2t(self.stw.cnt / 10) if st == st_learn else '')),
+            ('stw', f"<font color='purple'>{nr2t(self.stw.cnt / 10) if st == st_learn else ''}</font>"),
             ('aux', '<font color="%s">%s&nbsp; %s</font>' % tp if tp != ('red', '?', '') else ''),])
         
     def handler_mgr(self, d):
         c = d['cnd'] 
         if c == 'rev':
-            if self.state == st_learn:
-                #self.play_audio('res/av/due_rev.mp3')
+            if self.state in (st_learn, st_rest):
+            #    self.play_audio('/home/cytu/usr/src/py/ananda/res/av/due_rev.mp3')
                 self.rev(d)
 
         elif c in ['none: no active category', 'none: all done']:
@@ -313,7 +316,7 @@ class win_rev(QMainWindow):
         if fk:
             cr.execute('update fact set data = ? where id = ?', (fk, fact_id))
             cn.commit()
-            self.prepare(s='Fact [ %s  %s ] updated!' % (name, k))
+            self.prepare(s=f'Fact [ {name}  {k} ] updated!')
 
     def prepare(self, to=500, s=''): 
         self.reset(s)
@@ -333,14 +336,14 @@ class win_rev(QMainWindow):
         st = self.state
         if st == st_learn:
             #if self.par is None:
-            #    self.play_audio('res/av/learn.mp3')
+            #    self.play_audio('/home/cytu/usr/src/py/ananda/res/av/learn.mp3')
             self.prepare(to=2000)
 
         elif st == st_rest:
             if self.par is None:
                 self.close()
             #if self.par is None:
-            #    self.play_audio('res/av/rest.mp3')
+            #    self.play_audio('/home/cytu/usr/src/py/ananda/res/av/rest.mp3')
             #    self.reset('Take a Rest Now.')
             #    self.update_stb([('descr', ''), ('typ', ''), ('n_span', ''), ('n_rev', ''), ('n_fact', ''),])
         
@@ -374,7 +377,7 @@ class win_rev(QMainWindow):
         if self.last_state != self.state:
             self.last_state = self.state
         else:
-            for i in self.l_stw:
+            for i in self.lstw:
                 getattr(self, i).reset()
 
         names = self.names 
@@ -398,32 +401,31 @@ class win_rev(QMainWindow):
          
         tl = []
         tl.append(('n_fact', ('&nbsp;' * 3).join([
-            '<font color="blue">%s</font>' % n_fact_period,
-            '<font color="purple">%s</font>' % n_fact_today_all,
-            '<font color="goldenrod">%s</font>' % n_fact_all,
+            f'<font color="blue">{n_fact_period}</font>',
+            f'<font color="purple">{n_fact_today_all}</font>',
+            f'<font color="goldenrod">{n_fact_all}</font>',
             ])))
         
         tl.append(('n_span', ('&nbsp;' * 3).join([
-            #'<font color="blue">%s</font>' % n_span_period,
-            #'<font color="purple">%s</font>' % n_span_today,
-            '<font color="purple">%s</font>' % n_span_today_all,
+            #f'<font color="blue">{n_span_period}</font>',
+            #f'<font color="purple">{n_span_today}</font>',
+            f'<font color="purple">{n_span_today_all}</font>',
             ])))
 
         tl.append(('n_rev', ('&nbsp;' * 2).join([
-            '<font color="red">%s</font>' % n_rev_due_period,
-            '<font color="green">%s</font>' % n_rev_done_period,
-            '<font color="orange">%s</font>' % n_rev_done_period_dst,
-            '<font color="blue">%s</font>' % n_rev_done_today,
-            '<font color="purple">%s</font>' % n_rev_done_today_dst,
+            f'<font color="red">{n_rev_due_period}</font>',
+            f'<font color="green">{n_rev_done_period}</font>',
+            f'<font color="orange">{n_rev_done_period_dst}</font>',
+            f'<font color="blue">{n_rev_done_today}</font>',
+            f'<font color="purple">{n_rev_done_today_dst}</font>',
             ])))
         
-        tl.append(('descr', '<font color="blue"> %s </font>' % ellipsis(('&nbsp;' * 3).join(get_name_key(fact_id, cr)))))
+        tl.append(('descr', f"<font color='blue'> {ellipsis(('&nbsp;' * 3).join(get_name_key(fact_id, cr)))} </font>"))
         
         last_grade = h['last_grade']
         s_last_at = h['s_last_at'] 
         n_at = h['n_at']
-        tl.append(('n_hist', ('&nbsp;' * 3).join(['<font color="red">#seen: %s</font>' % n_at, '<font color="green">last: %s [%s]</font>' % (s_last_at, last_grade),]) if s_last_at else '<font color="red">debut</font>')) 
-
+        tl.append(('n_hist', ('&nbsp;' * 3).join([f'<font color="red">#seen: {n_at}</font>', f'<font color="green">last: {s_last_at} [{last_grade}]</font>',]) if s_last_at else '<font color="red">debut</font>')) 
         self.update_stb(tl)
 
     def edited(self, d):
@@ -439,7 +441,7 @@ class win_rev(QMainWindow):
             self.msg({'msg': s}, sct)
     
     def msg(self, d, sct='descr'):
-        lbl = getattr(self, 'lbl_%s' % sct)
+        lbl = getattr(self, f'lbl_{sct}')
         msg = d.get('msg', '')
         to = d.get('to', 0)
         lbl.setText(msg)
@@ -448,7 +450,7 @@ class win_rev(QMainWindow):
             QTimer.singleShot(to, partial(lbl.setText, ''))
 
     def reset(self, s=''):
-        self.b.set_htm(s if s else 'Query Due Review Items ...')
+        self.b.set_htm(s if s else htm('Query Due Review Items ...'))
         self.d, self.qas, self.gr, self.qa_span = {}, [], [], [] 
         self.slide = 0
         
@@ -469,7 +471,7 @@ class win_rev(QMainWindow):
         if qas:
             self.q_or_a = st
             self.b.set_htm(qas[self.slide][0 if st == 'q' else 1], b_raw=True)
-            self.update_stb([('typ', '<font color="red">[ %s ] </font><font color="blue">&nbsp;#%s of %s</font>' % (st.upper(), self.slide + 1, len(qas)))])
+            self.update_stb([('typ', f'<font color="red">[ {st.upper()} ] </font><font color="blue">&nbsp;#{self.slide + 1} of {len(qas)}</font>')])
 
     def grade(self, g, delay=3000):
         if getattr(self, 'b_busy_grade', False):
@@ -501,16 +503,14 @@ class win_rev(QMainWindow):
                 stw1.reset()
 
             else:
-                #self.play_audio('res/av/graded.mp3')
+                #self.play_audio('/home/cytu/usr/src/py/ananda/res/av/graded.mp3')
                 self.sched(gr, qa_span)
                 self.prepare()
     
     # XXX didn't use the full force of qa_span (detailed span info for each slide)
     def sched(self, gr, qa_span):
         cn = self.cn
-        sched(self.d.get('rev_id', 0), gr, 
-            compute_sched(self.d.get('fact_id', 0), gr, cn.cursor()), 
-            int(self.stw.elapsed() / 10.), cn)
+        sched(self.d.get('rev_id', 0), gr, compute_sched(self.d.get('fact_id', 0), gr, cn.cursor()), int(self.stw.elapsed() / 10.), cn)
 
     def play_audio(self, src):
         a = self.av
@@ -520,8 +520,8 @@ class win_rev(QMainWindow):
     def cls(self):
         n = self.n()
         if not self.isFullScreen() and not self.isMaximized():
-            sts.setValue('%s/size' % n, QVariant(self.size()))
-        sts.setValue('%s/state' % n, QVariant(self.saveState()))     
+            sts.setValue(f'{n}/size', QVariant(self.size()))
+        sts.setValue(f'{n}/state', QVariant(self.saveState()))     
         if self.par is None:
             shutil.rmtree(self.td)
 
@@ -550,32 +550,23 @@ class win_rev(QMainWindow):
         try:
             typ = e.type()
             if typ == QEvent.WindowActivate:
-                for i in self.l_stw:
+                for i in self.lstw:
                     getattr(self, i).start() 
             
             elif typ == QEvent.WindowDeactivate:
-                for i in self.l_stw:
+                for i in self.lstw:
                     getattr(self, i).stop() 
         finally:
             return QMainWindow.event(self, e) 
 
 if __name__ == '__main__':
-    DBusQtMainLoop(set_as_default=True) 
     argv = sys.argv
     app = QApplication(argv)
     app.setApplicationName('rev')
-    app.setFont(QFont('Microsoft JhengHei'))
+    font = QFont('Microsoft JhengHei')
+    font.setPointSize(12)
+    app.setFont(font)
 
-    # never put the following before the creation of qt loop 
-    bus = dbus.SessionBus()
-    ifc = 'ananda.ctrl'
-    
-    #try:
-    #    o = bus.get_object('ananda.rev', '/rev')
-    #    sys.exit()
-    #except:
-    #    pass
-    
     argc = len(argv)
     ps = argparse.ArgumentParser(description='Ananda Reviewer')
     ps.add_argument('-n', '--names', nargs='+', dest='names')
@@ -584,19 +575,10 @@ if __name__ == '__main__':
     # XXX code for debugging
     if argc == 1:
         # use in test
-        al = ['-n', 'zuily'] 
-    
+        al = ['-n', 'evans', '-d', '/home/cytu/usr/src/py/ananda/db/ananda_temp.db'] 
     else:
         al = argv[1:] if argc else []
-    
-    al = argv[1:] if argc else []
-
     w = win_rev(**ps.parse_args(al).__dict__)
     w.showMaximized()
-    
-    bus.add_signal_receiver(w.alarm, dbus_interface=ifc, signal_name='alarm')
-    try:
-        w.alarm(bus.get_object(ifc, '/').state())
-    except:
-        pass 
-    app.exec_()
+
+    app.exec()

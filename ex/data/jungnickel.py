@@ -33,7 +33,7 @@ class jungnickel(book):
                        },
 
             'defn': {'class': 'indent0',      
-                     'ocr': r'^((Deﬁnition) (\d+\.\d+\.\d+))\.?', 
+                     'ocr': r'^((Deﬁnition|Definition) (\d+\.\d+\.\d+))\.?', 
                     },
 
             'thm': {'class': 'indent0',      

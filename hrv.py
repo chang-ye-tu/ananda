@@ -16,7 +16,7 @@ def promote(self, typ='tkd'):
     if dlg.exec_():
         b = self.tk[0]
         cbo = dlg.cbo_tk
-        k = str(cbo.itemData(cbo.currentIndex()).value())
+        k = cbo.itemData(cbo.currentIndex())
         s = dlg.led_tk.text().strip()
         ke = dlg.led_key.text().strip()
         setattr(par, 'last_tk', k)
@@ -503,7 +503,7 @@ class box(QGraphicsItem):
                 print('error editing')
                 return
 
-            tk = str(cbo.itemData(cbo.currentIndex()).value())
+            tk = cbo.itemData(cbo.currentIndex())
             s = dlg.led_tk.text().strip()
             ke = dlg.led_key.text().strip()
             self.tk = [b, tk, s, ke]
@@ -527,13 +527,13 @@ class box(QGraphicsItem):
         x, y, w, h = span(bx)
         xx, yy, ww, hh = self.tk[0]
         QMessageBox.information(par, 'Measurements', '\n'.join([
-            '[item] x: %s  y: %s  w: %s  h: %s' % (xx, yy, ww, hh), 
-            '[span] x: %s  y: %s  w: %s  h: %s' % (x, y, w, h), 
-            '[ratio] indent: (%.4f, %.4f)' % (1.*(xx-x)/w, 1.*(x+w-xx-ww)/w),
-            '            top: (%.4f, %.4f)' % (1.*(yy-y)/h, 1.*(h+y-hh-yy)/h),     
-            '            width: %.4f' % (1.*ww/w),
-            '            height: %.4f' % (1.*hh/h),
-            '            thr: %.4f' % thr,
+            f'[item] x: {xx}  y: {yy}  w: {ww}  h: {hh}', 
+            f'[span] x: {x}  y: {y}  w: {w}  h: {h}', 
+            f'[ratio] indent: ({1. * (xx - x) / w:.4f}, {1.* (x + w - xx - ww) / w:.4f})',
+            f'           top: ({1. * (yy - y) / h:.4f}, {1.* (h + y - hh - yy) / h:.4f})',     
+            f'         width: {1.* ww / w:.4f}',
+            f'        height: {1.* hh / h:.4f}',
+            f'           thr: {thr:.4f}',
             ]))
         
     def reocr(self):
@@ -586,17 +586,16 @@ class dlg_tk(QDialog, Ui_dlg_tk):
             cbo.setCurrentIndex(cbo.findData(QVariant(k))) 
         else:
             cbo.setCurrentIndex(0)
-            k = str(cbo.itemData(0).value())
-        
+            k =  cbo.itemData(0)
         self.set_ocr(k)
 
     def set_ocr(self, k):
         tk = self.book.tokens[k]
         s = tk['ocr'] if 'ocr' in tk else 'none'
-        self.lbl_ocr.setText('<font color="blue">ocr regex pattern: </font><font color="red"> %s</font>' % (s if s else 'none'))
+        self.lbl_ocr.setText(f"<font color='blue'>ocr regex pattern: </font><font color='red'> {s if s else 'none'}</font>")
     
     def reset(self, i):
-        self.set_ocr(str(self.cbo_tk.itemData(i).value()))
+        self.set_ocr(self.cbo_tk.itemData(i))
 
 class dlg_op(QDialog, Ui_dlg_op):
     
@@ -619,12 +618,12 @@ class dlg_op(QDialog, Ui_dlg_op):
             self.tp = tp 
 
         for i in self.l:
-            w = getattr(self, 'chk_%s' % i)
-            n = sts.value('%s/chk_%s/check_state' % (self.n(), i), type=int)
+            w = getattr(self, f'chk_{i}')
+            n = sts.value(f'{self.n()}/chk_{i}/check_state', type=int)
             w.setCheckState(n)
             w.stateChanged.connect(self.blank)
             
-            w = getattr(self, 'led_%s' % i)
+            w = getattr(self, f'led_{i}')
             w.setText(pg)
             w.setEnabled(n == Qt.Checked)
         
@@ -639,26 +638,26 @@ class dlg_op(QDialog, Ui_dlg_op):
 
     def blank(self, i):
         for s in dir(self):
-            if s.find('led_%s' % self.sender().objectName().split('_')[-1]) != -1:
+            if s.find(f'led_{self.sender().objectName().split('_')[-1]}') != -1:
                 getattr(self, s).setEnabled(i == Qt.Checked)
 
     def accept(self):
         for i in self.l:
-            if getattr(self, 'chk_%s' % i).checkState() == Qt.Checked:
-                led = getattr(self, 'led_%s' % i)
+            if getattr(self, f'chk_{i}').checkState() == Qt.Checked:
+                led = getattr(self, f'led_{i}')
                 b, r = parse_range(led.text(), self.tp)
-                setattr(self, 'pgl_%s' % i, r)
+                setattr(self, f'pgl_{i}', r)
                 if i == 'bxd':
                     setattr(self, 'morph', getattr(self, 'led_bxd_morph').text())
                 if not b:
-                    QMessageBox.warning(self, 'Error', 'Range specification in %s is wrong. Please correct it.' % i)
+                    QMessageBox.warning(self, 'Error', f'Range specification in {i} is wrong. Please correct it.')
                     led.selectAll()
                     led.setFocus()
                     return  
 
         n = self.n()
         for i in self.l:
-            sts.setValue('%s/chk_%s/check_state' % (n, i), QVariant(getattr(self, 'chk_%s' % i).checkState()))
+            sts.setValue(f'{n}/chk_{i}/check_state', QVariant(getattr(self, f'chk_{i}').checkState()))
         QDialog.accept(self)
     
     def n(self):
@@ -719,7 +718,7 @@ class opr(thread):
             self.send(cnd='msg', msg=msg)
 
         def msg_dsp(ii, n_pg, n, task=''):
-            log(u'[ %s ]  processing page %-4d (%-4d of %4d: %3d %%) ... time elapsed:  %s' % (task, n_pg, ii + 1, n, int((ii + 1) * 100. / n), lapse(dt_now() - tic)))
+            log(f'[ {task} ]  processing page {n_pg:4d} ({ii + 1:4d} of {n:4d}: {int((ii + 1) * 100. / n):3d} %) ... time elapsed:  {lapse(dt_now() - tic)}')
 
         pgl_all = pgl_bxd + pgl_yd + pgl_tkd + pgl_sep
         n_bxd = len(pgl_bxd)
@@ -734,7 +733,7 @@ class opr(thread):
                 try:
                     dd['tkd_man'].update({str(n_pg): []})
                 except:
-                    log('man error: n_pg %s' % n_pg)
+                    log(f'man error: n_pg {n_pg}')
 
         if d['bxd']:
             for ii, n_pg in enumerate(pgl_bxd):
@@ -747,7 +746,7 @@ class opr(thread):
                         dd['yd'].update({str(n_pg): [0, sys.maxsize]})            
                         dd['tkd'].update({str(n_pg): []})  
                 except:
-                    log('bxd error: n_pg %s' % n_pg)
+                    log(f'bxd error: n_pg {n_pg}')
         
         if d['yd']:
             for ii, n_pg in enumerate(pgl_yd):
@@ -757,7 +756,7 @@ class opr(thread):
                     if y:
                         dd['yd'].update({str(n_pg): y})
                 except:
-                    log('yd error: n_pg %s' % n_pg)
+                    log(f'yd error: n_pg {n_pg}')
         
         corr = [] 
         if d['tkd']:
@@ -771,15 +770,15 @@ class opr(thread):
                     if tk:
                         dd['tkd'].update({str(n_pg): tk})
                 except:
-                    log('tkd error: n_pg %s' % n_pg)
+                    log(f'tkd error: n_pg {n_pg}')
 
         tkd = dd['tkd_man']
 
         fs = []
         try:
             for ii, sym in enumerate(dd['sym']['tome']):
-                f = cat(td, 'sym_%s.tif' % ii)
-                open(f, 'wb').write(bin_loads(sym))
+                f = cat(td, f'sym_{ii}.tif')
+                open(f, 'wb').write(sym.encode('latin-1'))
                 fs.append(f)
         except:
             pass
@@ -832,7 +831,7 @@ class opr(thread):
                     tkd[str(n_pg)].extend([[[x + w / 2, yy, 1000, 0], 'sep', '', ''] for yy in ys])
 
             except:
-                log('sep error: n_pg %s' % n_pg)
+                log(f'sep error: n_pg {n_pg}')
         
         book.post(dd)
         dd = json.loads(json.dumps(dd))
@@ -881,11 +880,12 @@ class view(QGraphicsView):
     msg_view = pyqtSignal(dict)
 
     def __init__(self, par=None, dd=None, db_file=None):
+
         super(view, self).__init__(par)
         self.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing)
 
         attrs_from_dict(locals())
-        self.td = tempfile.mkdtemp(prefix='%s_%s_' % (self.n(), now().replace(':', '').replace(' ', '_')), dir=cat(os.getcwd(), tmp))
+        self.td = tempfile.mkdtemp(prefix=f'{self.n()}_{now().replace(':', '').replace(' ', '_')}_', dir=cat(os.getcwd(), tmp))
 
         self.scn = QGraphicsScene(self)
         self.setScene(self.scn)
@@ -904,8 +904,8 @@ class view(QGraphicsView):
             print("dd['sha'] != dc.sha !!!")
         dc.msg_doc.connect(self.handler_doc)
         
-        self.opr = o = opr(self)
-        o.msg_thread.connect(self.handler_opr)
+        self.opr = opr(self)
+        self.opr.msg_thread.connect(self.handler_opr)
         
         self.set_mode(mode_anno)
         self.update_pg_fact(b_update_qa=False)
@@ -969,7 +969,7 @@ class view(QGraphicsView):
         t = ['set ft=tex bt=nofile bh=unload noswf']
         t.extend([r'imap <%s> <c-\><c-n><%s>a' % (k, k) for k in ks])
         
-        sh(2000, ff(self.nb.send, '1:create!1\n' + ''.join(['1:specialKeys!%s "%s"\n' % (i + 2, k) for i, k in enumerate(ks)])))        
+        sh(2000, ff(self.nb.send, '1:create!1\n' + ''.join([f'1:specialKeys!{i + 2} "{k}"\n' for i, k in enumerate(ks)])))        
         sh(3000, ff(vim_buf, nn, self.td, '\n'.join(t)))
         sh(4000, ff(vim_set, nn, content, True))
 
@@ -1054,9 +1054,8 @@ class view(QGraphicsView):
                 s_f = {'pg': pg, 'z': self.z(), 
                        'v': int((vs.maximum() - vs.minimum() + vs.pageStep()) * (ry - 10) / ph), 
                        'h': int((hs.maximum() - hs.minimum() + hs.pageStep()) * (rx - 10) / pw),}
-
                 if s_f != s_i and s_i:
-                    self.hst.push(cmd_view(self, s_i, s_f, '%s --> %s' % (s_i, s_f)))
+                    self.hst.push(cmd_view(self, s_i, s_f, f'{s_i} --> {s_f}'))
                 s_i = dict(s_f) 
 
     def save(self, b_display=True):
@@ -1070,7 +1069,7 @@ class view(QGraphicsView):
         qa = dd['qa']
         s_q = set(qa['q'].keys())
         s_a = set(qa['a'].keys())
-        self.send(cnd='saved', count='#qa: %s  #q\\a: %s  #a\\q: %s' % (len(s_q & s_a), len(s_q - s_a), len(s_a - s_q)))
+        self.send(cnd='saved', count=f'#qa: {len(s_q & s_a)} #q\\a: {len(s_q - s_a)}  #a\\q: {len(s_a - s_q)}')
         
     def refresh(self, b_reset=False):
         scn = self.scn
@@ -1140,7 +1139,7 @@ class view(QGraphicsView):
     def get_orig(self):
         pg = str(self.pg() + 1)
         f = cat(self.td, 'orig.tif')
-        call(['ddjvu', '-format=tiff', '-page=%s' % pg, self.dd['src'], f]) 
+        call(['ddjvu', '-format=tiff', f'-page={pg}', self.dd['src'], f]) 
         return f
 
     def replace(self, f):
@@ -1164,7 +1163,7 @@ class view(QGraphicsView):
         # XXX hack!
         if src.find('/home/cytu') != 0:
             return
-        call(['djvused', src.replace('/home/cytu', '/media/Elements'), '-e', 'select %s; save-page-with %s' % (pg, f1)])
+        call(['djvused', src.replace('/home/cytu', '/media/Elements'), '-e', f'select {pg}; save-page-with {f1}'])
         call(['djvm', '-d', src, pg])
         call(['djvm', '-i', src, f1, pg]) 
         self.restart()
@@ -1175,8 +1174,7 @@ class view(QGraphicsView):
         dc = self.book.doc()
         dc.set_z(self.dd['zo'])
         pix = dc.render(self.pg())
-        m = QTransform(1. * im.width() / pix.width(),   0, 0, 
-                       1. * im.height() / pix.height(), 0, 0)
+        m = QTransform(1. * im.width() / pix.width(), 0, 0, 1. * im.height() / pix.height(), 0, 0)
         b = m.mapRect(b)
         p = QPainter(im)
         #for ii, i in enumerate(li):
@@ -1197,7 +1195,7 @@ class view(QGraphicsView):
             self.dd['sym'] = {}
         if 'tome' not in self.dd['sym']:
             self.dd['sym']['tome'] = []
-        self.dd['sym']['tome'].append(bin_dumps(open(f, 'rb').read()))
+        self.dd['sym']['tome'].append(open(f, 'rb').read().decode('latin-1'))
 
     def select_sym(self):
         dc = self.book.doc()
@@ -1243,7 +1241,7 @@ class view(QGraphicsView):
         self.send(**d)
             
     def edit_py(self):
-        call(['gvim', cat(cwd, '%s.py' % self.dd['name'])])
+        call(['gvim', cat(cwd, f"{self.dd['name']}.py")])
 
     def add_man(self):
         if self.mode == mode_anno:
@@ -1255,9 +1253,9 @@ class view(QGraphicsView):
         if dlg.exec_():
             d = dict.fromkeys(dlg.l)
             for i in dlg.l:
-                if getattr(dlg, 'chk_%s' % i).checkState() == Qt.Checked:
+                if getattr(dlg, f'chk_{i}').checkState() == Qt.Checked:
                     d[i] = {}
-                    d[i]['pgl']= getattr(dlg, 'pgl_%s' % i)
+                    d[i]['pgl']= getattr(dlg, f'pgl_{i}')
                     if i == 'bxd':
                         d[i]['morph'] = getattr(dlg, 'morph')
             self.opr.go(d=d)
@@ -1268,7 +1266,7 @@ class view(QGraphicsView):
         pg = self.pg()
         if pg in self.pg_fact: 
             b, f = render_pg_fact(self.pg_fact[pg], pg, self.doc, self.mm, self.td)
-            self.send(cnd='pg_fact:%s' % ('done' if b else 'error'), f=f)
+            self.send(cnd=f"pg_fact:{'done' if b else 'error'}", f=f)
 
         else:
             self.send(cnd='pg_fact:none')
@@ -1346,7 +1344,7 @@ class view(QGraphicsView):
         #    def scr(b, t):
         #        b.setValue(b.value() + 10 * (1 if tick >= 0 else -1))
         #        
-        #    scr(self.horizontalScrollBar() if bar == 'h' else self.verticalScrollBar(), tick)    
+        #    scr(self.horizontalScrollBar() if bar == 'h' else self.verticalScrollBar(), tick)
         if c == 'before_page_changed':            
             self.before()
 
@@ -1372,7 +1370,7 @@ class view(QGraphicsView):
         if self.s_i == self.s_f:
             return
         
-        self.hst.push(cmd_view(self, self.s_i, self.s_f, '%s --> %s' % (self.s_i, self.s_f)))
+        self.hst.push(cmd_view(self, self.s_i, self.s_f, f'{self.s_i} --> {self.s_f}'))
 
     def z_in(self):
         self.zoom(1.25)
@@ -1471,8 +1469,8 @@ class lwd(QListWidget):
         m = QMenu(self)
         l = [('&try to render', 'render'), None, 
              ('&deskew', 'deskew'), None, 
-             ('&restore', 'restore'),
-            ]  
+             ('&restore', 'restore'),]
+
         for ll in l:
             if ll is None:
                 m.addSeparator()
@@ -1505,8 +1503,8 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         attrs_from_dict(locals())
         
         # XXX  07/29/13
-        self.setStyleSheet('*{font: 11pt "Microsoft JhengHei";} QTextEdit{font: bold; font-size: 20pt;}')       
-        # XXX 09/22/15
+        self.setStyleSheet('*{font: 12pt "Microsoft JhengHei";} QTextEdit{font: bold; font-size: 20pt;}')       
+        # XXX  09/22/15
         self.db_file = db_file if db_file else cat('db', 'ananda.db') 
 
         for i in ['spb_z_', 'spb_pg_', 'spb_z', 'spb_pg']:
@@ -1524,8 +1522,8 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         
         tb = self.tb
         for k, i in enumerate(['spb_z_', 'lbl_z_', '', 'spb_pg_', 'lbl_pg_', '']):
-            setattr(self, 'lbl_%s' % k, QLabel(self))
-            w = getattr(self, 'lbl_%s' % k)
+            setattr(self, f'lbl_{k}', QLabel(self))
+            w = getattr(self, f'lbl_{k}')
             w.setText(u'  ')        
             tb.addWidget(w)
             if i:
@@ -1543,7 +1541,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
 
         for i in ['full', 'quit',]:
             try:
-                a = getattr(self, 'act_%s' % i)
+                a = getattr(self, f'act_{i}')
                 a.triggered.connect(getattr(self, i)) 
                 self.addAction(a)
             except:
@@ -1553,16 +1551,16 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         l = ['mnb', 'tb', 'stb',]
 
         for i in l:
-            a = getattr(self, 'act_show_%s' % i)
-            b = sts.value('%s/%s/visible' % (n, i), type=bool)
+            a = getattr(self, f'act_show_{i}')
+            b = sts.value(f'{n}/{i}/visible', type=bool)
             getattr(self, i).setVisible(b)
             a.setChecked(b)
             a.toggled.connect(getattr(self, i).setVisible)
             self.addAction(a) 
         
-        self.restoreState(sts.value('%s/state' % n, type=QByteArray))        
-        self.resize(sts.value('%s/size' % n, type=QSize))
-        self.move(sts.value('%s/pos' % n, type=QPoint))
+        self.restoreState(sts.value(f'{n}/state', type=QByteArray))        
+        self.resize(sts.value(f'{n}/size', type=QSize))
+        self.move(sts.value(f'{n}/pos', type=QPoint))
         
         self.stw = stopwatch(self)
         self.root = cwd 
@@ -1577,21 +1575,20 @@ class win_hrv(QMainWindow, Ui_win_hrv):
                                  ('lbl_pg', 3),
                                  ('stw',    4),
                                  ('count', 10),
-                                 ('aux',    6),
-                                 ]):
-
+                                 ('aux',    6),]):
             i, l = it
             if i in ['spb_z', 'spb_pg', 'lbl_z', 'lbl_pg']:
                 stb.insertPermanentWidget(ii, getattr(self, i), l)
 
             else:
-                n = 'lbl_%s' % i
+                n = f'lbl_{i}'
                 setattr(self, n, QLabel(self))
                 w = getattr(self, n)
                 if i in ['mode', 'count', 'aux', 'stw']:
                     w.setAlignment(Qt.AlignCenter)
                 w.setFrameStyle(QFrame.StyledPanel|QFrame.Sunken)
                 stb.insertPermanentWidget(ii, w, l)
+
         stb.setSizeGripEnabled(False)
         
         # keyboard shortcut
@@ -1605,7 +1602,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
                      ('restart',    ('F7',)), 
                      ('switch_mode',('F12',))]:
 
-            s = 'act_%s' % i
+            s = f'act_{i}'
             setattr(self, s, QAction(self))
             a = getattr(self, s)
             a.setShortcuts([QKeySequence(kk) for kk in k])
@@ -1614,7 +1611,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
 
         for i in [#'open', 'open_new', 'tab_close', 'tab_close_all', 'save', 'tab_next', 'tab_prev', 
                   'z_in', 'z_out', 'fst', 'last', 'prev', 'next', 'fwd', 'bwd']:
-            a = getattr(self, 'act_%s' % i)
+            a = getattr(self, f'act_{i}')
             a.triggered.connect(partial(self.handler, i))
             self.addAction(a)
 
@@ -1659,21 +1656,25 @@ class win_hrv(QMainWindow, Ui_win_hrv):
                 w.set_mode(mode_read)
             
             if self.typ == hrv_read_rev:
-                # introduce learn/rest session management
+                # introduce learn / rest session management
                 self.state, self.interval = st_rest, None
-                self.overlay = overlay(self.centralWidget(), False)
+                #self.overlay = overlay(self.centralWidget(), False)
 
                 names = [w.dd['name']]
                 db_file = self.db_file
-                self.mgr = m = mgr(self, db_file, names=names) 
-                m.msg_thread.connect(self.handler_mgr)
-                self.rev = r = win_rev(w, names=names, db_file=db_file)
-                r.msg_win_rev.connect(self.handler_rev)
+                self.mgr = mgr(self, db_file, names=names) 
+                self.mgr.msg_thread.connect(self.handler_mgr)
+                self.rev = win_rev(w, names=names, db_file=db_file)
+                self.rev.msg_win_rev.connect(self.handler_rev)
                 
-        self.spl.restoreState(sts.value('%s/spl/state' % self.n(), type=QByteArray))
+        self.spl.restoreState(sts.value(f'{self.n()}/spl/state', type=QByteArray))
 
         self.startTimer(1000)
         
+        # ananda signal handler
+        self.signal_handler = DBusSignalHandler(self)
+        self.signal_handler.alarmReceived.connect(self.alarm)
+
     def n(self):
         return self.__class__.__name__
         
@@ -1692,13 +1693,10 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         c = d['cnd']
         if c == 'rev':
             try:
-                w = self.rev
-                w.alarm(bus.get_object(ifc, '/').state())
-                w.showMaximized()
+                self.rev.showMaximized()
                 self.msg({'msg': 'reviewing ...'})
-
             except:
-                pass 
+                pass
 
         elif c == 'none':
             self.msg({'msg': ''})
@@ -1778,7 +1776,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
             
             elif c == 'ed':
                 popen(['python', '/home/cytu/usr/src/py/ananda/ed.py', '-c', 
-                       json.dumps({'meta': {'name': w.dd['name'], 'key': 'page %s' % (w.pg() + 1)}})])
+                       json.dumps({'meta': {'name': w.dd['name'], 'key': f'page {w.pg() + 1}'}})])
             elif c == 'vim':
                 w.vim() 
 
@@ -1862,7 +1860,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
                     pass
 
             for b, tk, s, ke in sorted(tkd, key=lambda b:b[0][1]):
-                it = QListWidgetItem('[ %s ] %s' % (tk, s) + (' [k: %s]' % ke if ke else ''))
+                it = QListWidgetItem(f'[ {tk} ] {s}' + (f' [k: {ke}]' if ke else ''))
                 it.setData(Qt.UserRole, QVariant(json.dumps([b, tk, s, ke])))
                 self.lw.addItem(it)
         
@@ -1872,7 +1870,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         elif m == mode_read:
             s = 'viewer'
         
-        self.lbl_mode.setPixmap(QPixmap(':/res/img/%s.png' % s))
+        self.lbl_mode.setPixmap(QPixmap(f':/res/img/{s}.png'))
         
     def create(self, name, new_tab=False):
         #try:
@@ -1881,7 +1879,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         i = t.currentIndex()
         fn, typ = os.path.splitext(os.path.basename(dd['src']))
         f = ellipsis(fn)
-        icon = QIcon(':/res/img/%s.png' % typ.lower()[1:])
+        icon = QIcon(f':/res/img/{typ.lower()[1:]}.png')
         
         vw = view(dd=dd, db_file=self.db_file)
         if i != -1:
@@ -1925,7 +1923,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
                     fl_failed.append(f) 
             
             if fl_failed:
-                QMessageBox.warning(self, 'Ebook Harvester: Failed to Open File(s)', 'The following files could not be opened:\n%s' % '\n'.join(fl_failed))
+                QMessageBox.warning(self, 'Ebook Harvester: Failed to Open File(s)', f"The following files could not be opened:\n{'\n'.join(fl_failed)}")
          
     # =======================================
     #  neutral code  
@@ -1936,8 +1934,8 @@ class win_hrv(QMainWindow, Ui_win_hrv):
             self.msg({'msg': s}, sct)
 
     def msg(self, d, sct='task'):
-        lbl = getattr(self, 'lbl_%s' % sct)
-        msg = '<font color="%s">%s</font>' % ('blue', d.get('msg', ''))
+        lbl = getattr(self, f'lbl_{sct}')
+        msg = f"<font color='blue'>{d.get('msg', '')}</font>"
         to = d.get('to', 0)
         lbl.setText(msg)
         
@@ -1961,13 +1959,13 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         tw = self.tw
         w = tw.widget(i) if i else tw.currentWidget()
         try: 
-            self.setWindowTitle('%s -- [Ebook Harvester]'  % tw.tabText(i))
+            self.setWindowTitle(f'{tw.tabText(i)} -- [Ebook Harvester]')
         except:
             pass
 
         if w is not None:
             for i in ['lbl_pg_', 'lbl_pg']:
-                getattr(self, i).setText('  of   %s' % w.pgs())
+                getattr(self, i).setText(f'  of   {w.pgs()}')
 
             for i in ['spb_pg_', 'spb_pg']:
                 spb = getattr(self, i)
@@ -1998,14 +1996,13 @@ class win_hrv(QMainWindow, Ui_win_hrv):
     def cls(self):
         n = self.n()
         if not self.isFullScreen() and not self.isMaximized():
-            sts.setValue('%s/size' % n, QVariant(self.size()))
+            sts.setValue(f'{n}/size', QVariant(self.size()))
         
-        #sts.setValue('%s/state' % n, QVariant(self.saveState()))        
-        sts.setValue('%s/spl/state' % n, QVariant(self.spl.saveState()))
+        sts.setValue(f'{n}/spl/state', QVariant(self.spl.saveState()))
 
         l = ['mnb', 'stb', 'tb',]
         for i in l:
-            sts.setValue('%s/%s/visible' % (n, i), QVariant(getattr(self, i).isVisible()))
+            sts.setValue(f'{n}/{i}/visible', QVariant(getattr(self, i).isVisible()))
 
     def alarm(self, s):
         d = json.loads(s)
@@ -2015,10 +2012,10 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         if self.typ != hrv_read_rev:
             return
 
-        o = self.overlay
+        #o = self.overlay
         st = self.state
         if st == st_learn:
-            o.hide()
+            #o.hide()
             self.busy = False
             
         elif st == st_rest:
@@ -2048,7 +2045,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
 
             if st == st_learn:
                 t = (t1 - t0) if t1 > t0 else (t0 - t1)
-                tp = ('orange', '[ %d%% ]' % int(100. * t.seconds / T.seconds), nr2t(t.seconds))
+                tp = ('orange', f'[ {int(100. * t.seconds / T.seconds)}% ]', nr2t(t.seconds))
 
             elif st == st_rest:
                 t = (t2 - t1) if t2 > t1 else (t1 - t2)
@@ -2059,7 +2056,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         else:
             tp = ('red', '?', '')
        
-        self.update_stb([('stw', '<font color="purple">%s</font>' % (nr2t(self.stw.cnt / 10) if st == st_learn else '')),
+        self.update_stb([('stw', f"<font color='purple'>{nr2t(self.stw.cnt / 10) if st == st_learn else ''}</font>"),
                          ('aux', '<font color="%s">%s&nbsp; %s</font>' % tp if tp != ('red', '?', '') else ''),])
         if self.busy:
             return
@@ -2078,17 +2075,13 @@ class win_hrv(QMainWindow, Ui_win_hrv):
             return QMainWindow.event(self, e) 
 
 if __name__ == '__main__':
-    DBusQtMainLoop(set_as_default=True) 
     argv = sys.argv
     app = QApplication(argv)
     app.setApplicationName('hrv')
     font = QFont('Microsoft JhengHei')
-    #font.setPointSize(16)
+    font.setPointSize(12)
     app.setFont(font)
     
-    # never put the following before the creation of qt loop 
-    bus = dbus.SessionBus()
-
     argc = len(argv)
     ps = argparse.ArgumentParser(description='Ananda Ebook Harvester')
     ps.add_argument('-n', '--name', dest='name')
@@ -2099,11 +2092,7 @@ if __name__ == '__main__':
     
     if argc == 1:
         # use in test
-        #al = ['-n', 'baldi1']
-        #al = ['-n', 'knapp_adv_real']
-        al = ['-n', 'schilling'] 
-        #al = ['-n', 'jungnickel'] 
-        #al = ['-n', 'kirsch_grinberg', '-t', str(hrv_read_rev), '-d', '/home/cytu/usr/src/py/ananda/db/ananda_temp.db']    
+        al = ['-n', 'aliprantis'] 
 
     elif argc == 2:
         # use in *.ana file browsing 
@@ -2111,13 +2100,7 @@ if __name__ == '__main__':
         
     else:
         al = argv[1:] if argc else []
-
     w = win_hrv(**ps.parse_args(al).__dict__)
-    bus.add_signal_receiver(w.alarm, dbus_interface=ifc, signal_name='alarm')
-    try:
-        w.alarm(bus.get_object(ifc, '/').state())
-    except:
-        pass 
     w.showMaximized()
 
-    app.exec_()
+    app.exec()

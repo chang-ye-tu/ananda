@@ -85,19 +85,10 @@ class recorder(thread):
                     ix = i 
                     break
             
-            stream = p.open(format=FORMAT, 
-                            channels=channels,
-                            rate=rate,
-                            input=True,
-                            input_device_index=ix,
-                            frames_per_buffer=CHUNK)        
+            stream = p.open(format=FORMAT, channels=channels, rate=rate, input=True, input_device_index=ix, frames_per_buffer=CHUNK)  
         
         else:
-            stream = p.open(format=FORMAT,
-                            channels=channels,
-                            rate=RATE,
-                            input=True,
-                            frames_per_buffer=CHUNK)
+            stream = p.open(format=FORMAT, channels=channels, rate=RATE, input=True, frames_per_buffer=CHUNK)
         
         def cleanup():
             stream.close()
@@ -113,8 +104,8 @@ class recorder(thread):
 
         # write data to wav.
         ff = cat(self.td, 'rec')
-        f = '%s.wav' % ff        
-        f_ = '%s.mp3' % ff
+        f = f'{ff}.wav'        
+        f_ = f'{ff}.mp3'
 
         wf = wave.open(f, 'wb')
         wf.setsampwidth(p.get_sample_size(FORMAT))
@@ -157,7 +148,7 @@ class av(QWidget):
         self.show_play = True
         
         for i in ['play', 'stop', 'rec', 'file']:
-            getattr(self, 'btn_%s' % i).clicked.connect(getattr(self, ('_' if i == 'play' else '') + i))
+            getattr(self, f'btn_{i}').clicked.connect(getattr(self, ('_' if i == 'play' else '') + i))
 
     def _play(self):
         if self.show_play:
@@ -251,9 +242,7 @@ class av(QWidget):
     def time_info(self):
         m = self.mp
         ts = self.time_s
-        return {'duration': ts(m.duration()), 
-                'position': ts(m.position()), 
-                'remaining': ts(m.duration() - m.position())}
+        return {'duration': ts(m.duration()), 'position': ts(m.position()), 'remaining': ts(m.duration() - m.position())}
 
     def closeEvent(self, e):
         self.stop()
@@ -285,4 +274,4 @@ if __name__ == '__main__':
     app.setApplicationName('player')
     w = wdg_a()
     w.show()
-    app.exec_()
+    app.exec()

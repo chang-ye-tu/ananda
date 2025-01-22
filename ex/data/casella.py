@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from books import *
 
 class casella(book):
@@ -7,15 +5,15 @@ class casella(book):
     def __init__(self):
         super(casella, self).__init__()
 
-        self.src = '/home/cytu/usr/doc/math/prob/appl/Casella/Casella G., Berger R. Statistical Inference 2ed.pdf'
-        self.pgs =  range(28, 883)#range(219, 231) + range(732, 745)
+        self.src = '/home/cytu/usr/doc/math/prob/appl/Casella/Casella G., Berger R. L. Statistical Inference 2ed_all.pdf'
+        self.pgs =  list(range(31, 524)) + list(range(566, 761))
         self.tokens.update({
             'prob_sol':  {'class': 'indent0', 
                          'ocr': r'^(\d+\.\d+) ',
                          },
             
             'defn': {'class': 'indent0',      
-                     'ocr': r'^(Deﬁnition (\d+\.\d+\.\d+))',
+                     'ocr': r'^((Deﬁnition|Definition) (\d+\.\d+\.\d+))',
                     },
 
             'example': {'class': 'indent0',      
@@ -39,8 +37,8 @@ class casella(book):
     def tk_action(ltk, d):
         tk, k = ltk
         b_skip = False 
-        if tk in ['thm', 'proof', 'prob_sol']:
-            if tk == 'thm':
+        if tk in ['thm', 'proof', 'prob_sol', 'example', 'defn']:
+            if tk in ['thm', 'example', 'defn']:
                 d['q_or_a'] = 'q'
                 d['k'] = k
             elif tk == 'prob_sol':

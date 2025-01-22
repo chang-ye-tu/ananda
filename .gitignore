@@ -9,3 +9,4 @@ __pycache__/
 .cache
 res/credentials.json
 res/token.json
+.venv/

@@ -1,5 +1,3 @@
-import re, hashlib
-
 from PyQt5.QtCore import * 
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
@@ -7,9 +5,10 @@ from PyQt5.QtWidgets import *
 from djvu.decode import *
 from djvu.sexpr import *
 from popplerqt5 import Poppler
-from PIL import Image
 from PIL.ImageQt import ImageQt
+from PIL import Image
 
+import hashlib
 def sha(f):
     return hashlib.sha224(open(f, 'rb').read()).hexdigest()
 
@@ -161,7 +160,7 @@ class doc_pdf(doc):
     def matrix(self, n=0, z=0):
         z = z if z else self.z
         return QTransform(z * self.physicalDpiX() / 72., 0, 0, z * self.physicalDpiY() / 72., 0, 0)
-    
+
     def render(self, n, z=0):
         try:
             z = z if z else self.z

@@ -24,7 +24,7 @@ def img(s, typ='person'):
 
 sn = [str(nn).zfill(2) for nn in range(100)]  # 0, 1, 2, ..., 99
 
-sn1 = [str(nn).zfill(2) for nn in itertools.chain.from_iterable([(reversed([10*n + i for n in range(10)]) if i%2 else [10*n + i for n in range(10)]) for i in range(10)])]   # 0, 10, 20, 30, ..., 90, 91, 81, 71, ..., 11, 12, 22, 32, ... 
+sn1 = [str(nn).zfill(2) for nn in itertools.chain.from_iterable([(reversed([10 * n + i for n in range(10)]) if i % 2 else [10 * n + i for n in range(10)]) for i in range(10)])]   # 0, 10, 20, 30, ..., 90, 91, 81, 71, ..., 11, 12, 22, 32, ... 
 
 nr_person = [(s, img(s)) for s in sn]
 nr_action = [(s, img(s, typ='action')) for s in sn]
@@ -50,8 +50,7 @@ def mj():
     mj_suite = ['bamboo', 'character', 'circle']
     mj_type = range(1, 10)
     mj = ['%s_%s' % (i, j) for i in mj_suite for j in mj_type] 
-    mj.extend(['dragon_1', 'dragon_2', 'dragon_3', 
-               'wind_1', 'wind_2', 'wind_3', 'wind_4'])
+    mj.extend(['dragon_1', 'dragon_2', 'dragon_3', 'wind_1', 'wind_2', 'wind_3', 'wind_4'])
     return [cat(root, 'mj', '%s.png' % i) for i in mj]
 
 #mj_card = [(img_s % i, img_s % j) for i in mj() for j in card()]

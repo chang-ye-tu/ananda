@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=motion_detector
 Comment=motion_detector
-Exec=python /home/cytu/usr/src/py/ananda/motion_detector.py
+Exec=python3 /home/cytu/usr/src/py/ananda/motion_detector.py
 Terminal=false
 Type=Application
 NoDisplay=true

@@ -175835,10 +175835,10 @@
     "Theorem 4.13"
   ],
   "last_state": {
-    "h": 748,
-    "pg": 34,
-    "v": 612,
-    "z": 3.8875526865671644
+    "h": 724,
+    "pg": 30,
+    "v": 816,
+    "z": 3.765750447761194
   },
   "name": "knapp_basic_real",
   "qa": {
@@ -198938,7 +198938,7 @@
       ]
     }
   },
-  "sha": "a36dbfbee83fa67b9eea26f2f0a393ce0362c1af72f7d9dc02c3f626",
+  "sha": "74f8a7cc9a3073063a90194fc3a163cc48e5a66400e414e13d5bd0c2",
   "src": "/home/cytu/usr/doc/math/anly/th/Knapp/Knapp A. Basic Real Analysis Digital Second Edition.pdf",
   "sym": {
     "tome": [

@@ -90786,10 +90786,10 @@
     "3.273"
   ],
   "last_state": {
-    "h": 255,
-    "pg": 330,
-    "v": 242,
-    "z": 3.0759806295399517
+    "h": 310,
+    "pg": 328,
+    "v": 295,
+    "z": 3.478469565217391
   },
   "name": "polya1",
   "qa": {
@@ -110900,7 +110900,7 @@
       ]
     }
   },
-  "sha": "63b0de6ba1dc489f86d9a5730b1ef9e3a7c6909f1dbb21ae722e630c",
+  "sha": "1065f15ba9e0d7a54c6f5b82264bfd77e750985f658c095175bd4e77",
   "src": "/home/cytu/usr/doc/math/ex/P\u00f3lya G., Szeg\u00f6 G. Problems and Theorems in Analysis I Series Integral Calculus Theory of Functions.pdf",
   "tkd": {
     "100": [

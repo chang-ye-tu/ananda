@@ -1,24 +1,69 @@
-from base import *
+import sys 
+
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaContent
+
 from ui.wdg_tm import Ui_wdg_tm
 
+sts = QSettings('/home/cytu/usr/src/py/ananda/res/ananda.ini', QSettings.IniFormat)
 st_on, st_pause, st_off = range(3)
 m_once, m_cycle = range(2)
 
-class mysplash(splash):
+def nr2t(nr):
+    try:
+        mm, ss = divmod(nr, 60)
+        hh, mm = divmod(mm, 60)
+        return f'{hh:02d}:{mm:02d}:{ss:02d}'
+    except:
+        return '00:00:00'
 
-    def __init__(self, par=None, cnt=10):
-        splash.__init__(self, par, cnt, css='QLabel{background-color: rgb(200, 0, 0); color: rgb(255, 255, 255); font: 32pt "Microsoft JhengHei";}')
-    
+class splash(QLabel):
+
+    def __init__(self, par=None, cnt=10, show_txt=True, pix=None, css='QLabel{background-color: rgb(200, 0, 0); color: rgb(255, 255, 255); font: 32pt "Microsoft JhengHei";}'):
+        super(splash, self).__init__(par)
+        
+        self.setWindowFlags(Qt.WindowStaysOnTopHint)
+        self.setAttribute(Qt.WA_DeleteOnClose)
+        self.setAlignment(Qt.AlignCenter)
+        self.setStyleSheet(css)   
+        
+        self.setContextMenuPolicy(Qt.ActionsContextMenu)
+        
+        sz = QApplication.desktop().size()
+        if pix is not None:
+            # Resize the image if it's bigger than the screen
+            if pix.size().height() > sz.height(): 
+                pix = pix.scaledToHeight(sz.height() - 30, Qt.SmoothTransformation)
+                
+            if pix.size().width() > sz.width():   
+                pix = pix.scaledToWidth(sz.width() - 30, Qt.SmoothTransformation)
+
+            self.setPixmap(pix)
+
+        self.show_txt = show_txt
+        self.cnt = cnt
+        self.display()
+        self.startTimer(1000)
+
     def display(self):
         if self.cnt:
             if self.show_txt:
-                self.setText('Alarm !!!  %s Left' % nr2t(self.cnt))
+                self.setText(f'Alarm !!! {nr2t(self.cnt)} Left')
             self.cnt -= 1
         else:
             self.close()
             
-    def closeEvent(self, e):
-        set_audio(audio_ear, 2**15)
+    def keyPressEvent(self, e):
+        k = e.key()
+        if k == Qt.Key_Escape:
+            self.close()
+        else:
+            QLabel.keyPressEvent(self, e)
+
+    def timerEvent(self, e):
+        self.display()
 
 class wdg_tm(QWidget, Ui_wdg_tm):
 
@@ -41,17 +86,14 @@ class wdg_tm(QWidget, Ui_wdg_tm):
             self.cbo.addItem(s, QVariant(i))
 
         n = self.n()
-        self.cbo.setCurrentIndex(sts.value('{}/index'.format(n), type=int))
-        self.ted.setTime(sts.value('%s/ted' % n, type=QTime))
-        self.move(sts.value('%s/pos' % n, type=QPoint))
+        self.cbo.setCurrentIndex(sts.value(f'{n}/index', type=int))
+        self.ted.setTime(sts.value(f'{n}/ted', type=QTime))
+        self.move(sts.value(f'{n}/pos', type=QPoint))
 
         self.update_cnts()
         
-        # XXX set minimum 0 seconds
-        #self.ted.setMinimumTime(QTime(0, 0, 0))
-
         self.state = st_off
-        self.mode = sts.value('%s/mode' % n, type=int)
+        self.mode = sts.value(f'{n}/mode', type=int)
  
         self.tm = QTimer(self)
         self.tm.timeout.connect(self.tick)
@@ -63,13 +105,13 @@ class wdg_tm(QWidget, Ui_wdg_tm):
                      ('stop', ('Esc', 'Ctrl+Q',)), 
                     ]:
 
-            n = 'act_%s' % i
+            n = f'act_{i}'
             setattr(self, n, QAction(self))
             a = getattr(self, n)
             f = getattr(self, i)
             a.setShortcuts([QKeySequence(kk) for kk in k])
             a.triggered.connect(f)
-            getattr(self, 'btn_%s' % i).clicked.connect(f)
+            getattr(self, f'btn_{i}').clicked.connect(f)
             self.addAction(a)
 
         self.av = QMediaPlayer(self)
@@ -79,7 +121,7 @@ class wdg_tm(QWidget, Ui_wdg_tm):
         self.cnt_s = int(self.cbo.itemData(i)) 
         self.cnt = self.cnt_s
         self.show_cnt()
-        sts.setValue('%s/index' % self.n(), QVariant(i))
+        sts.setValue(f'{self.n()}/index', QVariant(i))
 
     def update_cnts_ed(self):
         t = self.ted.time()
@@ -87,7 +129,7 @@ class wdg_tm(QWidget, Ui_wdg_tm):
         if self.cnt_s:
             self.cnt = self.cnt_s
             self.show_cnt()
-            sts.setValue('%s/ted' % self.n(), QVariant(t))
+            sts.setValue(f'{self.n()}/ted', QVariant(t))
 
     def play(self):
         if self.state == st_off or self.state == st_pause:
@@ -126,16 +168,15 @@ class wdg_tm(QWidget, Ui_wdg_tm):
 
         else:
             m = self.mode
-            set_audio(audio_pc, 2**15)
             if m == m_once:
                 self.play_audio('/home/cytu/usr/src/py/ananda/res/av/alarm.mp3')
-                self.splash = mysplash() 
+                self.splash = splash() 
                 self.splash.showFullScreen()
                 self.stop()
 
             elif m == m_cycle:
                 self.play_audio('/home/cytu/usr/src/py/ananda/res/av/alarm_orig.mp3')
-                self.splash = mysplash(cnt=2) 
+                self.splash = splash(cnt=2) 
                 self.splash.showFullScreen()
                 self.cnt = self.cnt_s
 
@@ -150,7 +191,7 @@ class wdg_tm(QWidget, Ui_wdg_tm):
         return self.__class__.__name__
     
     def closeEvent(self, e):
-        sts.setValue('%s/mode' % self.n(), QVariant(self.mode))
+        sts.setValue(f'{self.n()}/mode', QVariant(self.mode))
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
@@ -158,4 +199,4 @@ if __name__ == '__main__':
     app.setFont(QFont('Microsoft JhengHei'))
     w = wdg_tm()
     w.show()
-    app.exec_()
+    app.exec()

@@ -30,9 +30,9 @@ def data(name):
                     continue
                 i += 1
                 l = []
-                dfs = [s.strip() for s in df.split(u'\n')]
+                dfs = [s.strip() for s in df.split('\n')]
                 w = dfs.pop()
-                l.append({'q': '%s' % w, 'a': '<br /><br />'.join(dfs)})
+                l.append({'q': w, 'a': '<br /><br />'.join(dfs)})
                 if name == 'de_grundwortschatz':
                     for e in ex:
                         de, en = [s.strip() for s in e.split('\n')]
@@ -67,7 +67,7 @@ def insert_prefab(name):
     d = data(name)
     if is_lang(name):
         save_ana(d[0])
-    keys = map(json.dumps, d)[1]
+    keys = list(map(json.dumps, d))[1]
     cr.execute('insert into prefab (name, keys) values (?, ?)', (name, keys))
     cn.commit()
 
@@ -87,14 +87,14 @@ def merge():
         for k in ks:
             m = re.search(r'\d+\.\d+', k)
             if m is None:
-                print('error in %s: wrong key' % k)
+                print('error in {k}: wrong key')
                 b = True
                 break
 
             else:
                 chapter, nr = [int(s) for s in m.group().split('.')]
                 if chapter0 > chapter: # error!
-                    print('error in %s: wrong chapter' % k)
+                    print(f'error in {k}: wrong chapter')
                     b = True
                     break
 
@@ -112,7 +112,7 @@ def merge():
                 # check nr
                 
                 if nr0 > nr:
-                    print('error in %s: wrong nr' % k)
+                    print(f'error in {k}: wrong nr')
                     break
 
                 nr0 = nr
@@ -123,8 +123,7 @@ def merge():
         if t:
             dd[i][str(chapter0)] = t
 
-        #cr.execute('insert into prefab (name, keys) values (?, ?)', 
-        #           (i, json.dumps(ks)))
+        #cr.execute('insert into prefab (name, keys) values (?, ?)', (i, json.dumps(ks)))
 
     keys = []
     for i in range(1, 41):
@@ -137,8 +136,7 @@ def merge():
         finally:
             keys.extend(t)
      
-    cr.execute('insert into prefab (name, keys) values (?, ?)', 
-               ('aliprantis_real', json.dumps(keys)))
+    cr.execute('insert into prefab (name, keys) values (?, ?)', ('aliprantis_real', json.dumps(keys)))
     cn.commit()
 
 def fn(s):
@@ -177,8 +175,7 @@ def move_db():
     keys_in_db = set([r[0] for r in cr1.execute('select meta_key(data) from fact where meta_name(data) = ?', (name,)).fetchall()])
     keys = mysorted((set(qa['q'].keys()) & set(qa['a'].keys())) - set(d.get('del', [])) - keys_in_db)
 
-    #cr.execute('insert into prefab (keys, name) values (?, ?)',
-    #           (json.dumps(keys), name))
+    #cr.execute('insert into prefab (keys, name) values (?, ?)', (json.dumps(keys), name))
     #cn.commit()
 
 def reconsolidate(name):
@@ -230,18 +227,18 @@ if __name__ == '__main__':
     cn.create_function('meta_key', 1, meta_key)
     cr = cn.cursor()
 
-    for i in ('aliprantis', 'knapp_basic_real',): # 'aliprantis', 'medvegyev', 'fabian', 'knapp_basic_real', 'knapp_adv_real', 'evans_gariepy', 'brezis', 'aliprantis', 'ambrosio', 'milman', 'ash_complex', 'bauschke', 'hoermander1', 'grimmett', 'boyd', 'zastawniak', 'rudin_fa', 'kirsch_grinberg', 'girault', 'mclean', 'necas',):
+    for i in ('baldi2','aliprantis'):#, 'baldi1', 'medvegyev', 'fabian', 'knapp_basic_real', 'knapp_adv_real', 'milman', 'ambrosio', 'ash_complex', 'boyd', 'zastawniak', 'grimmett', 'brezis', 'evans_gariepy', 'bauschke', 'hoermander1', 'rudin_fa',):
         try:
             insert_prefab_read(i)
         except:
-            print('%s has been saved.' % i)
+            print(f'{i} has been saved.')
 
-    #for i in ('zuily',): #'aliprantis_sol','costara', 'abadir', 'kaczor1', 'kaczor2', 'kaczor3', 'boyd_sol', 'abramovich_sol', 'grimmett_sol'):
-    #    try:
-    #        insert_prefab(i)
-    #    except:
-    #        print('%s has been saved.' % i)
-    #cn.commit()
+    for i in ('evans', 'dreyfus'): #, 'abadir_stat', 'aliprantis_sol', 'dreyfus', 'kaczor1', 'kaczor2', 'kaczor3', 'boyd_sol', 'abramovich_sol', 'grimmett_sol'):
+        try:
+            insert_prefab(i)
+        except:
+            print(f'{i} has been saved.')
+    cn.commit()
 
     #save_ana(data('de_grundwortschatz_pre')[0])
     #save_ana(data('de_grundwortschatz')[0])

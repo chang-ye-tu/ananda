@@ -105396,10 +105396,10 @@
   "err_a_no_q": [],
   "err_q_no_a": [],
   "last_state": {
-    "h": 153,
-    "pg": 104,
-    "v": 629,
-    "z": 2.2815012658922655
+    "h": 279,
+    "pg": 160,
+    "v": 189,
+    "z": 3.799778313253012
   },
   "name": "tkachuk_3",
   "qa": {
@@ -119369,7 +119369,7 @@
       ]
     }
   },
-  "sha": "4353933003bd27aedcb9597b6bad202bd88dc87745f20258d5dcfbea",
+  "sha": "bce28c3f20803373f78ca99da7ad41835f5f2d751fb326580ccb6059",
   "src": "/home/cytu/usr/doc/math/anly/th/gt/Tkachuk V. A C_p-Theory Problem Book Compactness in Function Spaces.pdf",
   "tkd": {
     "103": [
@@ -130927,7 +130927,7 @@
     "472": [
       [
         [
-          858.01885598745332,
+          858.0188559874533,
           718,
           1000,
           0

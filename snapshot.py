@@ -6,27 +6,17 @@ def limit_point_to_rect(p, r):
     q.setY(r.y() if p.y() < r.y() else p.y() if p.y() < r.bottom() else r.bottom())
     return q
 
-ifc = 'ananda.snapshot'
-class dso(dbus.service.Object): 
-    
-    def __init__(self): 
-        dbus.service.Object.__init__(self, 
-            dbus.service.BusName(ifc, bus=dbus.SessionBus()), '/')  
-
-    @dbus.service.signal(ifc)
-    def select(self, d):
-        pass
-
 class camera(QWidget):
 
     def __init__(self):
         super(camera, self).__init__(None)
-        self.setWindowFlags(Qt.WindowStaysOnTopHint|Qt.X11BypassWindowManagerHint)
+        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.X11BypassWindowManagerHint)
         self.setMouseTracking(True)
         self.sel = QRect()
         self.mouse_down = False
         
-        self.dso = dso()
+        self.service = SnapshotService(self)
+
         self.screen = QApplication.primaryScreen()
         self.winid = QApplication.desktop().winId()
         self.pix = self.screen.grabWindow(self.winid)
@@ -35,12 +25,12 @@ class camera(QWidget):
         self.setCursor(Qt.CrossCursor)
         
     def grab(self, p, rct=None):
-        fp = os.path.join('/home/cytu/usr/src/py/test/pix', '%s.png' % datetime.datetime.utcnow().strftime('%Y-%m-%d-%H-%M-%S'))
+        fp = os.path.join('/home/cytu/usr/src/py/test/pix', f"{datetime.datetime.now(datetime.UTC).strftime('%Y-%m-%d-%H-%M-%S')}.png")
         p.save(fp) 
         d = {'f': fp}
         if rct:
             d['rct'] = rct
-        self.dso.select(json.dumps(d))
+        self.service.select(json.dumps(d))
         self.close()
 
     def exit(self):
@@ -64,8 +54,7 @@ class camera(QWidget):
         if self.mouse_down:
             p = e.pos()
             r = self.rect()
-            self.sel = QRect(self.start_point, 
-                             limit_point_to_rect(p, r)).normalized()
+            self.sel = QRect(self.start_point, limit_point_to_rect(p, r)).normalized()
             self.update()
 
     def mouseReleaseEvent(self, e):
@@ -83,8 +72,6 @@ class camera(QWidget):
                 self.close()
 
 if __name__ == '__main__':
-
-    DBusQtMainLoop(set_as_default=True) 
     app = QApplication(sys.argv)
     c = camera()
-    app.exec_()
+    app.exec()

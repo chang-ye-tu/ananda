@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=ananda
 Comment=ananda
-Exec=python3 /home/cytu/usr/src/py/ananda/ananda.py
+Exec=/home/cytu/usr/src/py/ananda/res/ananda.sh
 Terminal=false
 Type=Application
 NoDisplay=true

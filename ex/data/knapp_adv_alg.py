@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from books import *
 
 from knapp_basic_real import *

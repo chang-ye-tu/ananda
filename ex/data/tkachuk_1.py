@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from books import *
 
 class tkachuk_1(book):

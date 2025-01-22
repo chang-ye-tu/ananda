@@ -144,7 +144,7 @@ class book(object):
         self.range_tinyw = (1e-2, 5e-2)
         self.range_linew = (0.8, 1.0)
         self.range_lineh = (0, 2)
-        self.morph0 = 'c150.6' 
+        self.morph0 = 'c150.8' 
         self.morph1 = 'c4.1'
         self.morph_sym = 'c3.1' 
        

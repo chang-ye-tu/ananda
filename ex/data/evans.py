@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 from books import *
 
 class evans(book):
@@ -7,8 +5,8 @@ class evans(book):
     def __init__(self):
         super(evans, self).__init__()
 
-        self.src = '/home/cytu/usr/doc/math/anly/th/Evans/Evans L. Partial Differential Equations 2ed.djvu' 
-        self.pgs = range(18, 743)
+        self.src = '/home/cytu/usr/doc/math/anly/th/Evans/Evans L. C. Partial Differential Equations 2ed.pdf' 
+        self.pgs = range(17, 705)
         self.range_tinyw = (3e-2, 5e-2)
         self.range_indent0r = (0., 8e-2)
         self.range_lineh = (0, 3)
@@ -43,7 +41,7 @@ class evans(book):
                       },
             
             'proof': {'class': 'indent0',      
-                      'ocr': r'^Proof', 
+                      'ocr': r'^Proo[ft]', 
                      },
         })
         

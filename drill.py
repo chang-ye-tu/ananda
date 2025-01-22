@@ -7,23 +7,23 @@ from ex.jp_kana import *
 from ex.ru_alphabets import alphabets as ru_abc 
 
 drill_suite = { 
-  'hiragana_kana_read': [(a, c + '<br />' + b) for a, b, c in hiragana],
-  'katakana_kana_read': [(a, c + '<br />' + b) for a, b, c in katakana],
-  'hiragana_read_kana': [(c, a + '<br />' + b) for a, b, c in hiragana],
-  'katakana_read_kana': [(c, a + '<br />' + b) for a, b, c in katakana],
-  'nr_action': nr_action,
-  'nr_action_1': nr_action_1,
-  '4_digits': d4,
-  '4_digits_rvs': d4_,
-  '4_digits_1': d41,
-  '4_digits_rvs_1': d41_,
-  'ru_alphabets': [(a, d + '<br />' + e) for a, b, c, d, e in ru_abc],
+    'hiragana_kana_read': [(a, c + '<br />' + b) for a, b, c in hiragana],
+    'katakana_kana_read': [(a, c + '<br />' + b) for a, b, c in katakana],
+    'hiragana_read_kana': [(c, a + '<br />' + b) for a, b, c in hiragana],
+    'katakana_read_kana': [(c, a + '<br />' + b) for a, b, c in katakana],
+    'nr_action': nr_action,
+    'nr_action_1': nr_action_1,
+    '4_digits': d4,
+    '4_digits_rvs': d4_,
+    '4_digits_1': d41,
+    '4_digits_rvs_1': d41_,
+    'ru_alphabets': [(a, d + '<br />' + e) for a, b, c, d, e in ru_abc],
 }
 
 for i in range(100):
     nn = str(i).zfill(2)
-    drill_suite['4_digits[%s]' % nn] = d4[100 * i : 100 * (i+1)]
-    drill_suite['4_digits_rvs[%s]' % nn] = d4_[100 * i : 100 * (i+1)]
+    drill_suite[f'4_digits[{nn}]'] = d4[100 * i : 100 * (i + 1)]
+    drill_suite[f'4_digits_rvs[{nn}]'] = d4_[100 * i : 100 * (i + 1)]
 
 def update_loci(b_write=True): # XXX behave badly 08/27/14
     cn = sqlite3.connect(cat('db', 'loci.db'))
@@ -53,19 +53,16 @@ def make_db_drill(cn):
     cr = cn.cursor()
 
     def create_ix(t, i):
-        cr.execute('create index ix_%s_%s on %s(%s)' % (t, i, t, i))
+        cr.execute(f'create index ix_{t}_{i} on {t}({i})')
     
     for t in ['result']:
-        cr.execute('''create table %s (id integer primary key, 
-                                       data text not null,
-                          created text not null default current_timestamp
-                                       )''' % t)
+        cr.execute(f'create table {t} (id integer primary key, data text not null, created text not null default current_timestamp)')
         for i in ['created']:
             create_ix(t, i)
 
     cn.commit()
 
-db_drill = cat('db', 'drill.db') 
+db_drill = cat('db', 'drill_meta.db') 
 if not os.path.isfile(db_drill):
     make_db_drill(sqlite3.connect(db_drill))
 
@@ -84,16 +81,15 @@ def get_4digits_test():
                 ns.append(g.groups()[0])
         n0 = set([str(i).zfill(2) for i in range(100)])
         df = n0 - set(ns)
-        tests.append(ss + '[%s]' % (sorted(list(df))[0] if len(df) else '00'))
+        tests.append(ss + f"[{sorted(list(df))[0] if len(df) else '00'}]")
     return tests
 
 def n_tested(cr, interval=None):
     try:
         count = 'select count(*) from result'
-        sql = (count,) if interval is None else \
-              (' '.join([count, 'where created between ? and ?']), interval)
-        
+        sql = (count,) if interval is None else (' '.join([count, 'where created between ? and ?']), interval)
         return cr.execute(*sql).fetchone()[0]
+
     except:
         return 0
 
@@ -110,8 +106,7 @@ def drill_set(n, qas, b_random=False):
         dd['a'] = [{'txt': a}]
         l.append(dd)
     
-    return [q[0] for q in qq], json.dumps({'qas': l, 
-                                           'meta': {'name': n, 'key': ''}})
+    return [q[0] for q in qq], json.dumps({'qas': l, 'meta': {'name': n, 'key': ''}})
 
 class mgr(mgr_due):
 
@@ -128,39 +123,41 @@ class mgr(mgr_due):
         r = due_rev(cr, b_prefab=False)
         if r:
             rev_id, fact_id = r[:2]
-            self.send(cnd='rev', rev_id=rev_id, fact_id=fact_id, 
-                      qas=self.fact_to_htm(fact_id, cr, b_math=False, b_hr=True, 
-                                css='usr/src/py/ananda/res/ananda_noframe.css'))
+            self.send(cnd='rev', rev_id=rev_id, fact_id=fact_id, qas=self.fact_to_htm(fact_id, cr, b_math=False, b_hr=True, 
+                      css='usr/src/py/ananda/res/ananda_noframe.css'))
         else:
             self.send(cnd='none')
             
 class win_drill(win_rev):
      
-    lstb = [('auto',   1, u''),
-            ('descr',  8, u'q-a info'),
-            ('typ',    6, u'q-a type | part'), 
-            ('stw',    3, u'active time of this fact'),
-            ('n_span', 3, u'logged active time: today'),
-            ('n_hist', 6, u'history'),
-            ('aux',    3, u'session status'),
-            ]
+    lstb = [('auto',   1,   u''),
+            ('descr',  16,  u'q-a info'),
+            ('typ',    12,  u'q-a type | part'), 
+            ('stw',    6,   u'active time of this fact'),
+            ('n_span', 6,   u'logged active time: today'),
+            ('n_hist', 12,  u'history'),
+            ('aux',    6,   u'session status'),]
 
     def __init__(self, names=None):
+
         super(win_drill, self).__init__()
         f = cat(self.td, 'drill.db')
+        try:
+            os.remove(f)
+        except:
+            pass
         make_db(sqlite3.connect(f))
         self.setup_mgr(mgr(self, f))
         self.add_test(names)
         
-        self.sc = sc = Scheduler()
-        sc.add_listener(self.listen, EVENT_JOB_EXECUTED) 
+        self.service = AnandaService(self)
+
+        self.sc = sc = QtScheduler()
         sc.start()
-        
-        self.dso = dso()
 
         for i, k in [('auto',  ('F3',)),
                      ('mark',  ('m',)),]:
-            s = 'act_%s' % i
+            s = f'act_{i}'
             setattr(self, s, QAction(self))
             a = getattr(self, s)
             a.setShortcuts([QKeySequence(kk) for kk in k])
@@ -169,44 +166,53 @@ class win_drill(win_rev):
             a.triggered.connect(f)
             self.addAction(a)
 
-        for f, s in [(self.callback, 'auto'),
-                     (self.alarm, 'alarm'), 
-                    ]:
-            dbus.SessionBus().add_signal_receiver(f, dbus_interface=ifc,
-                                                  signal_name=s)
-
-    def update_auto(self):
-        self.lbl_auto.setPixmap(QPixmap(':/res/img/1rightarrow.png' if self.b_auto else ''))
+        # ananda signal handler
+        self.signal_handler = DBusSignalHandler(self)
+        self.signal_handler.alarmReceived.connect(self.alarm)
+        self.signal_handler.autoReceived.connect(self.callback)
 
     def auto(self, b=True):
-        sc = self.sc
-        for j in sc.get_jobs():
-            sc.unschedule_job(j)
-        
+        self.sc.remove_all_jobs()
         if b:
             self.add_callback()
-        self.update_auto()
+        self.lbl_auto.setPixmap(QPixmap(':/res/img/1rightarrow.png' if self.b_auto else ''))
 
     def add_callback(self):
         sc = self.sc
+        auto = self.service.auto
         if self.q_or_a == 'q':
             n = 'show_answer'
             t = self.t_a
         else: 
-            n = 'check'
+            n = 'show_question'
             t = self.t_q 
-        sc.add_date_job(self.dso.auto, 
-                        str(t_add(t_delta(seconds=t), now(utc=False))), name=n)
+        sc.add_job(auto, trigger='date', run_date=t_add(t_delta(seconds=t), now(utc=False)), name=n)
+
+        sc.remove_all_jobs()
+        
+        def f():
+            tic = now(utc=False)
+            alarm = self.service.alarm
+            for fn, arg, tl, tr in tbl:
+                sc.add_job(globals()[fn], trigger='date', args=[arg,], run_date=tic)
+                tic = t_add(t_delta(seconds=2), tic)
+                toc = t_add(t_delta(minutes=tl), tic)
+                sc.add_job(alarm, trigger='date', args=[json.dumps({'state': st_learn, 'interval': (tic, toc)}),], run_date=tic)
+                tic = toc
+                toc = t_add(t_delta(minutes=tr), tic)
+                sc.add_job(alarm, trigger='date', args=[json.dumps({'state': st_rest, 'interval': (tic, toc)}),], run_date=tic)
+                tic = toc
     
+        QTimer.singleShot(100, f)
+
     def callback(self):
         if self.q_or_a == 'q':
             self.show_qa('a')
         else:
             self.grade(3)
 
-    def listen(self, e):
-        if e.job.name in ('show_answer', 'check'):
-            self.add_callback()
+    #def listen(self, e):
+    #    self.add_callback()
 
     def handler(self, d):
         c = d['cnd'] 
@@ -249,8 +255,7 @@ class win_drill(win_rev):
             self.test_id = -1
             cn = sqlite3.connect(db_drill)
 
-            # display statistics and then extra turn(s) of failed/marked drills
-            # save score, speed data for comparison
+            # display statistics and then extra turn(s) of failed/marked drills. Save score, speed data for comparison.
             marks = []
 
             for n in self.d_result:
@@ -267,19 +272,18 @@ class win_drill(win_rev):
                 score_orig = [score[order[i]] for i in nl]
                 speed_orig = [speed[order[i]] for i in nl]
                 
-                dd = {'meta': meta, 
+                dd = {'meta':  meta, 
                       'speed': speed,
                       'score': score,
                       'order': order,
-                      'mark': mark}
+                      'mark':  mark}
                 
-                cn.cursor().execute('insert into result (data) values (?)', 
-                                    (json.dumps(dd),)) 
+                cn.cursor().execute('insert into result (data) values (?)', (json.dumps(dd),)) 
             cn.commit()
 
             if marks:
                 drill_suite['failed'] = marks
-                # Go over those marked again?
+                # Go over those marked again ?
                 self.add_test(['failed', '0', '1', '2', '2'])
                 self.busy = False
 
@@ -295,10 +299,10 @@ class win_drill(win_rev):
         
         self.q_or_a = 'q'
         self.show_qa('q')
-        for i in self.l_stw:
+        for i in self.lstw:
             getattr(self, i).reset()
          
-        tl = [('descr', '<font color="blue"> %s </font>' % ellipsis(self.d_meta[self.test_id]['name']))]
+        tl = [('descr', f"<font color='blue'> {ellipsis(self.d_meta[self.test_id]['name'])} </font>")]
         self.update_stb(tl)
     
     def sched(self, gr, qa_span):
@@ -309,7 +313,7 @@ class win_drill(win_rev):
     def add_test(self, names=None):
         if names is None:
             return
-        tps = [names[5 * i : 5 * (i + 1)] for i in range(len(names) / 5)] 
+        tps = [names[5 * i : 5 * (i + 1)] for i in range(len(names) // 5)] 
         cn = self.cn
         self.b_auto, self.t_q, self.t_a = 0, 0, 0 
         self.d_result, self.d_order, self.d_mark, self.d_meta = {}, {}, {}, {}
@@ -317,14 +321,11 @@ class win_drill(win_rev):
         for i, (n, b_random, b_auto, t_q, t_a) in enumerate(tps):
             order, d = drill_set(n, drill_suite[n], b_random=int(b_random))
             self.d_order[i] = order
-            self.d_meta[i] = {
-                'name': n, 'b_random': int(b_random), 'b_auto': int(b_auto),
-                't_q': int(t_q) , 't_a': int(t_a),}
+            self.d_meta[i] = {'name': n, 'b_random': int(b_random), 'b_auto': int(b_auto), 't_q': int(t_q), 't_a': int(t_a),}
             insert_new_fact(d, cn.cursor())
         cn.commit()
 
 if __name__ == '__main__':
-    DBusQtMainLoop(set_as_default=True) 
     argv = sys.argv
     app = QApplication(argv)
     app.setApplicationName('drill')
@@ -335,30 +336,22 @@ if __name__ == '__main__':
     ps.add_argument('-n', '--names', nargs='+', dest='names')
     
     if argc in (0, 1): # use in test
-        
-        # XXX 5-tuple: n (test name), b_random (randomize?), b_auto (autoplay?), 
-        #              t_q (question shown /secs), t_a (answer shown /secs)
-        #al = ['-n', 
-        #      'hiragana_read_kana', '0', '1', '1', '1', 
-        #      'ru_alphabets',       '1', '1', '2', '2', 
-        #      'katakana_read_kana', '0', '1', '3', '3',]
-        
+        # XXX 5-tuple: n (test name), b_random (randomize?), b_auto (autoplay?), t_q (question shown /secs), t_a (answer shown /secs)
         t1, t2 = get_4digits_test()
         al = ['-n', 
-              'nr_action_1', '0', '1', '3', '3', 
+              'nr_action_1', '0', '1', '3', '3',
               'nr_action',   '1', '1', '3', '3',
-              t1,            '0', '1', '6', '3', 
+              t1,            '0', '1', '6', '3',
               t2,            '0', '1', '6', '3',]
               #t1,            '1', '1', '6', '3',
-              #t2,            '1', '1', '6', '3',]
+              #t2,            '1', '1', '6', '3',
+              #'hiragana_read_kana', '0', '1', '1', '1', 
+              #'ru_alphabets',       '1', '1', '2', '2', 
+              #'katakana_read_kana', '0', '1', '3', '3',]
     else:
         al = argv[1:]
    
     w = win_drill(**ps.parse_args(al).__dict__)
     w.show()
-    
-    try:
-        w.alarm(dbus.SessionBus().get_object(ifc, '/').state())
-    except:
-        pass 
-    app.exec_()
+
+    app.exec()

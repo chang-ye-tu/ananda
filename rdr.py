@@ -479,7 +479,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
         if c == 'rev':
             try:
                 w = self.rev
-                w.alarm(bus.get_object(ifc, '/').state())
+                # XXX w.alarm(bus.get_object(ifc, '/').state())
                 w.showMaximized()
                 self.msg({'msg': 'reviewing ...'})
 
@@ -595,8 +595,7 @@ class win_hrv(QMainWindow, Ui_win_hrv):
 
             @atexit.register   
             def restart():
-                popen(['python', '/home/cytu/usr/src/py/ananda/hrv.py',  
-                       '-n', w.dd['name']])
+                popen(['python', '/home/cytu/usr/src/py/ananda/hrv.py', '-n', w.dd['name']])
             
             self.close()
 
@@ -754,15 +753,14 @@ class win_hrv(QMainWindow, Ui_win_hrv):
     def cls(self):
         n = self.n()
         if not self.isFullScreen() and not self.isMaximized():
-            sts.setValue('%s/size' % n, QVariant(self.size()))
+            sts.setValue(f'{n}/size', QVariant(self.size()))
         
-        #sts.setValue('%s/state' % n, QVariant(self.saveState()))        
-        sts.setValue('%s/spl/state' % n, QVariant(self.spl.saveState()))
+        #sts.setValue(f'{n}/state', QVariant(self.saveState()))        
+        sts.setValue(f'{n}/spl/state', QVariant(self.spl.saveState()))
 
         l = ['mnb', 'stb', 'tb',]
         for i in l:
-            sts.setValue('%s/%s/visible' % (n, i), 
-                QVariant(getattr(self, i).isVisible()))
+            sts.setValue(f'{n}/{i}/visible', QVariant(getattr(self, i).isVisible()))
 
     def n(self):
         return self.__class__.__name__
@@ -841,15 +839,10 @@ class win_hrv(QMainWindow, Ui_win_hrv):
             return QMainWindow.event(self, e) 
 
 if __name__ == '__main__':
-    DBusQtMainLoop(set_as_default=True) 
     argv = sys.argv
     app = QApplication(argv)
     app.setApplicationName('rdr')
     app.setFont(QFont('Microsoft JhengHei'))
-
-    # never put the following before the creation of qt loop 
-    bus = dbus.SessionBus()
-    ifc = 'ananda.ctrl'
 
     argc = len(argv)
     ps = argparse.ArgumentParser(description='Ananda Ebook Reader')
@@ -869,11 +862,6 @@ if __name__ == '__main__':
         al = argv[1:] if argc else []
 
     w = win_rdr(**ps.parse_args(al).__dict__)
-    bus.add_signal_receiver(w.alarm, dbus_interface=ifc, signal_name='alarm')
-    try:
-        w.alarm(bus.get_object(ifc, '/').state())
-    except:
-        pass 
     w.showMaximized()
 
-    app.exec_()
+    app.exec()

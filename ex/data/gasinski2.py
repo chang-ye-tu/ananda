@@ -57,7 +57,7 @@ class gasinski2(book):
         b_skip = False 
         
         if tk in ['prob', 'sol']:
-            d['q_or_a'] = 'q' if (tk in ['prob']) else 'a'
+            d['q_or_a'] = 'q' if tk in ['prob'] else 'a'
             d['k'] = k
         else:
             b_skip = True

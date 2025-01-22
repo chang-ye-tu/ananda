@@ -10,8 +10,7 @@ def qas2db(qas, cr, fact_id=0, name=''):
     try:
         orig = json.loads(fact(fact_id, cr)[0])
     except:
-        orig = {'meta': {'name': name if name else 'gen' , 
-                         'key': str(datetime.datetime.utcnow())},}
+        orig = {'meta': {'name': name if name else 'gen', 'key': str(datetime.datetime.utcnow())},}
     def distill(d):
         for i in ['q', 'a']:
             d[i] = [dd for dd in d[i] if test(dd) not in (AV, TXT, PIX)]
@@ -27,22 +26,21 @@ def qas2db(qas, cr, fact_id=0, name=''):
 
         for i in ['q', 'a']:
             try:            
-                a = qa['%s_audio' % i]
+                a = qa[f'{i}_audio']
                 if a:
-                    d[i].append({'sha': os.path.split(a)[-1], 'f': a, 
-                                 'start': '', 'stop': ''})
+                    d[i].append({'sha': os.path.split(a)[-1], 'f': a, 'start': '', 'stop': ''})
             except:
                 pass
             
             try:
-                t = qa['%s_text' % i].strip()
+                t = qa[f'{i}_text'].strip()
                 if t:
                     d[i].append({'txt': t})
             except:
                 pass
 
             try:
-                p = qa['%s_pix' % i]
+                p = qa[f'{i}_pix']
                 if p:
                     d[i].append({'sha': os.path.split(a)[-1], 'f': a, 'qry': ''})
             except:
@@ -69,9 +67,9 @@ def db2qas(fact_id, td, cr):
                     t = test(dd)
                     if t in (AV, PIX):
                         f, meta = load_f(dd['sha'], td, cr)
-                        d['%s_%s' % (s, 'audio' if t == AV else 'pix')] = f
+                        d[f"{s}_{'audio' if t == AV else 'pix'}"] = f
                     elif t == TXT:
-                        d['%s_text' % s] = dd['txt']
+                        d[f'{s}_text'] = dd['txt']
             l.append(d)
     return l
 
@@ -146,7 +144,7 @@ class win_ed(QMainWindow):
         
         td = getattr(par, 'td', '')
         self.has_par = td 
-        self.td = td if td else tempfile.mkdtemp(prefix='%s_%s_' % (self.n(), now().replace(':', '')), dir=cat(os.getcwd(), tmp)) 
+        self.td = td if td else tempfile.mkdtemp(prefix=f"{self.n()}_{now().replace(':', '')}_", dir=cat(os.getcwd(), tmp)) 
         
         wdg = QWidget(self)
         hlo = QHBoxLayout(wdg)
@@ -168,7 +166,7 @@ class win_ed(QMainWindow):
         vlo.setContentsMargins(0, 0, 0, 0)
 
         for i in ['q', 'a']:
-            s = 'ed_%s' % i
+            s = f'ed_{i}'
             setattr(self, s, edt(w))
             ed = getattr(self, s) 
             ed.setFont(QFont('Microsoft JhengHei', 20, QFont.Black))
@@ -189,7 +187,7 @@ class win_ed(QMainWindow):
                      ('preview_htm', ('F5',)),
                      ('flip',        ('Ctrl+M',)),
                      ('quit',        ('Esc',)),]:
-            n = 'act_%s' % i
+            n = f'act_{i}'
             setattr(self, n, QAction(self))
             a = getattr(self, n)
             a.setShortcuts([QKeySequence(kk) for kk in k])
@@ -202,7 +200,7 @@ class win_ed(QMainWindow):
         for ii, (i, l) in enumerate([('rec',  1),
                                      ('side', 1),
                                      ('gen',  23)]):
-            n = 'lbl_%s' % i
+            n = f'lbl_{i}'
             setattr(self, n, QLabel(self))
             w = getattr(self, n)
             w.setAlignment(Qt.AlignCenter)
@@ -211,10 +209,10 @@ class win_ed(QMainWindow):
         stb.setSizeGripEnabled(False)
         
         n = self.n()
-        self.restoreState(sts.value('%s/state' % n, type=QByteArray))
-        self.resize(sts.value('%s/size' % n, type=QSize))
-        self.move(sts.value('%s/pos' % n, type=QPoint))
-        self.spl.restoreState(sts.value('%s/spl' % n, type=QByteArray))        
+        self.restoreState(sts.value(f'{n}/state', type=QByteArray))
+        self.resize(sts.value(f'{n}/size', type=QSize))
+        self.move(sts.value(f'{n}/pos', type=QPoint))
+        self.spl.restoreState(sts.value(f'{n}/spl', type=QByteArray))        
          
         self.hst = QUndoStack(self)
         
@@ -280,8 +278,8 @@ class win_ed(QMainWindow):
         if self.qas:
             qa = self.qas[slide]
             for s in ['q', 'a']:
-                s_t = '%s_text' % s
-                ed = getattr(self, 'ed_%s' % s)
+                s_t = f'{s}_text'
+                ed = getattr(self, f'ed_{s}')
                 ed.clear()
                 ed.setPlainText(qa[s_t])
         if b:
@@ -292,7 +290,7 @@ class win_ed(QMainWindow):
         
         if self.qas:
             for s in ['q', 'a']:
-                self.qas[slide]['%s_text' % s] = getattr(self, 'ed_%s' % s).toPlainText()
+                self.qas[slide][f'{s}_text'] = getattr(self, f'ed_{s}').toPlainText()
         
         # update tw 
         if b:
@@ -330,7 +328,7 @@ class win_ed(QMainWindow):
             self.slide = 0
 
         for ii, qa in enumerate(self.qas): 
-            i = item('Q/A %s' % str(ii + 1), ':/res/img/package_education.png')
+            i = item(f'Q/A {ii + 1}', ':/res/img/package_education.png')
             i.setData(Qt.UserRole, 0, QVariant(json.dumps({'key': (ii, 'qa')})))
             self.update_elem(i, ii)
             tw.addTopLevelItem(i)
@@ -349,7 +347,7 @@ class win_ed(QMainWindow):
         elif c == 'rec_stop':
             self.lbl_rec.setPixmap(QPixmap())
             
-            self.qas[self.slide]['%s_audio' % ('a' if self.side == 1 else 'q')] = d['f']
+            self.qas[self.slide]["{'a' if self.side == 1 else 'q'}_audio"] = d['f']
             # automatically switch side.
             self.flip()
             self.update_slide()
@@ -363,7 +361,7 @@ class win_ed(QMainWindow):
 
         b = True
         for s in ['q', 'a']:
-            s_a, s_t = '%s_audio' % s, '%s_text' % s
+            s_a, s_t = f'{s}_audio', f'{s}_text'
             a = self.qas[ii][s_a]
 
             if a:
@@ -415,7 +413,7 @@ class win_ed(QMainWindow):
         for qa in self.qas:
             tq, ta = qa['q_text'].strip(), qa['a_text'].strip()
             if tq or ta:
-                tl.append('<div class="question_pre">%s</div><div class="answer_pre">%s</div>' % (tq, ta))
+                tl.append(f'<div class="question_pre">{tq}</div><div class="answer_pre">{ta}</div>')
                  
         self.win_b = win_b(self, htm('\n'.join(tl), 
             css='usr/src/py/ananda/res/ananda_prv.css', b_math=True))
@@ -439,21 +437,20 @@ class win_ed(QMainWindow):
         n_fact_today_all = n_fact(cr, (today(), tomorrow()))
         n_fact_all = n_fact(cr, names=['gen',])
         
-        for i, t in [('side', '<font color="blue">%s</font>' % s.upper()), 
-                     ('gen', ('&nbsp;' * 2).join([
-                '<font color="purple">today: %s</font>' % n_fact_today_all,
-                '<font color="goldenrod">all: %s</font>' % n_fact_all,
+        for i, t in [('side', f'<font color="blue">{s.upper()}</font>'), 
+                     ('gen', ('&nbsp;' * 2).join([f'<font color="purple">today: {n_fact_today_all}</font>',
+                                                  f'<font color="goldenrod">all: {n_fact_all}</font>',
                 ]))]:
-            getattr(self, 'lbl_%s' % i).setText(t)
+            getattr(self, f'lbl_{i}').setText(t)
 
-        getattr(self, 'ed_%s' % s).setFocus()
+        getattr(self, f'ed_{s}').setFocus()
 
     def closeEvent(self, e):
         n = self.n()
-        sts.setValue('%s/state' % n, self.saveState())
-        sts.setValue('%s/spl' % n, self.spl.saveState())
-        sts.setValue('%s/size' % n, QVariant(self.size()))
-        sts.setValue('%s/pos' % n, QVariant(self.pos()))
+        sts.setValue(f'{n}/state', self.saveState())
+        sts.setValue(f'{n}/spl', self.spl.saveState())
+        sts.setValue(f'{n}/size', QVariant(self.size()))
+        sts.setValue(f'{n}/pos', QVariant(self.pos()))
         
         if not self.has_par:
             shutil.rmtree(self.td)
@@ -482,4 +479,4 @@ if __name__ == '__main__':
     except:
         pass 
 
-    app.exec_()
+    app.exec()

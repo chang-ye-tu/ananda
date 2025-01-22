@@ -9,7 +9,6 @@ import books
 span = books.span
 zo = books.zo
 # XXX hardcoded magic; 
-md = QTransform(2 * 102 / 96, 0, 0, 2 * 102 / 96, 0, 0)
 md = QTransform(2, 0, 0, 2, 0, 0)
 
 prf_fit_width, prf_fit_height = range(2)
@@ -99,19 +98,18 @@ def get_tk(i, td, book, bx, n_pg='', corr=None):
                     continue
 
                 # convert to grayscale 
-                tp = (n_pg, b)
                 r = md.mapRect(QRect(*b))
                 # adjust r
                 if corr:
                     rc = md.mapRect(QRect(*corr))
                     rw, rh = rc.width(), rc.height()
                     r.adjust(-rw, -rh, rw, rh)
-                f_i = cat(td, 'ocr_%s_%s.tif' % tp) 
+                f_i = cat(td, f'ocr_{n_pg}_{b}.tif') 
                 if not os.path.isfile(f_i):
                     i.copy(r).convertToFormat(QImage.Format_Indexed8).save(f_i)
 
                 # ocr
-                f_w = cat(td, 'ocr_%s_%s' % tp)
+                f_w = cat(td, f'ocr_{n_pg}_{b}')
                 f_w_t = f_w + '.txt'
                 if not os.path.isfile(f_w_t):
                     # tesseract may fail
@@ -289,7 +287,7 @@ def parse(name):
     pgl = book.pgs
     corr = []
     for ii, n_pg in enumerate(pgl):
-        log(u'processing page %-4d (%-4d of %4d: %4d %%) ... time elapsed: %s' % (n_pg, ii + 1, len(pgl), int((ii + 1) * 100. / len(pgl)),  lapse(dt_now() - tic)))
+        log(f'processing page {n_pg:4d} ({ii + 1:4d} of {len(pgl):4d}: {int((ii + 1) * 100. / len(pgl)):4d} %) ... time elapsed: {lapse(dt_now() - tic)}')
         
         i = dc.render(n_pg)
         if i is None:
@@ -334,9 +332,9 @@ def parse(name):
         d.update(get_qa(book, tkd, bxd, yd))
 
     except:
-        log(u'error generating [%s] qa: skipped' % name)
+        log(f'error generating [{name}] qa: skipped')
 
-    log(u'\nparsing completed; total time lapse: %s' % lapse(dt_now() - tic))
+    log(f'\nparsing completed; total time lapse: {lapse(dt_now() - tic)}')
     
     shutil.rmtree(td)
     return d
@@ -372,7 +370,7 @@ def render_pg_fact(l, pg, dc, mm, td):
     try:
         i = dc.render(pg) 
         render_i(i, l, mm)
-        f = cat(td, '%s_pg.png' % pg)
+        f = cat(td, f'{pg}_pg.png')
         i.save(f)
         return True, f
 
@@ -380,19 +378,19 @@ def render_pg_fact(l, pg, dc, mm, td):
         return False, ''
 
 def render(qa, k, book, dc, mm, td):
-    aa1 = qa['q'][k]
-    aa2 = qa['a'][k]
+    aa1 = qa['q'].get(k, [])
+    aa2 = qa['a'].get(k, [])
     
     for n_pg, a in (aa1 + aa2):
-        f = cat(td, '%s.tif' % n_pg)
+        f = cat(td, f'{n_pg}.tif')
         if not os.path.isfile(f):
             i = dc.render(n_pg)
             i.save(f)
     
     for ii, ll in enumerate([aa1, aa2]):
         for n_pg, a in ll:
-            f = cat(td, '%s_comp_%s.png' % (k, n_pg))
-            i = QImage(f if os.path.isfile(f) else cat(td, '%s.tif' % n_pg))
+            f = cat(td, f'{k}_comp_{n_pg}.png')
+            i = QImage(f if os.path.isfile(f) else cat(td, f'{n_pg}.tif'))
             p = QPainter(i)
             pen = QPen()
             pen.setColor(QColor('blue' if ii else 'red'))
@@ -409,7 +407,7 @@ def render(qa, k, book, dc, mm, td):
     for nn, ll in enumerate([aa1, aa2]):
         l = []
         for n_pg, a in ll: 
-            i = QImage(cat(td, '%s.tif' % n_pg))
+            i = QImage(cat(td, f'{n_pg}.tif'))
             l.append(i.copy(mm.mapRect(QRectF(*a)).toRect()))
         try:
             c[nn] = combine(l, width_qa(l))
@@ -425,13 +423,13 @@ def render(qa, k, book, dc, mm, td):
         p.drawImage(QPoint(pl + wp, pt + wp), c[nn])
         
         if book.replace_title:
-            f_b = cat(td, 'box_%s_%s.tif' % (k, nn))
+            f_b = cat(td, f'box_{k}_{nn}.tif')
             i.convertToFormat(QImage.Format_Indexed8).save(f_b)
             # find out first line
             bx = boxes(f_b, book.morph0)
             if bx:
                 l1 = [b for b in sorted(bx, key=lambda b: b[1]) if (b[2] > 50 and b[-1] > 5)][0]
-                f_b = cat(td, 'box_%s_%s_.tif' % (k, nn))
+                f_b = cat(td, f'box_{k}_{nn}_.tif')
                 i.copy(md.mapRect(QRect(*l1))).convertToFormat(QImage.Format_Indexed8).save(f_b)
                 bx1 = boxes(f_b, book.morph1)
                 # get first word
@@ -450,6 +448,8 @@ def render(qa, k, book, dc, mm, td):
                     p.drawRect(md.mapRect(r1))
                     p.restore()
 
+        combine([i,], width_qa([i,]), 0).save(cat(td, f"{k}_{'ans' if nn else 'prob'}.png"))
+        # draw the black frame for question
         pen = QPen()
         pen.setColor(QColor('black'))
         pen.setWidth(wp)
@@ -457,16 +457,16 @@ def render(qa, k, book, dc, mm, td):
         if nn == 0:
             p.drawRect(QRect(QPoint(0, 0), sz))
         p.end()
-        l.append(i) 
-    combine(l, width_qa(l), 0).save(cat(td, '%s_fact.png' % k))
+        l.append(i)
+    combine(l, width_qa(l), 0).save(cat(td, f'{k}_fact.png'))
 
-def rename_fact_png(fd):
+def rename_fact_qa_png(fd):
     ff = []
     for root, dirs, files in os.walk(fd):
         for f in files:
-            if f.find('_fact.png') != -1:
+            if f.find('_fact.png') != -1 or f.find('_prob.png') != -1 or f.find('_ans.png') != -1:
                 ff.append(f)
-    keys = [f.replace('_fact.png', '') for f in ff]
+    keys = list(set([f.replace('_fact.png', '').replace('_prob.png', '').replace('_ans.png', '') for f in ff]))
 
     def mycmp(s):
         # assume the folder name is the same as ana
@@ -477,14 +477,21 @@ def rename_fact_png(fd):
 
     keys = sorted(keys, key=mycmp)
 
-    digits = 4#round(math.log(len(keys), 10) + 1)
+    digits = 4 #XXX round(math.log(len(keys), 10) + 1)
     ddd = dict([(i, str(ii + 1).zfill(digits)) for ii, i in enumerate(keys)])
     
     for f in ff:
-        key = f.replace('_fact.png', '')
-        os.rename(cat(root, f), cat(root, ddd[key] + '_' + key + '.png'))  
+        for ft in ['fact', 'prob', 'ans',]:
+            if f.find(f'_{ft}.png') != -1:
+                key = f.replace(f'_{ft}.png', '')
+                fts = ''
+                if ft == 'prob':
+                    fts = '_prob'
+                elif ft == 'ans':
+                    fts = '_ans'
+                os.rename(cat(root, f), cat(root, ddd[key] + '_' + key + fts + '.png'))  
 
-def render_all(name, td='', b_fact_only=True, b_rename_fact_png=True):
+def render_all(name, td='', b_fact_qa_only=True, b_rename_fact_qa_png=True, b_remove_prob_ans_png=False, b_render_q_no_a=False):
     d = get_ana(name) 
     zo = d['zo']
     z = d['z'] * 0.96 * w_desktop / d['w_desktop']
@@ -504,8 +511,15 @@ def render_all(name, td='', b_fact_only=True, b_rename_fact_png=True):
         td = tempfile.mkdtemp(prefix=name + '_', dir=tmp)
     
     qa = d['qa']
-
-    qa_proper = set(qa['q'].keys()) & set(qa['a'].keys())
+    
+    def right(key, keywords=['Theorem', 'Lemma', 'Corollary', 'Definition', 'Example']):
+        for keyword in keywords:
+            if key.find(keyword) != -1:
+                return True
+        return False
+        
+    qa_ = set(qa['q'].keys()) & set(qa['a'].keys())
+    qa_proper = qa_.union(set([key for key in qa['q'].keys() if right(key)])) if b_render_q_no_a else qa_
     for k in qa_proper:
         render(qa, k, book, dc, mm, td)
     
@@ -523,7 +537,7 @@ def render_all(name, td='', b_fact_only=True, b_rename_fact_png=True):
         os.remove(f)
 
     # remove all comps, pgs
-    if b_fact_only:
+    if b_fact_qa_only:
         ff = []
         for root, dirs, files in os.walk(td):
             for f in files:
@@ -531,15 +545,24 @@ def render_all(name, td='', b_fact_only=True, b_rename_fact_png=True):
                     ff.append(cat(root, f))
         for f in ff:
             os.remove(f)
-    
-    if b_rename_fact_png:
-        rename_fact_png(td)
+
+    if b_rename_fact_qa_png:
+        rename_fact_qa_png(td)
+
+    if b_remove_prob_ans_png:
+        ff = []
+        for root, dirs, files in os.walk(td):
+            for f in files:
+                if f.find('_prob.png') != -1 or f.find('_ans.png') != -1:
+                    ff.append(cat(root, f))
+        for f in ff:
+            os.remove(f)
 
 # XXX from os.walk or query dd['qa']?
 def pixd(dd, td):
     qa = dd['qa']
 
-    fact_pg, fact, comp = [], [], []
+    fact_pg, fact, prob, ans, comp = [], [], [], [], []
     for root, dirs, files in os.walk(td):
         for f in files:
             ff = cat(root, f)
@@ -547,6 +570,10 @@ def pixd(dd, td):
                 fact.append(ff)
             elif fnmatch(f, '*_pg.png'):
                 fact_pg.append(ff)
+            elif fnmatch(f, '*_prob.png'):
+                prob.append(ff)
+            elif fnmatch(f, '*_ans.png'):
+                ans.append(ff)
             elif fnmatch(f, '*.png'): 
                 comp.append(ff)
         
@@ -570,7 +597,7 @@ def pixd(dd, td):
     
     return {'comp_by_k': d_k, 'comp_by_pg': d_pg,
             'fact_by_k': dict([(f_no_ext(i)[:-5], [i]) for i in fact]), 
-            'fact_by_pg': dict([(str(pg), list(set([cat(td, '%s_fact.png' % i[0]) for i in ii]))) for pg, ii in pg_fact(qa).items()]), 
+            'fact_by_pg': dict([(str(pg), list(set([cat(td, f'{i[0]}_fact.png') for i in ii]))) for pg, ii in pg_fact(qa).items()]), 
             'comp': comp, 'fact': fact, 'pgs': pgs, 'ks': ks}
 
 def update_qa(d):
@@ -581,7 +608,7 @@ def update_qa(d):
     
     except:
         traceback.print_exc()
-        log(u'error generating [%s] qa: skipped' % d['name'])
+        log(f"error generating [{d['name']}] qa: skipped")
         return False
 
 def erase_ana(name, l):
@@ -609,7 +636,7 @@ def update_ana(b_sha=False):
             print(n, b)
             save_ana(d)
         else:
-            print(n, 'load [%s] error' % n)
+            print(n, f'load [{n}] error')
 
 def update_ana_dpix():
     t = []
@@ -623,7 +650,7 @@ def update_ana_dpix():
             d['dpix'] = 96
             save_ana(d)
         else:
-            print(n, 'load [%s] error' % n)
+            print(n, f'load [{n}] error')
 
 def delete_tk(n, tpl):
     d = get_ana(n)
@@ -778,7 +805,7 @@ class win_fact(QMainWindow):
         for ii, (i, l) in enumerate([('fact', 1),
                                      ('comp', 1), 
                                      ('aux',  2)]):
-            n = 'lbl_%s' % i
+            n = f'lbl_{i}'
             setattr(self, n, QLabel(self))
             w = getattr(self, n)
             w.setAlignment(Qt.AlignCenter)
@@ -789,7 +816,7 @@ class win_fact(QMainWindow):
         stb.setSizeGripEnabled(False)
 
         for i, k in [('quit', ('Q', 'Esc')),]: 
-            s = 'act_%s' % i
+            s = f'act_{i}'
             if not getattr(self, s, ''):
                 setattr(self, s, QAction(self))
             a = getattr(self, s)
@@ -798,12 +825,12 @@ class win_fact(QMainWindow):
             self.addAction(a)
         
         n = self.n()
-        self.restoreState(sts.value('%s/state' % n, type=QByteArray))  
+        self.restoreState(sts.value(f'{n}/state', type=QByteArray))  
         self.td = tempfile.mkdtemp(prefix=n + '_', dir=td)
         self.w = w = wdg_fact(self)
         self.setCentralWidget(w)
         w.msg_wdg_fact.connect(self.refresh)
-        w.spl.restoreState(sts.value('%s/spl/state' % n, type=QByteArray))
+        w.spl.restoreState(sts.value(f'{n}/spl/state', type=QByteArray))
 
         self.overlay = overlay(self.centralWidget())
 
@@ -853,7 +880,7 @@ class win_fact(QMainWindow):
             w.vw_fact.load_pix(sorted(pd['fact_by_k'][k]))
             w.vw_comp.load_pix(sorted(pd['comp_by_k'][k]))
             #w.vw_fact.load_pix(sorted(pd['fact_by_pg'][pg]))
-            #w.vw_comp.load_pix([cat(self.td, '%s_pg.png' % pg)])
+            #w.vw_comp.load_pix([cat(self.td, f'{pg}_pg.png')])
             #w.vw_fact.load_pix(sorted(pd['comp_by_pg'][pg]))
 
         elif c == 'error':
@@ -862,15 +889,15 @@ class win_fact(QMainWindow):
     def closeEvent(self, e):
         self.cls()
         n = self.n()
-        sts.setValue('%s/spl/state' % n, QVariant(self.w.spl.saveState()))
-        sts.setValue('%s/state' % n, QVariant(self.saveState()))     
+        sts.setValue(f'{n}/spl/state', QVariant(self.w.spl.saveState()))
+        sts.setValue(f'{n}/state', QVariant(self.saveState()))     
 
     def update_stb(self, tl):
         for sct, s in tl:
             self.msg({'msg': s}, sct)
 
     def msg(self, d, sct):
-        lbl = getattr(self, 'lbl_%s' % sct)
+        lbl = getattr(self, f'lbl_{sct}')
         msg = d.get('msg', '')
         to = d.get('to', 0)
         lbl.setText(msg)
@@ -944,35 +971,44 @@ def group(name):
     cn.commit()
 
 if __name__ == '__main__':
+
     app = QApplication(sys.argv)
     desktop = app.desktop()
     w_desktop = desktop.availableGeometry().width()
     dpix = desktop.physicalDpiX()
+    
+    screen = app.screens()[0]
+    physical_dpi_x = screen.physicalDotsPerInchX()
+    physical_dpi_y = screen.physicalDotsPerInchY()
+    logical_dpi_x = screen.logicalDotsPerInchX()
+    logical_dpi_y = screen.logicalDotsPerInchY()
+    dpr = screen.devicePixelRatio()
 
     begin = time.perf_counter() 
-    print('begin:   %s' % now(utc=False))
+    print(f'begin:   {now(utc=False)}')
 
     #group('ash_real')
     
     #wipe_all('kirsch', [str(i) for i in range(1, 15)])
     
-    #for i in ['jungnickel', 'abadir']:#'baldi1', 'knapp_basic_real']:
-    #    folder = cat('/home/cytu/thm', i)
-    #    if os.path.isdir(folder):
-    #        shutil.rmtree(folder)
-    #    render_all(i, folder)
+    for i in ['aliprantis',]: # ['grimmett_sol', 'baldi1', 'knapp_basic_real']:
+        folder = cat('/home/cytu/thm', i)
+        if os.path.isdir(folder):
+            shutil.rmtree(folder)
+        render_all(i, folder, b_remove_prob_ans_png=True)#, b_render_q_no_a=True)
+       #render_all(i, folder, b_fact_qa_only=True, b_rename_fact_qa_png=True, b_remove_prob_ans_png=False, b_render_q_no_a=False)
 
     ## detect which problems are not in the list; designed only for tkachuk books
     #d = get_ana('tkachuk_3')
-    #print sorted(list(set(['U.%03d' % i for i in range(1,500)]) - set(d['qa']['q'].keys())))
+    #print sorted(list(set([f'U.{i:03d}' for i in range(1,500)]) - set(d['qa']['q'].keys())))
     
     ## code to detect qa generating problem
     #d = get_ana('baldi1')
     #update_qa(d)
     
-    for name in ['jungnickel',]:
-        d = parse(name)
-        save_ana(d)
+    #for name in ['evans',]:
+    #    d = parse(name)
+    #    save_ana(d)
 
-    print('end:     %s' % now(utc=False))
-    print('elapsed: %s' % nr2t(int(time.perf_counter() - begin)))
+    print(f'end:     {now(utc=False)}')
+    print(f'elapsed: {nr2t(int(time.perf_counter() - begin))}')

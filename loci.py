@@ -1,7 +1,8 @@
 from base import *
-from op import matches
 
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 
 mode_insert, mode_update = range(2)
 
@@ -9,22 +10,20 @@ def make_db(cn):
     cr = cn.cursor()
 
     def create_ix(t, i):
-        cr.execute('create index ix_%s_%s on %s(%s)' % (t, i, t, i))
+        cr.execute(f'create index ix_{t}_{i} on {t}({i})')
 
     for t in ['loci']:
-        cr.execute('''create table %s (id integer primary key, 
-                                       link text not null,
-                                       pix blob not null,
-                                       rct text not null,
+        cr.execute(f'''create table {t} (id integer primary key, 
+                                         link text not null,
+                                         pix blob not null,
+                                         rct text not null,
                           created text not null default current_timestamp,
-                                       unique (link))''' % t)
+                                         unique (link))''')
         for i in ['link', 'created']:
             create_ix(t, i)
 
     for t in ['route']:
-        cr.execute('''create table %s (id integer primary key, 
-                                       data text not null, 
-                                       unique (data))''' % t)
+        cr.execute(f'''create table {t} (id integer primary key, data text not null, unique (data))''')
         for i in ['data',]:
             create_ix(t, i)
 
@@ -45,21 +44,15 @@ def n_fact(interval=None):
     except:
         return 0
 
-class dso(dbus.service.Object):
-
-    def __init__(self): 
-        dbus.service.Object.__init__(self, 
-            dbus.service.BusName('ananda.loci', bus=dbus.SessionBus()), '/')
-        
 class win_loci(QMainWindow):
     
     resized = pyqtSignal()    
 
     def __init__(self, par=None):
         QMainWindow.__init__(self, par)
-        self.setWindowTitle(u'Loci Selector')
+        self.setWindowTitle('Loci Selector')
         self.setWindowIcon(QIcon(':/res/img/google-streets-icon.png'))
-        self.td = tempfile.mkdtemp(prefix='%s_%s_' % (self.n(), now().replace(':', '')), dir=cat(os.getcwd(), tmp))
+        self.td = tempfile.mkdtemp(prefix=f"{self.n()}_{now().replace(':', '')}_", dir=cat(os.getcwd(), tmp))
         
         self.lw = lw = QListWidget(self)
         f = self.load_lw
@@ -80,7 +73,6 @@ class win_loci(QMainWindow):
         ww.setLayout(lo)
         
         self.setCentralWidget(ww)
-        self.dso = dso()
 
         for i, k in [('load', ('F3',)),
                      ('mode', ('F4',)), 
@@ -89,7 +81,7 @@ class win_loci(QMainWindow):
                      ('next', ('Alt+Right', 'PgDown')),
                      ('prev', ('Alt+Left',  'PgUp')),
                     ]:
-            s = 'act_%s' % i
+            s = f'act_{i}'
             setattr(self, s, QAction(self))
             a = getattr(self, s)
             a.setShortcuts([QKeySequence(kk) for kk in k])
@@ -103,7 +95,7 @@ class win_loci(QMainWindow):
                                      ('num',  8),
                                      ('route',13),
                                     ]):
-            n = 'lbl_%s' % i
+            n = f'lbl_{i}'
             setattr(self, n, QLabel(self))
             lbl = getattr(self, n)
             lbl.setAlignment(Qt.AlignCenter)
@@ -112,15 +104,16 @@ class win_loci(QMainWindow):
         stb.setSizeGripEnabled(False)
 
         n = self.n()
-        spl.restoreState(sts.value('%s/spl/state' % n, type=QByteArray))
-        self.restoreState(sts.value('%s/state' % n, type=QByteArray))        
+        spl.restoreState(sts.value(f'{n}/spl/state', type=QByteArray))
+        self.restoreState(sts.value(f'{n}/state', type=QByteArray))        
         
-        dbus.SessionBus().add_signal_receiver(self.select, dbus_interface='ananda.snapshot', signal_name='select')
-        
+        self.signal_handler = DBusSignalHandler(self)
+        self.signal_handler.selectReceived.connect(self.select)
+
         # XXX
-        #n, ok = sts.value('%s/id' % self.n()).toInt()
+        #n, ok = sts.value(f'{self.n()}/id').toInt()
         #self.setup(n if ok else 1) 
-        n = sts.value('%s/id' % self.n(), type=int)
+        n = sts.value(f'{self.n()}/id', type=int)
         self.setup(n) 
     
         # To handle the resizeEvent better
@@ -202,14 +195,13 @@ class win_loci(QMainWindow):
                 scn.addItem(QGraphicsPixmapItem(p))
 
     def update_stb(self):
-        self.lbl_mode.setPixmap(QPixmap(':/res/img/%s.png' % ('list_add' if self.mode == mode_insert else 'frame_edit')))
+        self.lbl_mode.setPixmap(QPixmap(f":/res/img/{'list_add' if self.mode == mode_insert else 'frame_edit'}.png"))
         
         d = self.d
         n = len(d['loci'])
         
-        self.msg({'msg': '<font color="green">route &nbsp; [%s] : &nbsp;#%s of %s</font>' % (d['name'], self.ix + 1 if n else 0, n), 'sct': 'route'})
-
-        self.msg({'msg': '<font color="blue"># today: %s&nbsp; all: %s</font>' % (n_fact((today(), tomorrow())), n_fact()), 'sct': 'num'})
+        self.msg({'msg': f'<font color="green">route &nbsp; [{d["name"]}] : &nbsp;#{self.ix + 1 if n else 0} of {n}</font>', 'sct': 'route'})
+        self.msg({'msg': f'<font color="blue"># today: {n_fact((today(), tomorrow()))}&nbsp; all: {n_fact()}</font>', 'sct': 'num'})
 
     def handler(self, i):
         if i == 'load':
@@ -274,7 +266,7 @@ class win_loci(QMainWindow):
                 i = cr.execute('select last_insert_rowid()').fetchone()[0]
                 d['id'] = i
 
-        sts.setValue('%s/id' % self.n(), QVariant(i))        
+        sts.setValue(f'{self.n()}/id', QVariant(i))        
         cn.commit()
 
     def select(self, s):
@@ -297,7 +289,7 @@ class win_loci(QMainWindow):
 
         else:
             try:
-                cr.execute('update loci set link = ?, pix = ?, rct = ? where id =?', (link, pix, rct, self.d['loci'][self.ix]))
+                cr.execute('update loci set link = ?, pix = ?, rct = ? where id = ?', (link, pix, rct, self.d['loci'][self.ix]))
                 cn.commit()
                 self.display()
 
@@ -308,7 +300,7 @@ class win_loci(QMainWindow):
         self.update_stb()
 
     def msg(self, d):
-        lbl = getattr(self, 'lbl_%s' % d.get('sct', 'gen'))
+        lbl = getattr(self, f"lbl_{d.get('sct', 'gen')}")
         msg = d.get('msg', '')
         to = d.get('to', 0)
         lbl.setText(msg)
@@ -319,15 +311,14 @@ class win_loci(QMainWindow):
     def cls(self):
         n = self.n()
         #if not self.isFullScreen() and not self.isMaximized():
-        #    sts.setValue('%s/size' % n, QVariant(self.size()))
+        #    sts.setValue(f'{n}/size', QVariant(self.size()))
         
-        sts.setValue('%s/state' % n, QVariant(self.saveState()))        
-        sts.setValue('%s/spl/state' % n, QVariant(self.spl.saveState()))
+        sts.setValue(f'{n}/state', QVariant(self.saveState()))        
+        sts.setValue(f'{n}/spl/state', QVariant(self.spl.saveState()))
 
         #l = ['mnb', 'stb', 'tb',]
         #for i in l:
-        #    sts.setValue('%s/%s/visible' % (n, i), 
-        #        QVariant(getattr(self, i).isVisible()))
+        #    sts.setValue(f'{n}/{i}/visible', QVariant(getattr(self, i).isVisible()))
         
         shutil.rmtree(self.td)
 
@@ -343,7 +334,7 @@ class win_loci(QMainWindow):
         self.resized.emit() 
 
 def save_all_path():
-    ## routine that save the whole path into a folder
+    # routine that save the whole path into a folder
     data = cr.execute('select data from route').fetchall()
     for d in data:
         dd = json.loads(d[0])
@@ -359,19 +350,25 @@ def save_all_path():
                 open(f, 'wb').write(r[0])
 
 if __name__ == '__main__':
-    
     #save_all_path(); sys.exit()
 
-    driver = webdriver.Chrome('/home/cytu/usr/src/py/ananda/chromedriver')
+    # Set up Chrome options
+    chrome_options = Options()
+    chrome_options.add_argument("--start-maximized")  # Since we are using maximize_window()
+
+    # Create service object
+    service = Service(executable_path='/home/cytu/usr/src/py/ananda/chromedriver')
+
+    # Create driver with service and options
+    driver = webdriver.Chrome(service=service, options=chrome_options)
     driver.maximize_window()
 
-    DBusQtMainLoop(set_as_default=True) 
     app = QApplication(sys.argv)
-     
     app.setFont(QFont('Microsoft JhengHei'))
+
     QWebEngineSettings.globalSettings().setAttribute(QWebEngineSettings.PluginsEnabled, True)
      
     w = win_loci()
     w.showMaximized()
     
-    app.exec_()
+    app.exec() 

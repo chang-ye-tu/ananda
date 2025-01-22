@@ -10,7 +10,7 @@ class falmagne(book):
         self.pgs = range(17, 374)
         self.morph0 = 'c150.4'
 
-        self.src = "/home/cytu/usr/src/py/ananda/theory/Falmagne J.-C., Doignon J.-P. Learning Spaces.pdf"
+        self.src = "/home/cytu/usr/src/py/ananda/theory/Falmagne/Falmagne J.-C., Doignon J.-P. Learning Spaces.pdf"
         
         self.tokens.update({
             'sec': {'class': 'indent0',      
