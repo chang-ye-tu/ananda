@@ -61,12 +61,12 @@ A collection of adaptive computer-assisted learning / memorizing subroutines.
   - Audio / Video: [PortAudio]( http://www.portaudio.com/ ) / [PyAudio]( https://people.csail.mit.edu/hubert/pyaudio/ ) 
   - JavaScript: [MathJax]( https://www.mathjax.org/ ) 
   - Other Utilities: [ChromeDriver]( https://sites.google.com/chromium.org/driver/ ), [Vim]( https://www.vim.org/ ) 
-- Issue the following commands (for Ubuntu 20.04) 
+- Issue the following commands (for Ubuntu 24.04) 
 
 ```shell
-sudo apt install python3-djvu python3-xlib python3-poppler-qt5 python3-pyaudio pyqt5-dev-tools python3-pyqt5-qtwebengine python3-pyqt5-qtmultimedia libleptonica-dev djvulibre-bin poppler-utils libopencv-dev tesseract-ocr build-essential cmake git vim-gtk3 python3-pip pdftk libboost1.71-all-dev qt5-default google-chrome-stable gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly ffmpeg libopencv-dev
+sudo apt install build-essential cmake vim-gtk3 pdftk ffmpeg tesseract-ocr djvulibre-bin libpoppler-qt5-dev libdjvulibre-dev portaudio19-dev libdbus-1-dev libleptonica-dev
 
-pip3 install apscheduler beautifulsoup4 selenium
+pip install pillow==9.2.0 PyQt5 PyQtWebEngine python-poppler-qt5 djvulibre-python apscheduler tqdm google-api-python-client google-auth-oauthlib selenium PyAudio python-xlib
 ```
 - Install MathJax (with root repository in $BIN)
 
